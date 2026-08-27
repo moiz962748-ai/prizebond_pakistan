@@ -168,7 +168,7 @@ export const Navbar: React.FC<NavbarProps> = ({
               )}
             </div>
 
-{/* Prize Bonds Dropdown */}
+            {/* Prize Bonds Dropdown */}
             <div
               className="relative"
               onMouseEnter={() => setActiveDropdown('prize-bonds')}
@@ -340,10 +340,19 @@ export const Navbar: React.FC<NavbarProps> = ({
             <span className="text-xs bg-[#004D26] px-2 py-0.5 rounded">Check Now</span>
           </button>
 
-          {/* Schedule Accordion */}
+          {/* Schedule Section with Main Schedule Link */}
           <div className="py-2 border-b border-slate-100">
-            <div className="text-xs font-extrabold text-[#004D26] uppercase tracking-wider mb-2">
-              Draw Schedule
+            <div className="flex items-center justify-between mb-2">
+              <span className="text-xs font-extrabold text-[#004D26] uppercase tracking-wider">
+                Draw Schedule
+              </span>
+              <button
+                type="button"
+                onClick={() => handleNavClick('schedule')}
+                className="text-[11px] font-bold text-[#006633] hover:underline cursor-pointer"
+              >
+                View Full Schedule →
+              </button>
             </div>
             <div className="flex flex-wrap gap-2">
               {[
@@ -364,7 +373,7 @@ export const Navbar: React.FC<NavbarProps> = ({
             </div>
           </div>
 
-          {/* Denominations */}
+          {/* Denominations Section with Main Hub Link */}
           <div className="py-2 border-b border-slate-100">
             <div className="flex items-center justify-between mb-2">
               <span className="text-xs font-extrabold text-[#004D26] uppercase tracking-wider">
@@ -373,9 +382,9 @@ export const Navbar: React.FC<NavbarProps> = ({
               <button
                 type="button"
                 onClick={() => handleNavClick('prizebonds')}
-                className="text-[11px] font-bold text-[#006633] hover:underline"
+                className="text-[11px] font-bold text-[#006633] hover:underline cursor-pointer"
               >
-                View Hub Page →
+                Prize Bonds Hub (All) →
               </button>
             </div>
             <div className="grid grid-cols-3 gap-1.5">
