@@ -41,9 +41,11 @@ import {
 
 interface HomePageProps {
   onNavigate: (view: string, param?: string) => void;
+  cmsContent?: Record<string, string>;
+  isAdmin?: boolean;
 }
 
-export const HomePage: React.FC<HomePageProps> = ({ onNavigate }) => {
+export const HomePage: React.FC<HomePageProps> = ({ onNavigate, cmsContent = {}, isAdmin = false }) => {
   const [openFaqId, setOpenFaqId] = useState<string | null>('faq-1');
 
   // Next scheduled draw lookup
@@ -61,12 +63,14 @@ export const HomePage: React.FC<HomePageProps> = ({ onNavigate }) => {
               <span>Official National Savings & SBP Information Portal</span>
             </div>
 
+            {/* Dynamic Hero Title */}
             <h1 className="text-3xl sm:text-5xl font-black tracking-tight leading-tight">
-              Pakistan Prize Bond Results & Draw Schedule 2026
+              {cmsContent.hero_title || 'Pakistan Prize Bond Results & Draw Schedule 2026'}
             </h1>
 
+            {/* Dynamic Hero Subtitle */}
             <p className="text-xs sm:text-sm text-emerald-100/90 leading-relaxed font-medium">
-              Instantly check single numbers, bulk lists, and serial ranges against official State Bank of Pakistan gazettes. Access 2026 draw schedules, prize breakdowns, and tax rates.
+              {cmsContent.hero_subtitle || 'Instantly check single numbers, bulk lists, and serial ranges against official State Bank of Pakistan gazettes. Access 2026 draw schedules, prize breakdowns, and tax rates.'}
             </p>
 
             <div className="flex flex-wrap items-center justify-center lg:justify-start gap-3 pt-2">
@@ -76,7 +80,10 @@ export const HomePage: React.FC<HomePageProps> = ({ onNavigate }) => {
                 className="px-6 py-3.5 bg-amber-400 hover:bg-amber-300 text-slate-950 font-black text-xs sm:text-sm rounded-xl shadow-md transition-all active:scale-98 cursor-pointer flex items-center gap-2"
               >
                 <Search className="w-4 h-4" />
-                <span>Check Prize Bond</span>
+                {/* Dynamic Button Text */}
+                <span>
+                  {cmsContent.search_button || 'Check Prize Bond'}
+                </span>
               </button>
 
               <button

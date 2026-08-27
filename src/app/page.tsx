@@ -1,6 +1,6 @@
 'use client';
 
-import React, { useState } from 'react';
+import React, { useState, useEffect } from 'react';
 import { Navbar } from '@/components/layout/Navbar';
 import { Footer } from '@/components/layout/Footer';
 import { SearchModal } from '@/components/common/SearchModal';
@@ -16,12 +16,43 @@ import { FaqPage } from '@/views/FaqPage';
 import { LatestDrawPage } from '@/views/LatestDrawPage';
 import { DrawDetailPage } from '@/views/DrawDetailPage';
 import { StaticInfoPages } from '@/views/StaticInfoPages';
-import { DenominationValue } from '@/types/prizebond';
+import { supabase } from '@/lib/supabase'; // Supabase client import
 
 export default function Page() {
   const [currentView, setCurrentView] = useState<string>('home');
   const [viewParam, setViewParam] = useState<string | undefined>(undefined);
   const [isSearchOpen, setIsSearchOpen] = useState<boolean>(false);
+
+  // CMS Content State for Dynamic Texts & Admin Check
+  const [cmsContent, setCmsContent] = useState<Record<string, string>>({});
+  const [isAdmin, setIsAdmin] = useState<boolean>(false);
+
+  // Fetch CMS content and check admin status on load
+  useEffect(() => {
+    const checkAdminAndFetch = async () => {
+      // 1. Check if user is logged in as Admin
+      const { data: { session } } = await supabase.auth.getSession();
+      if (session) {
+        setIsAdmin(true);
+      }
+
+      // 2. Fetch dynamic contents from Supabase
+      const { data, error } = await supabase
+        .from('site_contents')
+        .select('section_key, content_value')
+        .eq('page_name', 'home');
+
+      if (!error && data) {
+        const map: Record<string, string> = {};
+        data.forEach((item) => {
+          map[item.section_key] = item.content_value;
+        });
+        setCmsContent(map);
+      }
+    };
+
+    checkAdminAndFetch();
+  }, []);
 
   const handleNavigate = (view: string, param?: string) => {
     setCurrentView(view);
@@ -49,7 +80,11 @@ export default function Page() {
       {/* Dynamic View Router */}
       <main className="flex-1">
         {currentView === 'home' && (
-          <HomePage onNavigate={handleNavigate} />
+          <HomePage 
+            onNavigate={handleNavigate} 
+            cmsContent={cmsContent} 
+            isAdmin={isAdmin} 
+          />
         )}
 
         {currentView === 'results' && (
