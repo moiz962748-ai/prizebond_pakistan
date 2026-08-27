@@ -56,6 +56,33 @@ export const SchedulePage: React.FC<SchedulePageProps> = ({
   const [viewMode, setViewMode] = useState<'table' | 'cards'>('table');
   const [selectedMonth, setSelectedMonth] = useState<string>('all');
 
+  // Scroll to section based on navbar dropdown parameter
+  useEffect(() => {
+    if (!initialFilter) return;
+
+    const timer = setTimeout(() => {
+      let targetId = '';
+      if (initialFilter === 'upcoming') {
+        targetId = 'upcoming-section';
+      } else if (initialFilter === 'previous' || initialFilter === '2026') {
+        targetId = 'annual-schedule-section';
+      } else if (initialFilter === 'cities') {
+        targetId = 'cities-section';
+      } else if (initialFilter === 'calendar') {
+        targetId = 'calendar-section';
+      }
+
+      if (targetId) {
+        const el = document.getElementById(targetId);
+        if (el) {
+          el.scrollIntoView({ behavior: 'smooth', block: 'start' });
+        }
+      }
+    }, 150);
+
+    return () => clearTimeout(timer);
+  }, [initialFilter]);
+
   // FAQ Accordion State
   const [openFaqId, setOpenFaqId] = useState<string | null>('sch-faq-1');
 
@@ -114,7 +141,6 @@ export const SchedulePage: React.FC<SchedulePageProps> = ({
   // Filtering Logic
   const filteredSchedule = useMemo(() => {
     return SCHEDULE_2026.filter((item) => {
-      // Year check (all mock items are 2026)
       if (selectedYear !== '2026' && selectedYear !== 'all') {
         return false;
       }
@@ -350,7 +376,7 @@ export const SchedulePage: React.FC<SchedulePageProps> = ({
       <AdSensePlaceholder slot="banner" />
 
       {/* 06 & 07. UPCOMING DRAWS GRID */}
-      <section className="bg-white rounded-2xl p-6 sm:p-8 border border-slate-200 shadow-xs space-y-6">
+      <section id="upcoming-section" className="bg-white rounded-2xl p-6 sm:p-8 border border-slate-200 shadow-xs space-y-6">
         <div className="flex flex-col sm:flex-row sm:items-center justify-between gap-3 border-b border-slate-100 pb-4">
           <div>
             <div className="text-xs font-extrabold text-[#006633] uppercase tracking-wider mb-1">
@@ -558,7 +584,7 @@ export const SchedulePage: React.FC<SchedulePageProps> = ({
       </div>
 
       {/* 11, 12, 13, 14. ANNUAL SCHEDULE TABLE & MOBILE STACKED CARDS */}
-      <section className="bg-white rounded-2xl border border-slate-200 shadow-md overflow-hidden space-y-0">
+      <section id="annual-schedule-section" className="bg-white rounded-2xl border border-slate-200 shadow-md overflow-hidden space-y-0">
         {/* Table Toolbar Header */}
         <div className="p-4 sm:p-5 bg-slate-50 border-b border-slate-200 flex flex-col sm:flex-row items-start sm:items-center justify-between gap-3">
           <div className="flex items-center gap-3">
@@ -792,7 +818,7 @@ export const SchedulePage: React.FC<SchedulePageProps> = ({
       </section>
 
       {/* 21. DRAW CALENDAR / TIMELINE ROADMAP */}
-      <section className="bg-white rounded-2xl p-6 sm:p-8 border border-slate-200 shadow-xs space-y-6">
+      <section id="calendar-section" className="bg-white rounded-2xl p-6 sm:p-8 border border-slate-200 shadow-xs space-y-6">
         <div>
           <div className="text-xs font-extrabold text-[#006633] uppercase tracking-wider mb-1">
             2026 Calendar Roadmap
@@ -833,7 +859,7 @@ export const SchedulePage: React.FC<SchedulePageProps> = ({
       </section>
 
       {/* 22 & 23. DRAW CITIES SECTION */}
-      <section className="bg-white rounded-2xl p-6 sm:p-8 border border-slate-200 shadow-xs space-y-6">
+      <section id="cities-section" className="bg-white rounded-2xl p-6 sm:p-8 border border-slate-200 shadow-xs space-y-6">
         <div>
           <div className="text-xs font-extrabold text-[#006633] uppercase tracking-wider mb-1">
             Official SBP Host Venues

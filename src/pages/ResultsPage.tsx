@@ -830,57 +830,6 @@ export const ResultsPage: React.FC<ResultsPageProps> = ({
         </div>
       </section>
 
-      {/* 11. BROWSE HISTORICAL RESULTS BY YEAR GRID */}
-      <section className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
-        <div className="bg-slate-900 text-white rounded-2xl p-6 sm:p-8 border border-slate-800 shadow-lg">
-          <div className="flex flex-col md:flex-row md:items-center justify-between gap-4 mb-6">
-            <div>
-              <div className="text-xs font-bold text-amber-400 uppercase tracking-wider mb-1 flex items-center gap-1.5">
-                <Clock className="w-4 h-4" /> Historical Draw Archive
-              </div>
-              <h2 className="text-xl sm:text-2xl font-black text-white">
-                Browse Results by Year
-              </h2>
-              <p className="text-xs text-slate-400">
-                Access official gazette records published from 2022 through 2026.
-              </p>
-            </div>
-
-            <button
-              onClick={() => handleFilterChange('year', 'all')}
-              className="text-xs font-bold text-amber-300 hover:underline cursor-pointer"
-            >
-              View Full 10-Year Archive →
-            </button>
-          </div>
-
-          <div className="grid grid-cols-2 sm:grid-cols-3 md:grid-cols-6 gap-3">
-            {[
-              { year: '2026', label: '2026 Draws', count: '15 Draws' },
-              { year: '2025', label: '2025 Draws', count: '24 Draws' },
-              { year: '2024', label: '2024 Draws', count: '24 Draws' },
-              { year: '2023', label: '2023 Draws', count: '24 Draws' },
-              { year: '2022', label: '2022 Draws', count: '24 Draws' },
-              { year: 'older', label: 'Previous Years', count: '2012-2021' },
-            ].map((y) => (
-              <button
-                key={y.year}
-                onClick={() => handleFilterChange('year', y.year)}
-                className={`p-4 rounded-xl border text-left transition-all cursor-pointer ${
-                  selectedYear === y.year
-                    ? 'bg-[#006633] border-emerald-400 text-white shadow-md'
-                    : 'bg-slate-800/80 hover:bg-slate-800 border-slate-700 text-slate-200'
-                }`}
-              >
-                <div className="text-lg font-black">{y.year === 'older' ? 'Archive' : y.year}</div>
-                <div className="text-[11px] font-bold text-amber-300 mt-0.5">{y.count}</div>
-                <div className="text-[10px] text-slate-400 mt-2 font-medium">Filter Results →</div>
-              </button>
-            ))}
-          </div>
-        </div>
-      </section>
-
       {/* 12 & 13. LATEST DRAW CONNECTION & CHECKER CROSS-LINK */}
       <section className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
         <div className="grid grid-cols-1 md:grid-cols-2 gap-6">

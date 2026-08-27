@@ -1,15 +1,12 @@
 'use client';
 
-import React, { useState, useEffect, useMemo } from 'react';
+import React, { useState, useMemo } from 'react';
 import {
   CheckCircle2,
   XCircle,
   Award,
   ListPlus,
   SlidersHorizontal,
-  Bookmark,
-  BookmarkCheck,
-  Trash2,
   RefreshCw,
   Sparkles,
   Info,
@@ -29,9 +26,9 @@ import {
   X,
   FileText,
 } from 'lucide-react';
-import { DenominationValue, CheckerResultItem, SavedBond, DrawRecord } from '../../types/prizebond';
-import { DENOMINATIONS } from '../../data/mockData';
-import { ALL_DRAW_RESULTS } from '../../data/resultsData';
+import { DenominationValue, CheckerResultItem, DrawRecord } from '@/types/prizebond';
+import { DENOMINATIONS } from '@/data/mockData';
+import { ALL_DRAW_RESULTS } from '@/data/resultsData';
 
 interface BondCheckerToolProps {
   initialDenomination?: DenominationValue;
@@ -44,10 +41,8 @@ export const BondCheckerTool: React.FC<BondCheckerToolProps> = ({
   initialNumber = '',
   onNavigate,
 }) => {
-  // Mode Selection
-  const [activeTab, setActiveTab] = useState<'single' | 'multiple' | 'range' | 'saved'>(
-    initialNumber ? 'single' : 'single'
-  );
+  // Mode Selection ('saved' tab removed)
+  const [activeTab, setActiveTab] = useState<'single' | 'multiple' | 'range'>('single');
   const [selectedDenomination, setSelectedDenomination] =
     useState<DenominationValue>(initialDenomination);
 
@@ -62,35 +57,6 @@ export const BondCheckerTool: React.FC<BondCheckerToolProps> = ({
   const [rangeFrom, setRangeFrom] = useState('');
   const [rangeTo, setRangeTo] = useState('');
 
-  // Local storage saved bonds
-  const [savedBonds, setSavedBonds] = useState<SavedBond[]>(() => {
-    try {
-      const saved = localStorage.getItem('prizebond_saved_bonds');
-      return saved
-        ? JSON.parse(saved)
-        : [
-            {
-              id: 'sb-1',
-              label: 'Personal Savings Bond',
-              denomination: '1500',
-              bondNumber: '452819',
-              dateAdded: '2026-08-01',
-            },
-            {
-              id: 'sb-2',
-              label: 'Family Investment',
-              denomination: '750',
-              bondNumber: '892104',
-              dateAdded: '2026-08-05',
-            },
-          ];
-    } catch {
-      return [];
-    }
-  });
-
-  const [savedLabel, setSavedLabel] = useState('');
-
   // Evaluation & Result States
   const [isLoading, setIsLoading] = useState<boolean>(false);
   const [results, setResults] = useState<CheckerResultItem[] | null>(null);
@@ -99,14 +65,6 @@ export const BondCheckerTool: React.FC<BondCheckerToolProps> = ({
 
   // Copy / Share state
   const [copiedText, setCopiedText] = useState<boolean>(false);
-
-  useEffect(() => {
-    try {
-      localStorage.setItem('prizebond_saved_bonds', JSON.stringify(savedBonds));
-    } catch (e) {
-      console.error(e);
-    }
-  }, [savedBonds]);
 
   // Available draws filtered by current selected denomination
   const availableDrawsForDenom = useMemo(() => {
@@ -135,7 +93,6 @@ export const BondCheckerTool: React.FC<BondCheckerToolProps> = ({
       let drawsToSearch: DrawRecord[] = ALL_DRAW_RESULTS.filter((d) => d.denomination === denom);
 
       if (drawScope === 'latest') {
-        // Take latest published draw for denomination
         if (drawsToSearch.length > 0) {
           drawsToSearch = [drawsToSearch[0]];
         }
@@ -146,7 +103,6 @@ export const BondCheckerTool: React.FC<BondCheckerToolProps> = ({
       const checkResults: CheckerResultItem[] = [];
 
       cleanNumbers.forEach((rawNum) => {
-        // Pad to 6 digits (e.g. "12345" -> "012345")
         const paddedNum = rawNum.padStart(6, '0');
         let foundWinner = false;
 
@@ -256,35 +212,6 @@ export const BondCheckerTool: React.FC<BondCheckerToolProps> = ({
     executeCheck(rangeList, selectedDenomination);
   };
 
-  const handleCheckSaved = () => {
-    const listForDenom = savedBonds
-      .filter((sb) => sb.denomination === selectedDenomination)
-      .map((sb) => sb.bondNumber);
-    executeCheck(listForDenom, selectedDenomination);
-  };
-
-  const saveCurrentBond = (bondNum: string) => {
-    const clean = bondNum.trim().replace(/\D/g, '');
-    if (!clean) return;
-    const padded = clean.padStart(6, '0');
-    if (savedBonds.some((b) => b.bondNumber === padded && b.denomination === selectedDenomination)) {
-      return;
-    }
-    const newSaved: SavedBond = {
-      id: 'sb-' + Date.now(),
-      label: savedLabel.trim() || `Bond ${padded}`,
-      denomination: selectedDenomination,
-      bondNumber: padded,
-      dateAdded: new Date().toISOString().split('T')[0],
-    };
-    setSavedBonds([newSaved, ...savedBonds]);
-    setSavedLabel('');
-  };
-
-  const removeSavedBond = (id: string) => {
-    setSavedBonds(savedBonds.filter((b) => b.id !== id));
-  };
-
   const handleCopyResultSummary = () => {
     if (!results) return;
     const text = results
@@ -333,13 +260,12 @@ export const BondCheckerTool: React.FC<BondCheckerToolProps> = ({
           </div>
         </div>
 
-        {/* MODE TABS (Single, Multiple/Bulk, Range, Saved) */}
+        {/* 3 Main Mode Tabs */}
         <div className="flex flex-wrap gap-2 mt-5 border-t border-emerald-700/60 pt-4">
           {[
             { id: 'single', label: 'Single Bond Check', icon: Award },
             { id: 'multiple', label: 'Multiple / Bulk List', icon: ListPlus },
             { id: 'range', label: 'By Series Range', icon: SlidersHorizontal },
-            { id: 'saved', label: `Saved Portfolio (${savedBonds.length})`, icon: Bookmark },
           ].map((tab) => {
             const Icon = tab.icon;
             const isActive = activeTab === tab.id;
@@ -348,7 +274,7 @@ export const BondCheckerTool: React.FC<BondCheckerToolProps> = ({
                 key={tab.id}
                 type="button"
                 onClick={() => {
-                  setActiveTab(tab.id as any);
+                  setActiveTab(tab.id as 'single' | 'multiple' | 'range');
                   setResults(null);
                   setHasSearched(false);
                   setValidationError(null);
@@ -460,7 +386,7 @@ export const BondCheckerTool: React.FC<BondCheckerToolProps> = ({
                 <select
                   value={selectedYearFilter}
                   onChange={(e) => setSelectedYearFilter(e.target.value)}
-                  className="w-full bg-white border border-slate-300 px-3 py-2 rounded-lg font-bold text-slate-800 focus:outline-none focus:border-[#006633]"
+                  className="w-full bg-white border border-slate-300 px-3 py-2 rounded-lg font-bold text-slate-800 focus:outline-none focus:border-[#006633] cursor-pointer"
                 >
                   <option value="2026">2026 Draws</option>
                   <option value="2025">2025 Draws</option>
@@ -477,7 +403,7 @@ export const BondCheckerTool: React.FC<BondCheckerToolProps> = ({
                 <select
                   value={selectedDrawId}
                   onChange={(e) => setSelectedDrawId(e.target.value)}
-                  className="w-full bg-white border border-slate-300 px-3 py-2 rounded-lg font-bold text-slate-800 focus:outline-none focus:border-[#006633]"
+                  className="w-full bg-white border border-slate-300 px-3 py-2 rounded-lg font-bold text-slate-800 focus:outline-none focus:border-[#006633] cursor-pointer"
                 >
                   <option value="all">All Draws in {selectedYearFilter}</option>
                   {availableDrawsForDenom
@@ -537,7 +463,7 @@ export const BondCheckerTool: React.FC<BondCheckerToolProps> = ({
               </p>
             </div>
 
-            <div className="flex flex-wrap items-center justify-between gap-3 pt-2">
+            <div className="pt-2">
               <button
                 type="submit"
                 disabled={isLoading}
@@ -550,17 +476,6 @@ export const BondCheckerTool: React.FC<BondCheckerToolProps> = ({
                 )}
                 <span>{isLoading ? 'Checking Database...' : 'Check Prize Bond'}</span>
               </button>
-
-              {singleNumber && (
-                <button
-                  type="button"
-                  onClick={() => saveCurrentBond(singleNumber)}
-                  className="px-4 py-2.5 bg-slate-100 hover:bg-slate-200 text-slate-700 text-xs font-bold rounded-xl flex items-center gap-1.5 transition-colors cursor-pointer"
-                >
-                  <Bookmark className="w-3.5 h-3.5 text-[#006633]" />
-                  <span>Save to Portfolio</span>
-                </button>
-              )}
             </div>
           </form>
         )}
@@ -663,121 +578,6 @@ export const BondCheckerTool: React.FC<BondCheckerToolProps> = ({
           </form>
         )}
 
-        {/* TAB 4: SAVED PORTFOLIO */}
-        {activeTab === 'saved' && (
-          <div className="space-y-4">
-            <div className="flex items-center justify-between pb-3 border-b border-slate-200">
-              <div>
-                <h3 className="text-sm font-extrabold text-slate-900">
-                  Your Saved Bonds Portfolio ({savedBonds.length})
-                </h3>
-                <p className="text-xs text-slate-500">
-                  Saved securely in your browser storage. Check your full list after every official draw in one click.
-                </p>
-              </div>
-              {savedBonds.length > 0 && (
-                <button
-                  type="button"
-                  onClick={handleCheckSaved}
-                  disabled={isLoading}
-                  className="px-4 py-2 bg-[#006633] hover:bg-[#004D26] text-white text-xs font-bold rounded-xl shadow-xs flex items-center gap-1.5 cursor-pointer disabled:opacity-60"
-                >
-                  <RefreshCw className="w-3.5 h-3.5 text-amber-300" />
-                  <span>Check Saved Portfolio</span>
-                </button>
-              )}
-            </div>
-
-            {/* Quick Add Form */}
-            <div className="p-3.5 bg-slate-50 rounded-xl border border-slate-200 flex flex-col sm:flex-row gap-2">
-              <input
-                type="text"
-                placeholder="Bond No (e.g. 452819)"
-                value={singleNumber}
-                onChange={(e) => setSingleNumber(e.target.value)}
-                className="bg-white border border-slate-300 text-xs font-mono font-bold px-3 py-2 rounded-lg sm:w-44"
-              />
-              <input
-                type="text"
-                placeholder="Optional Note (e.g. Family Savings)"
-                value={savedLabel}
-                onChange={(e) => setSavedLabel(e.target.value)}
-                className="bg-white border border-slate-300 text-xs px-3 py-2 rounded-lg flex-1"
-              />
-              <button
-                type="button"
-                onClick={() => {
-                  if (singleNumber) saveCurrentBond(singleNumber);
-                }}
-                className="px-4 py-2 bg-slate-800 hover:bg-slate-900 text-white text-xs font-bold rounded-lg shrink-0 cursor-pointer"
-              >
-                + Add Bond
-              </button>
-            </div>
-
-            {savedBonds.length === 0 ? (
-              <div className="text-center py-8 text-slate-400">
-                <Bookmark className="w-10 h-10 text-slate-300 mx-auto mb-2" />
-                <p className="text-xs font-bold text-slate-700">No saved bonds in portfolio.</p>
-                <p className="text-[11px] text-slate-400 mt-1">
-                  Add your bond numbers above to save them for quick evaluation!
-                </p>
-              </div>
-            ) : (
-              <div className="divide-y divide-slate-100 max-h-60 overflow-y-auto">
-                {savedBonds.map((bond) => (
-                  <div key={bond.id} className="py-2.5 flex items-center justify-between gap-3 text-xs">
-                    <div className="flex items-center gap-3">
-                      <BookmarkCheck className="w-4 h-4 text-[#006633] shrink-0" />
-                      <div>
-                        <div className="font-mono font-black text-slate-900 text-sm">
-                          {bond.bondNumber}
-                        </div>
-                        <div className="text-[11px] text-slate-500">
-                          Rs. {bond.denomination} • {bond.label}
-                        </div>
-                      </div>
-                    </div>
-                    <div className="flex items-center gap-2">
-                      <button
-                        type="button"
-                        onClick={() => {
-                          setSelectedDenomination(bond.denomination);
-                          executeCheck([bond.bondNumber], bond.denomination);
-                        }}
-                        className="px-3 py-1 bg-emerald-50 text-[#006633] font-bold rounded border border-emerald-200 hover:bg-emerald-100 cursor-pointer"
-                      >
-                        Check Now
-                      </button>
-                      <button
-                        type="button"
-                        onClick={() => removeSavedBond(bond.id)}
-                        className="p-1 text-slate-400 hover:text-red-600 cursor-pointer"
-                        title="Remove"
-                      >
-                        <Trash2 className="w-3.5 h-3.5" />
-                      </button>
-                    </div>
-                  </div>
-                ))}
-              </div>
-            )}
-          </div>
-        )}
-
-        {/* LOADING ANIMATION STATE */}
-        {isLoading && (
-          <div className="p-8 text-center bg-emerald-50/50 rounded-2xl border border-emerald-200 space-y-3 animate-pulse">
-            <RefreshCw className="w-8 h-8 text-[#006633] animate-spin mx-auto" />
-            <div className="text-sm font-extrabold text-slate-900">
-              Checking your Prize Bond number...
-            </div>
-            <p className="text-xs text-slate-500 max-w-md mx-auto">
-              Scanning official Central Directorate of National Savings (CDNS) and SBP draw records for Rs. {selectedDenomination} denomination.
-            </p>
-          </div>
-        )}
-
         {/* RESULT AREA */}
         {hasSearched && results && !isLoading && (
           <div className="mt-8 pt-6 border-t border-slate-200 animate-in fade-in duration-300 space-y-6">
@@ -805,7 +605,7 @@ export const BondCheckerTool: React.FC<BondCheckerToolProps> = ({
                     <span>{winnersCount} Winning Match(es)</span>
                   </span>
                 ) : (
-                  <span className="px-3 py-1.5 rounded-lg text-xs font-bold bg-slate-200 text-slate-700">
+                  <span className="px-3.5 py-1.5 rounded-lg text-xs font-bold bg-slate-200 text-slate-700">
                     No Match Found
                   </span>
                 )}

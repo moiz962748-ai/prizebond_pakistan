@@ -91,66 +91,17 @@ export const Navbar: React.FC<NavbarProps> = ({
               Home
             </button>
 
-            {/* Results Dropdown */}
-            <div
-              className="relative"
-              onMouseEnter={() => setActiveDropdown('results')}
-              onMouseLeave={() => setActiveDropdown(null)}
+            {/* Results Button */}
+            <button
+              onClick={() => handleNavClick('results')}
+              className={`px-3 py-1.5 rounded font-semibold text-xs transition-colors cursor-pointer ${
+                activeView === 'results'
+                  ? 'text-[#006633] border-b-2 border-[#006633] pb-1'
+                  : 'text-slate-600 hover:text-[#006633]'
+              }`}
             >
-              <button
-                onClick={() => handleNavClick('results')}
-                className={`px-3 py-1.5 rounded font-semibold text-xs flex items-center gap-1 transition-colors cursor-pointer ${
-                  activeView === 'results'
-                    ? 'text-[#006633] border-b-2 border-[#006633] pb-1'
-                    : 'text-slate-600 hover:text-[#006633]'
-                }`}
-              >
-                <span>Results</span>
-                <ChevronDown className="w-3 h-3 opacity-70" />
-              </button>
-
-              {activeDropdown === 'results' && (
-                <div className="absolute top-full left-0 w-64 pt-2 z-50 animate-in fade-in slide-in-from-top-1 duration-150">
-                  <div className="bg-white rounded-xl shadow-xl border border-slate-200 py-2 overflow-hidden">
-                    <div className="px-3 py-1.5 text-[10px] font-bold uppercase tracking-wider text-slate-400 bg-slate-50 border-b border-slate-100">
-                      Prize Bond Results
-                    </div>
-                    <button
-                      onClick={() => handleNavClick('results')}
-                      className="w-full text-left px-3.5 py-2 text-xs font-semibold text-slate-800 hover:bg-emerald-50 hover:text-[#006633] flex items-center justify-between transition-colors cursor-pointer"
-                    >
-                      <span>Latest Results</span>
-                      <Sparkles className="w-3.5 h-3.5 text-amber-500" />
-                    </button>
-                    <div className="my-1 border-t border-slate-100"></div>
-                    {[
-                      { label: '100 Prize Bond Results', val: '100' },
-                      { label: '200 Prize Bond Results', val: '200' },
-                      { label: '750 Prize Bond Results', val: '750' },
-                      { label: '1,500 Prize Bond Results', val: '1500' },
-                      { label: '25,000 Premium Results', val: '25000' },
-                      { label: '40,000 Premium Results', val: '40000' },
-                    ].map((item) => (
-                      <button
-                        key={item.val}
-                        onClick={() => handleNavClick('results', item.val)}
-                        className="w-full text-left px-3.5 py-1.5 text-xs text-slate-700 hover:bg-emerald-50 hover:text-[#006633] transition-colors cursor-pointer"
-                      >
-                        {item.label}
-                      </button>
-                    ))}
-                    <div className="mt-1 pt-1.5 border-t border-slate-100 px-3.5">
-                      <button
-                        onClick={() => handleNavClick('results')}
-                        className="text-[11px] font-bold text-[#006633] hover:underline flex items-center gap-1 cursor-pointer"
-                      >
-                        View All Results →
-                      </button>
-                    </div>
-                  </div>
-                </div>
-              )}
-            </div>
+              Results
+            </button>
 
             {/* Prize Bond Checker */}
             <button
@@ -373,6 +324,13 @@ export const Navbar: React.FC<NavbarProps> = ({
           </button>
 
           <button
+            onClick={() => handleNavClick('results')}
+            className="w-full text-left font-bold text-sm text-slate-800 py-2 border-b border-slate-100 flex items-center justify-between"
+          >
+            <span>Results</span>
+          </button>
+
+          <button
             onClick={() => handleNavClick('checker')}
             className="w-full text-left font-bold text-sm bg-[#006633] text-white px-4 py-3 rounded-xl flex items-center justify-between shadow-xs"
           >
@@ -382,56 +340,27 @@ export const Navbar: React.FC<NavbarProps> = ({
             <span className="text-xs bg-[#004D26] px-2 py-0.5 rounded">Check Now</span>
           </button>
 
-          {/* Results Accordion */}
-          <div className="py-2 border-b border-slate-100">
-            <div className="text-xs font-extrabold text-[#004D26] uppercase tracking-wider mb-2">
-              Results
-            </div>
-            <div className="grid grid-cols-2 gap-1.5">
-              {[
-                { label: 'Latest Results', val: '' },
-                { label: '100 Results', val: '100' },
-                { label: '200 Results', val: '200' },
-                { label: '750 Results', val: '750' },
-                { label: '1,500 Results', val: '1500' },
-                { label: '25,000 Premium', val: '25000' },
-                { label: '40,000 Premium', val: '40000' },
-              ].map((item) => (
-                <button
-                  key={item.label}
-                  onClick={() => handleNavClick('results', item.val)}
-                  className="text-left text-xs text-slate-700 bg-slate-50 hover:bg-emerald-50 p-2 rounded-lg border border-slate-100"
-                >
-                  {item.label}
-                </button>
-              ))}
-            </div>
-          </div>
-
-          {/* Schedule */}
+          {/* Schedule Accordion */}
           <div className="py-2 border-b border-slate-100">
             <div className="text-xs font-extrabold text-[#004D26] uppercase tracking-wider mb-2">
               Draw Schedule
             </div>
             <div className="flex flex-wrap gap-2">
-              <button
-                onClick={() => handleNavClick('schedule', '2026')}
-                className="text-xs bg-slate-50 p-2 rounded-lg text-slate-700 font-semibold"
-              >
-                2026 Schedule
-              </button>
-              <button
-                onClick={() => handleNavClick('schedule', 'upcoming')}
-                className="text-xs bg-slate-50 p-2 rounded-lg text-slate-700 font-semibold"
-              >
-                Upcoming Draw
-              </button>
-              <button
-                onClick={() => handleNavClick('schedule', 'previous')}
-                className="text-xs bg-slate-50 p-2 rounded-lg text-slate-700 font-semibold"
-              >
-                Previous Draws
-              </button>
+              {[
+                { label: '2026 Schedule', param: '2026' },
+                { label: 'Upcoming Draw', param: 'upcoming' },
+                { label: 'Previous Draws', param: 'previous' },
+                { label: 'Draw Cities', param: 'cities' },
+                { label: 'Draw Calendar', param: 'calendar' },
+              ].map((item) => (
+                <button
+                  key={item.param}
+                  onClick={() => handleNavClick('schedule', item.param)}
+                  className="text-xs bg-slate-50 p-2 rounded-lg text-slate-700 font-semibold cursor-pointer hover:bg-emerald-50"
+                >
+                  {item.label}
+                </button>
+              ))}
             </div>
           </div>
 

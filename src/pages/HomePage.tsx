@@ -11,7 +11,9 @@ import {
   ChevronRight,
   Search,
   Sparkles,
-  TrendingUp,
+  Bookmark,
+  FileSpreadsheet,
+  Layers,
   HelpCircle,
   FileText,
   ChevronDown,
@@ -25,7 +27,6 @@ import {
   ARTICLES,
   FAQS,
 } from '@/data/mockData';
-import { BondCheckerTool } from '@/components/checker/BondCheckerTool';
 import { AdSensePlaceholder } from '@/components/common/AdSensePlaceholder';
 import { LastUpdatedBadge } from '@/components/common/LastUpdatedBadge';
 import { StatsCounterWidget } from '@/components/common/StatsCounterWidget';
@@ -138,9 +139,102 @@ export const HomePage: React.FC<HomePageProps> = ({ onNavigate }) => {
         <StatsCounterWidget />
       </div>
 
-      {/* 03. EMBEDDED BOND CHECKER TOOL */}
+      {/* 03. CHECK PRIZE BOND TEASER & CTA CARD */}
       <section className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
-        <BondCheckerTool onNavigate={onNavigate} />
+        <div className="bg-white rounded-2xl border border-slate-200 shadow-md overflow-hidden">
+          {/* Header Banner */}
+          <div className="bg-[#004D26] text-white p-6 sm:p-8 space-y-4">
+            <div className="flex flex-wrap items-center justify-between gap-3">
+              <div className="inline-flex items-center gap-1.5 px-3 py-1 rounded-full bg-emerald-900/90 text-amber-300 text-[11px] font-black uppercase tracking-wider border border-emerald-700/60">
+                <ShieldCheck className="w-3.5 h-3.5 text-amber-300" /> Verified CDNS & SBP Gazette Checker Engine
+              </div>
+              <div className="flex items-center gap-1.5 text-xs text-emerald-200 font-bold">
+                <Clock className="w-3.5 h-3.5 text-emerald-300" />
+                <span>Data Updated: 15 Aug 2026</span>
+              </div>
+            </div>
+
+            <div className="flex flex-col md:flex-row md:items-center justify-between gap-4">
+              <div className="max-w-2xl">
+                <h2 className="text-2xl sm:text-3xl font-black text-white tracking-tight">
+                  Check Your Prize Bond
+                </h2>
+                <p className="text-xs sm:text-sm text-emerald-100/90 mt-1 font-medium">
+                  Evaluate your 6-digit bond numbers against 10+ years of official State Bank of Pakistan gazettes.
+                </p>
+              </div>
+
+              <button
+                type="button"
+                onClick={() => onNavigate('checker')}
+                className="px-6 py-3.5 bg-amber-400 hover:bg-amber-300 text-slate-950 font-black text-xs sm:text-sm rounded-xl shadow-md transition-all active:scale-98 cursor-pointer flex items-center justify-center gap-2 shrink-0"
+              >
+                <Search className="w-4 h-4" />
+                <span>Launch Full Checker Tool →</span>
+              </button>
+            </div>
+          </div>
+
+          {/* Quick Option Cards */}
+          <div className="p-6 sm:p-8 grid grid-cols-1 md:grid-cols-3 gap-4 bg-slate-50">
+            <div
+              onClick={() => onNavigate('checker')}
+              className="p-5 bg-white rounded-xl border border-slate-200 hover:border-[#006633] hover:shadow-xs transition-all cursor-pointer space-y-2 group"
+            >
+              <div className="w-9 h-9 rounded-lg bg-emerald-50 text-[#006633] flex items-center justify-center font-bold">
+                <Bookmark className="w-4 h-4" />
+              </div>
+              <h3 className="font-extrabold text-sm text-slate-900 group-hover:text-[#006633] transition-colors">
+                Single Bond Check
+              </h3>
+              <p className="text-xs text-slate-500 leading-relaxed">
+                Check an individual 6-digit bond number against the latest or historical draw gazette lists.
+              </p>
+              <div className="text-[11px] font-bold text-[#006633] pt-1 flex items-center gap-1">
+                <span>Check Single Bond</span>
+                <ChevronRight className="w-3.5 h-3.5" />
+              </div>
+            </div>
+
+            <div
+              onClick={() => onNavigate('checker')}
+              className="p-5 bg-white rounded-xl border border-slate-200 hover:border-[#006633] hover:shadow-xs transition-all cursor-pointer space-y-2 group"
+            >
+              <div className="w-9 h-9 rounded-lg bg-emerald-50 text-[#006633] flex items-center justify-center font-bold">
+                <FileSpreadsheet className="w-4 h-4" />
+              </div>
+              <h3 className="font-extrabold text-sm text-slate-900 group-hover:text-[#006633] transition-colors">
+                Multiple / Bulk List
+              </h3>
+              <p className="text-xs text-slate-500 leading-relaxed">
+                Paste up to 500 serial numbers at once to evaluate your entire prize bond collection.
+              </p>
+              <div className="text-[11px] font-bold text-[#006633] pt-1 flex items-center gap-1">
+                <span>Check Bulk Numbers</span>
+                <ChevronRight className="w-3.5 h-3.5" />
+              </div>
+            </div>
+
+            <div
+              onClick={() => onNavigate('checker')}
+              className="p-5 bg-white rounded-xl border border-slate-200 hover:border-[#006633] hover:shadow-xs transition-all cursor-pointer space-y-2 group"
+            >
+              <div className="w-9 h-9 rounded-lg bg-emerald-50 text-[#006633] flex items-center justify-center font-bold">
+                <Layers className="w-4 h-4" />
+              </div>
+              <h3 className="font-extrabold text-sm text-slate-900 group-hover:text-[#006633] transition-colors">
+                By Series Range
+              </h3>
+              <p className="text-xs text-slate-500 leading-relaxed">
+                Enter continuous series brackets (e.g., 100001 to 100100) to search serial ranges in bulk.
+              </p>
+              <div className="text-[11px] font-bold text-[#006633] pt-1 flex items-center gap-1">
+                <span>Search by Range</span>
+                <ChevronRight className="w-3.5 h-3.5" />
+              </div>
+            </div>
+          </div>
+        </div>
       </section>
 
       {/* ADSENSE PLACEHOLDER */}
