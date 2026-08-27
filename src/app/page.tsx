@@ -5,17 +5,17 @@ import { Navbar } from '@/components/layout/Navbar';
 import { Footer } from '@/components/layout/Footer';
 import { SearchModal } from '@/components/common/SearchModal';
 
-import { HomePage } from '@/pages/HomePage';
-import { ResultsPage } from '@/pages/ResultsPage';
-import { CheckerPage } from '@/pages/CheckerPage';
-import { SchedulePage } from '@/pages/SchedulePage';
-import { DenominationPage } from '@/pages/DenominationPage';
-import { PrizeBondsPage } from '@/pages/PrizeBondsPage';
-import { InformationPage } from '@/pages/InformationPage';
-import { FaqPage } from '@/pages/FaqPage';
-import { LatestDrawPage } from '@/pages/LatestDrawPage';
-import { DrawDetailPage } from '@/pages/DrawDetailPage';
-import { StaticInfoPages } from '@/pages/StaticInfoPages';
+import { HomePage } from '@/views/HomePage';
+import { ResultsPage } from '@/views/ResultsPage';
+import { CheckerPage } from '@/views/CheckerPage';
+import { SchedulePage } from '@/views/SchedulePage';
+import { DenominationPage } from '@/views/DenominationPage';
+import { PrizeBondsPage } from '@/views/PrizeBondsPage';
+import { InformationPage } from '@/views/InformationPage';
+import { FaqPage } from '@/views/FaqPage';
+import { LatestDrawPage } from '@/views/LatestDrawPage';
+import { DrawDetailPage } from '@/views/DrawDetailPage';
+import { StaticInfoPages } from '@/views/StaticInfoPages';
 import { DenominationValue } from '@/types/prizebond';
 
 export default function Page() {
