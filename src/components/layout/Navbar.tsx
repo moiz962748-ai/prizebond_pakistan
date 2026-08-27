@@ -168,7 +168,7 @@ export const Navbar: React.FC<NavbarProps> = ({
               )}
             </div>
 
-            {/* Prize Bonds Dropdown */}
+{/* Prize Bonds Dropdown */}
             <div
               className="relative"
               onMouseEnter={() => setActiveDropdown('prize-bonds')}
