@@ -1,8 +1,13 @@
 'use client';
 
 import React, { useState, useEffect, useRef } from 'react';
-import { Search, X, ArrowRight, FileText, Calendar, Award, Sparkles } from 'lucide-react';
-import { DENOMINATIONS, LATEST_DRAWS, SCHEDULE_2026, ARTICLES } from '../../data/mockData';
+import { Search, X, ArrowRight, FileText, Calendar, Award, Sparkles, Loader2 } from 'lucide-react';
+import { createClient } from '@supabase/supabase-js';
+import { DENOMINATIONS, SCHEDULE_2026, ARTICLES } from '../../data/mockData';
+
+const supabaseUrl = process.env.NEXT_PUBLIC_SUPABASE_URL || 'https://yprybofxbbqqulmpydtq.supabase.co';
+const supabaseKey = process.env.NEXT_PUBLIC_SUPABASE_ANON_KEY || 'sb_publishable_FCgPg24cKrKlBGLMfiS-Tw_nmpMywQG';
+const supabase = createClient(supabaseUrl, supabaseKey);
 
 interface SearchModalProps {
   isOpen: boolean;
@@ -10,8 +15,21 @@ interface SearchModalProps {
   onNavigate: (view: string, param?: string) => void;
 }
 
+interface BondSearchResult {
+  id: string;
+  bond_number: string;
+  prize_type: string;
+  draws: {
+    denomination: number;
+    draw_number: number;
+    draw_date: string;
+  } | null;
+}
+
 export const SearchModal: React.FC<SearchModalProps> = ({ isOpen, onClose, onNavigate }) => {
   const [query, setQuery] = useState('');
+  const [dbResults, setDbResults] = useState<BondSearchResult[]>([]);
+  const [loading, setLoading] = useState(false);
   const inputRef = useRef<HTMLInputElement>(null);
 
   useEffect(() => {
@@ -19,8 +37,50 @@ export const SearchModal: React.FC<SearchModalProps> = ({ isOpen, onClose, onNav
       setTimeout(() => inputRef.current?.focus(), 50);
     } else {
       setQuery('');
+      setDbResults([]);
     }
   }, [isOpen]);
+
+  useEffect(() => {
+    const cleanQuery = query.trim();
+    if (cleanQuery.length >= 3) {
+      const fetchBondResults = async () => {
+        setLoading(true);
+        const { data, error } = await supabase
+          .from('prize_bonds')
+          .select(`
+            id,
+            bond_number,
+            prize_type,
+            draws (
+              denomination,
+              draw_number,
+              draw_date
+            )
+          `)
+          .ilike('bond_number', `%${cleanQuery}%`)
+          .limit(10);
+
+        if (!error && data) {
+          const formattedData: BondSearchResult[] = data.map((item: any) => ({
+            id: item.id,
+            bond_number: item.bond_number,
+            prize_type: item.prize_type,
+            draws: Array.isArray(item.draws) ? item.draws[0] : item.draws
+          }));
+          setDbResults(formattedData);
+        } else {
+          setDbResults([]);
+        }
+        setLoading(false);
+      };
+
+      const timer = setTimeout(fetchBondResults, 300);
+      return () => clearTimeout(timer);
+    } else {
+      setDbResults([]);
+    }
+  }, [query]);
 
   if (!isOpen) return null;
 
@@ -31,14 +91,6 @@ export const SearchModal: React.FC<SearchModalProps> = ({ isOpen, onClose, onNav
       d.value.includes(cleanQuery) ||
       d.label.toLowerCase().includes(cleanQuery) ||
       d.description.toLowerCase().includes(cleanQuery)
-  );
-
-  const matchedDraws = LATEST_DRAWS.filter(
-    (dr) =>
-      dr.denomination.includes(cleanQuery) ||
-      dr.city.toLowerCase().includes(cleanQuery) ||
-      dr.drawNo.toString().includes(cleanQuery) ||
-      dr.firstPrizeNumbers.some((n) => n.includes(cleanQuery))
   );
 
   const matchedSchedule = SCHEDULE_2026.filter(
@@ -64,7 +116,6 @@ export const SearchModal: React.FC<SearchModalProps> = ({ isOpen, onClose, onNav
         aria-hidden="true"
       />
       <div className="relative w-full max-w-2xl bg-white rounded-2xl shadow-2xl border border-slate-200 overflow-hidden z-10 flex flex-col max-h-[80vh]">
-        {/* Search Input Bar */}
         <div className="relative flex items-center px-4 py-3.5 border-b border-slate-200 bg-slate-50/50">
           <Search className="w-5 h-5 text-emerald-700 shrink-0 mr-3" />
           <input
@@ -75,7 +126,8 @@ export const SearchModal: React.FC<SearchModalProps> = ({ isOpen, onClose, onNav
             placeholder="Search bond number (e.g. 452819), denomination (1500), city or guide..."
             className="w-full bg-transparent text-slate-800 placeholder-slate-400 text-sm focus:outline-none"
           />
-          {query && (
+          {loading && <Loader2 className="w-4 h-4 text-emerald-600 animate-spin mr-2 shrink-0" />}
+          {query && !loading && (
             <button
               onClick={() => setQuery('')}
               className="p-1 text-slate-400 hover:text-slate-600 rounded-lg mr-2 cursor-pointer"
@@ -91,9 +143,7 @@ export const SearchModal: React.FC<SearchModalProps> = ({ isOpen, onClose, onNav
           </button>
         </div>
 
-        {/* Results Container */}
         <div className="p-4 overflow-y-auto space-y-5">
-          {/* Quick Direct Checker Trigger if numeric search */}
           {isNumericBondSearch && (
             <div className="p-3.5 rounded-xl bg-emerald-50 border border-emerald-200 flex items-center justify-between">
               <div>
@@ -138,7 +188,34 @@ export const SearchModal: React.FC<SearchModalProps> = ({ isOpen, onClose, onNav
             </div>
           ) : (
             <>
-              {/* Denominations */}
+              {dbResults.length > 0 && (
+                <div>
+                  <h3 className="text-xs font-bold text-slate-400 uppercase tracking-wider mb-2 flex items-center gap-1.5">
+                    <Award className="w-3.5 h-3.5 text-emerald-600" /> Database Winning Matches ({dbResults.length})
+                  </h3>
+                  <div className="space-y-1.5">
+                    {dbResults.map((item) => (
+                      <div
+                        key={item.id}
+                        className="w-full text-left p-2.5 rounded-xl border border-emerald-200 bg-emerald-50/40 flex items-center justify-between"
+                      >
+                        <div>
+                          <div className="text-xs font-bold text-slate-800 flex items-center gap-2">
+                            <span>Bond: <span className="font-mono text-emerald-800 text-sm">{item.bond_number}</span></span>
+                            <span className="px-2 py-0.5 text-[10px] font-semibold bg-emerald-700 text-white rounded uppercase">
+                              {item.prize_type} Prize
+                            </span>
+                          </div>
+                          <div className="text-[11px] text-slate-600 mt-1">
+                            Rs. {item.draws?.denomination} Denomination • Draw #{item.draws?.draw_number} • Date: {item.draws?.draw_date}
+                          </div>
+                        </div>
+                      </div>
+                    ))}
+                  </div>
+                </div>
+              )}
+
               {matchedDenominations.length > 0 && (
                 <div>
                   <h3 className="text-xs font-bold text-slate-400 uppercase tracking-wider mb-2 flex items-center gap-1.5">
@@ -169,40 +246,6 @@ export const SearchModal: React.FC<SearchModalProps> = ({ isOpen, onClose, onNav
                 </div>
               )}
 
-              {/* Draws */}
-              {matchedDraws.length > 0 && (
-                <div>
-                  <h3 className="text-xs font-bold text-slate-400 uppercase tracking-wider mb-2 flex items-center gap-1.5">
-                    <Award className="w-3.5 h-3.5 text-emerald-600" /> Draw Results
-                  </h3>
-                  <div className="space-y-1.5">
-                    {matchedDraws.map((dr) => (
-                      <button
-                        key={dr.id}
-                        onClick={() => {
-                          onNavigate('results', dr.denomination);
-                          onClose();
-                        }}
-                        className="w-full text-left p-2.5 rounded-xl border border-slate-200 hover:border-emerald-500 hover:bg-emerald-50/50 transition-all flex items-center justify-between cursor-pointer"
-                      >
-                        <div>
-                          <div className="text-xs font-bold text-slate-800">
-                            Rs. {dr.denomination} Draw #{dr.drawNo} ({dr.city})
-                          </div>
-                          <div className="text-[11px] text-slate-500">
-                            Date: {dr.formattedDate} • 1st Prize: {dr.prizeStructure.firstAmountFormatted}
-                          </div>
-                        </div>
-                        <span className="text-xs font-semibold text-emerald-700 bg-emerald-100/80 px-2.5 py-1 rounded-md">
-                          View Result
-                        </span>
-                      </button>
-                    ))}
-                  </div>
-                </div>
-              )}
-
-              {/* Articles / Information */}
               {matchedArticles.length > 0 && (
                 <div>
                   <h3 className="text-xs font-bold text-slate-400 uppercase tracking-wider mb-2 flex items-center gap-1.5">
@@ -229,7 +272,6 @@ export const SearchModal: React.FC<SearchModalProps> = ({ isOpen, onClose, onNav
                 </div>
               )}
 
-              {/* Schedule */}
               {matchedSchedule.length > 0 && (
                 <div>
                   <h3 className="text-xs font-bold text-slate-400 uppercase tracking-wider mb-2 flex items-center gap-1.5">
