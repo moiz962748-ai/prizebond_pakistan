@@ -70,7 +70,7 @@ export const HomePage: React.FC<HomePageProps> = ({ onNavigate, cmsContent = {},
 
             {/* Dynamic Hero Subtitle */}
             <p className="text-xs sm:text-sm text-emerald-100/90 leading-relaxed font-medium">
-              {cmsContent.hero_subtitle || 'Instantly check single numbers, bulk lists, and serial ranges against official State Bank of Pakistan gazettes. Access 2026 draw schedules, prize breakdowns, and tax rates.'}
+              Instantly check single numbers, bulk lists, and serial ranges against official State Bank of Pakistan gazettes. Access 2026 draw schedules, prize breakdowns, and tax rates.
             </p>
 
             <div className="flex flex-wrap items-center justify-center lg:justify-start gap-3 pt-2">
@@ -82,7 +82,7 @@ export const HomePage: React.FC<HomePageProps> = ({ onNavigate, cmsContent = {},
                 <Search className="w-4 h-4" />
                 {/* Dynamic Button Text */}
                 <span>
-                  {cmsContent.search_button || 'Check Prize Bond'}
+                  Check Prize Bond →
                 </span>
               </button>
 
