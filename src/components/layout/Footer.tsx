@@ -1,11 +1,14 @@
+'use client';
+
 import React from 'react';
 import { Award, ShieldCheck, Landmark } from 'lucide-react';
 
 interface FooterProps {
   onNavigate: (view: string, param?: string) => void;
+  cmsContent?: Record<string, string>;
 }
 
-export const Footer: React.FC<FooterProps> = ({ onNavigate }) => {
+export const Footer: React.FC<FooterProps> = ({ onNavigate, cmsContent = {} }) => {
   return (
     <footer className="bg-[#111827] text-slate-400 pt-12 pb-8 border-t border-slate-800">
       <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
@@ -16,9 +19,11 @@ export const Footer: React.FC<FooterProps> = ({ onNavigate }) => {
               P
             </div>
             <div>
-              <div className="text-base font-bold text-white tracking-tight uppercase">PrizeBond Pakistan</div>
+              <div className="text-base font-bold text-white tracking-tight uppercase">
+                {cmsContent.footer_brand_title || 'PrizeBond Pakistan'}
+              </div>
               <div className="text-xs text-slate-400">
-                Official Gazette Results & Schedules Utility
+                {cmsContent.footer_brand_subtitle || 'Official Gazette Results & Schedules Utility'}
               </div>
             </div>
           </div>
@@ -292,10 +297,10 @@ export const Footer: React.FC<FooterProps> = ({ onNavigate }) => {
         {/* Footer Bottom */}
         <div className="pt-6 flex flex-col sm:flex-row items-center justify-between gap-4 text-xs text-slate-400">
           <p className="text-center sm:text-left">
-            Prize Bond information, results, schedules and checking tools for Pakistan.
+            {cmsContent.footer_disclaimer || 'Prize Bond information, results, schedules and checking tools for Pakistan.'}
           </p>
           <p className="text-center sm:text-right font-medium">
-            © 2026 PrizeBond Pakistan. All rights reserved.
+            {cmsContent.footer_copyright || '© 2026 PrizeBond Pakistan. All rights reserved.'}
           </p>
         </div>
       </div>

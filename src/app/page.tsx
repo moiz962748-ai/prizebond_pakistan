@@ -69,12 +69,13 @@ export default function Page() {
         onNavigate={handleNavigate}
       />
 
-      {/* Main Navbar */}
+      {/* Main Navbar with cmsContent prop bound */}
       <Navbar
         activeView={currentView}
         activeParam={viewParam}
         onNavigate={handleNavigate}
         onOpenSearch={() => setIsSearchOpen(true)}
+        cmsContent={cmsContent}
       />
 
       {/* Dynamic View Router */}
@@ -148,8 +149,11 @@ export default function Page() {
         )}
       </main>
 
-      {/* Global Footer */}
-      <Footer onNavigate={handleNavigate} />
+      {/* Global Footer with cmsContent prop bound */}
+      <Footer 
+        onNavigate={handleNavigate} 
+        cmsContent={cmsContent} 
+      />
     </div>
   );
 }

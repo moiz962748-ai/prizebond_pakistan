@@ -18,6 +18,7 @@ interface NavbarProps {
   activeParam?: string;
   onNavigate: (view: string, param?: string) => void;
   onOpenSearch: () => void;
+  cmsContent?: Record<string, string>;
 }
 
 export const Navbar: React.FC<NavbarProps> = ({
@@ -25,6 +26,7 @@ export const Navbar: React.FC<NavbarProps> = ({
   activeParam,
   onNavigate,
   onOpenSearch,
+  cmsContent = {},
 }) => {
   const [mobileMenuOpen, setMobileMenuOpen] = useState(false);
   const [activeDropdown, setActiveDropdown] = useState<string | null>(null);
@@ -42,12 +44,12 @@ export const Navbar: React.FC<NavbarProps> = ({
         <div className="max-w-7xl mx-auto flex flex-col sm:flex-row items-center justify-between gap-1">
           <div className="flex items-center gap-2">
             <span className="inline-block w-2 h-2 rounded-full bg-yellow-400"></span>
-            <span>Official Prize Bond Information Platform of Pakistan</span>
+            <span>{cmsContent.announcement_text || 'Official Prize Bond Information Platform of Pakistan'}</span>
           </div>
           <div className="flex items-center gap-4 text-emerald-100 text-[11px]">
             <span className="flex items-center gap-1">
               <span className="w-1.5 h-1.5 rounded-full bg-yellow-400"></span>
-              Next Draw: <strong>Rs. 750 — March 15, 2026</strong>
+              <span>{cmsContent.top_banner_text || 'Next Draw: Rs. 750 — March 15, 2026'}</span>
             </span>
             <span className="hidden md:inline">|</span>
             <span className="hidden md:inline text-emerald-200">Last Updated: Today, 04:30 PM</span>
@@ -69,10 +71,10 @@ export const Navbar: React.FC<NavbarProps> = ({
             </div>
             <div className="leading-tight">
               <div className="font-bold text-[#004D26] text-lg uppercase tracking-tight group-hover:text-[#006633] transition-colors">
-                PrizeBond
+                {cmsContent.header_title || 'PrizeBond'}
               </div>
               <div className="text-[10px] text-slate-500 font-semibold tracking-widest uppercase">
-                Pakistan
+                {cmsContent.header_subtitle || 'Pakistan'}
               </div>
             </div>
           </button>
