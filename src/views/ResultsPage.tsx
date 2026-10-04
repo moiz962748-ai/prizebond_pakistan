@@ -222,72 +222,7 @@ export const ResultsPage: React.FC<ResultsPageProps> = ({
         </div>
       </section>
 
-      {/* 06. FEATURED / LATEST PRIZE BOND RESULTS GRID */}
-      <section className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
-        <div className="flex items-center justify-between mb-4">
-          <div>
-            <div className="text-xs font-bold text-[#006633] uppercase tracking-wider flex items-center gap-1.5">
-              <Sparkles className="w-3.5 h-3.5" /> Featured Gazette Highlights
-            </div>
-            <h2 className="text-xl font-black text-slate-900">Latest Prize Bond Draws</h2>
-          </div>
-          <button
-            onClick={() => handleFilterChange('year', '2026')}
-            className="text-xs font-bold text-[#006633] hover:underline flex items-center gap-1 cursor-pointer"
-          >
-            <span>View All 2026 Draws</span>
-            <ArrowRight className="w-3.5 h-3.5" />
-          </button>
-        </div>
-
-        <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-4">
-          {ALL_DRAW_RESULTS.slice(0, 6).map((draw) => (
-            <div
-              key={draw.id}
-              className="bg-white rounded-xl p-5 border border-slate-200 shadow-xs hover:shadow-md hover:border-emerald-300 transition-all flex flex-col justify-between"
-            >
-              <div>
-                <div className="flex items-center justify-between gap-2 mb-2">
-                  <span className="px-2.5 py-0.5 rounded-full text-[11px] font-extrabold bg-emerald-100 text-[#004D26]">
-                    Rs. {draw.denomination} Bond
-                  </span>
-                  <span className="text-[11px] font-bold text-emerald-700 bg-emerald-50 px-2 py-0.5 rounded border border-emerald-200">
-                    Draw #{draw.drawNo}
-                  </span>
-                </div>
-
-                <div className="font-mono text-lg font-black text-slate-900 mb-1">
-                  1st Prize: {draw.prizeStructure.firstAmountFormatted}
-                </div>
-
-                <div className="grid grid-cols-2 gap-2 text-xs text-slate-600 bg-slate-50 p-2.5 rounded-lg border border-slate-100 mb-3">
-                  <div className="flex items-center gap-1">
-                    <Calendar className="w-3.5 h-3.5 text-slate-400 shrink-0" />
-                    <span>{draw.formattedDate}</span>
-                  </div>
-                  <div className="flex items-center gap-1">
-                    <Building2 className="w-3.5 h-3.5 text-slate-400 shrink-0" />
-                    <span>{draw.city}</span>
-                  </div>
-                </div>
-
-                <div className="text-[11px] text-slate-500 line-clamp-1 mb-3">
-                  Winning Number: <strong className="font-mono text-slate-800">{draw.firstPrizeNumbers.join(', ')}</strong>
-                </div>
-              </div>
-
-              <button
-                onClick={() => setSelectedDrawForModal(draw)}
-                className="w-full py-2 bg-slate-100 hover:bg-[#006633] hover:text-white text-slate-800 font-bold text-xs rounded-lg border border-slate-200 transition-colors flex items-center justify-center gap-1 cursor-pointer"
-              >
-                <span>View Official Gazette</span>
-                <ExternalLink className="w-3.5 h-3.5" />
-              </button>
-            </div>
-          ))}
-        </div>
-      </section>
-
+      
       {/* ADSENSE AD PLACEHOLDER */}
       <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
         <AdSensePlaceholder slot="banner" />
@@ -879,7 +814,7 @@ export const ResultsPage: React.FC<ResultsPageProps> = ({
         </div>
       </section>
 
-      {/* 14. RELATED PRIZE BOND INFORMATION */}
+{/* 14. RELATED PRIZE BOND INFORMATION */}
       <section className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
         <div className="mb-6">
           <div className="text-xs font-bold text-[#006633] uppercase tracking-wider flex items-center gap-1.5">
@@ -904,21 +839,6 @@ export const ResultsPage: React.FC<ResultsPageProps> = ({
               slug: 'prize-bond-rules',
               title: 'Official Prize Bond Rules',
               desc: 'Important guidelines on 6-year claim limits, lost bond policies, and draw eligibility rules.',
-            },
-            {
-              slug: 'prize-money-and-tax',
-              title: 'Prize Money & Tax Deductions',
-              desc: 'Complete 15% (Filer) and 30% (Non-Filer) withholding tax breakdown under Income Tax Ordinance 2001.',
-            },
-            {
-              slug: 'how-to-claim-a-prize',
-              title: 'How to Claim a Prize',
-              desc: 'Official SBP-BSC claim submission process, PB-1 forms, and IBAN bank transfer guidelines.',
-            },
-            {
-              slug: 'how-to-buy-prize-bonds',
-              title: 'How to Buy Prize Bonds',
-              desc: 'Where to buy authentic bearer and Premium registered Prize Bonds across Pakistan.',
             },
           ].map((item) => (
             <div
