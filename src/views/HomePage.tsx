@@ -19,6 +19,10 @@ import {
   ChevronDown,
   Building2,
   MapPin,
+  Link,
+  Banknote,    // <-- Yeh add karein
+  Calculator,  // <-- Yeh add karein
+  Newspaper,   // <-- Yeh add karein
 } from 'lucide-react';
 import {
   DENOMINATIONS,
@@ -249,134 +253,138 @@ export const HomePage: React.FC<HomePageProps> = ({ onNavigate, cmsContent = {},
         <AdSensePlaceholder slot="banner" />
       </div>
 
-      {/* 04. LATEST DRAW HIGHLIGHTS */}
-      <section className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 space-y-6">
-        <div className="flex flex-col sm:flex-row sm:items-center justify-between gap-3 bg-white p-5 rounded-2xl border border-slate-200 shadow-xs">
-          <div>
-            <div className="text-xs font-black text-[#006633] uppercase tracking-wider flex items-center gap-1.5">
-              <Award className="w-4 h-4" /> Gazette Highlights
-            </div>
-            <h2 className="text-xl sm:text-2xl font-black text-slate-900 tracking-tight">
-              Latest Prize Bond Draw Results
-            </h2>
+{/* 5. DENOMINATION HUBS */}
+<section className="px-4 sm:px-6 lg:px-8 max-w-7xl mx-auto my-12 space-y-6">
+  <div className="flex flex-col sm:flex-row sm:items-center justify-between gap-3 bg-white p-5 rounded-2xl border border-slate-200 shadow-xs">
+    <div>
+      <div className="text-xs font-black text-[#006633] uppercase tracking-wider flex items-center gap-1.5">
+        <Banknote className="w-4 h-4 text-emerald-600" /> Denomination Hubs
+      </div>
+      <h2 className="text-xl sm:text-2xl font-black text-slate-900 tracking-tight">
+        Browse All Categories
+      </h2>
+    </div>
+    <button
+      type="button"
+      onClick={() => onNavigate('results')}
+      className="text-xs font-bold text-[#006633] hover:underline flex items-center gap-1 cursor-pointer"
+    >
+      <span>Browse All Categories &rarr;</span>
+    </button>
+  </div>
+  
+  <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-5">
+    {[
+      { val: "100", label: "Rs. 100", date: "Aug 15, 2026", winner: "Rs. 700,000" },
+      { val: "200", label: "Rs. 200", date: "Sep 15, 2026", winner: "Rs. 750,000" },
+      { val: "750", label: "Rs. 750", date: "Oct 15, 2026", winner: "Rs. 1,500,000" },
+      { val: "1500", label: "Rs. 1,500", date: "Nov 15, 2026", winner: "Rs. 3,000,000" },
+      { val: "25000", label: "Rs. 25,000 Premium", date: "Dec 10, 2026", winner: "Rs. 30,000,000", premium: true },
+      { val: "40000", label: "Rs. 40,000 Premium", date: "Sep 10, 2026", winner: "Rs. 80,000,000", premium: true }
+    ].map((bond) => (
+      <div
+        key={bond.val}
+        onClick={() => onNavigate('denomination', bond.val)}
+        className="bg-white p-6 rounded-2xl border border-slate-200 hover:border-emerald-300 hover:shadow-md transition-all cursor-pointer space-y-4 flex flex-col justify-between group shadow-xs"
+      >
+        <div className="flex justify-between items-start">
+          <span className={`text-xl font-black ${bond.premium ? 'text-amber-600' : 'text-slate-900'} group-hover:text-[#006633] transition-colors`}>
+            {bond.label}
+          </span>
+          <span className="bg-emerald-50 text-[#004D26] text-[10px] px-2 py-0.5 rounded font-black uppercase tracking-wider">
+            Hub
+          </span>
+        </div>
+        <div className="space-y-1.5 text-xs text-slate-600 bg-slate-50 p-3 rounded-xl border border-slate-100">
+          <div className="flex justify-between items-center">
+            <span>Next Draw:</span>
+            <strong className="text-slate-800">{bond.date}</strong>
           </div>
-          <button
-            type="button"
-            onClick={() => onNavigate('results')}
-            className="text-xs font-bold text-[#006633] hover:underline flex items-center gap-1 cursor-pointer"
-          >
-            <span>View All Results Hub</span>
-            <ChevronRight className="w-4 h-4" />
-          </button>
-        </div>
-
-        <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-5">
-          {LATEST_DRAWS.slice(0, 3).map((dr: DrawRecord) => (
-            <div
-              key={dr.id}
-              className="bg-white rounded-2xl border border-slate-200 p-6 shadow-xs hover:border-emerald-300 hover:shadow-md transition-all space-y-4 flex flex-col justify-between"
-            >
-              <div className="space-y-3">
-                <div className="flex items-center justify-between">
-                  <span className="px-2.5 py-1 bg-emerald-100 text-[#004D26] font-black text-xs rounded-lg">
-                    Rs. {dr.denomination} Bond
-                  </span>
-                  <span className="text-xs font-bold text-slate-500 font-mono">
-                    Draw #{dr.drawNo}
-                  </span>
-                </div>
-
-                <div className="space-y-1">
-                  <div className="text-xs text-slate-500 font-bold uppercase">1st Prize Winner:</div>
-                  <div className="text-xl font-black text-[#006633] font-mono tracking-wider">
-                    {dr.firstPrizeNumbers[0]}
-                  </div>
-                  <div className="text-xs font-bold text-slate-700">
-                    Amount: {dr.prizeStructure.firstAmountFormatted}
-                  </div>
-                </div>
-
-                <div className="grid grid-cols-2 gap-2 text-xs bg-slate-50 p-2.5 rounded-xl border border-slate-100 text-slate-600">
-                  <div>Date: <strong className="text-slate-800">{dr.formattedDate}</strong></div>
-                  <div>City: <strong className="text-slate-800">{dr.city}</strong></div>
-                </div>
-              </div>
-
-              <div className="pt-2 border-t border-slate-100 flex items-center justify-between">
-                <button
-                  type="button"
-                  onClick={() => onNavigate('results', dr.denomination)}
-                  className="text-xs font-black text-[#006633] hover:underline flex items-center gap-1 cursor-pointer"
-                >
-                  <span>Full Winning List</span>
-                  <ArrowRight className="w-3.5 h-3.5" />
-                </button>
-                <button
-                  type="button"
-                  onClick={() => onNavigate('checker', dr.denomination)}
-                  className="text-xs font-bold text-slate-500 hover:text-slate-900 cursor-pointer"
-                >
-                  Check In Tool
-                </button>
-              </div>
-            </div>
-          ))}
-        </div>
-      </section>
-
-      {/* 05. PRIZE BOND DENOMINATIONS GRID */}
-      <section className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 space-y-6">
-        <div className="flex flex-col sm:flex-row sm:items-center justify-between gap-3 bg-white p-5 rounded-2xl border border-slate-200 shadow-xs">
-          <div>
-            <div className="text-xs font-black text-[#006633] uppercase tracking-wider flex items-center gap-1.5">
-              <Sparkles className="w-4 h-4 text-amber-500" /> Active Bond Types
-            </div>
-            <h2 className="text-xl sm:text-2xl font-black text-slate-900 tracking-tight">
-              Explore Prize Bond Denominations
-            </h2>
+          <div className="flex justify-between items-center pt-1 border-t border-slate-200/60">
+            <span>1st Prize:</span>
+            <strong className="text-[#006633] font-mono">{bond.winner}</strong>
           </div>
-          <button
-            type="button"
-            onClick={() => onNavigate('prizebonds')}
-            className="text-xs font-bold text-[#006633] hover:underline flex items-center gap-1 cursor-pointer"
-          >
-            <span>View Denominations Hub</span>
-            <ChevronRight className="w-4 h-4" />
-          </button>
         </div>
-
-        <div className="grid grid-cols-2 sm:grid-cols-3 lg:grid-cols-6 gap-3">
-          {DENOMINATIONS.map((denom: DenominationInfo) => (
-            <div
-              key={denom.value}
-              onClick={() => onNavigate('denomination', denom.value)}
-              className="bg-white p-4 rounded-xl border border-slate-200 hover:border-[#006633] hover:shadow-xs transition-all cursor-pointer space-y-2 group flex flex-col justify-between"
-            >
-              <div className="space-y-1">
-                <span
-                  className={`text-[9px] font-black uppercase px-2 py-0.5 rounded ${
-                    denom.isPremium ? 'bg-amber-100 text-amber-900' : 'bg-emerald-50 text-[#004D26]'
-                  }`}
-                >
-                  {denom.isPremium ? 'Premium' : 'Bearer'}
-                </span>
-                <h3 className="text-sm font-black text-slate-900 group-hover:text-[#006633] transition-colors">
-                  {denom.formattedAmount}
-                </h3>
-                <p className="text-[11px] text-slate-500 line-clamp-1">
-                  1st: {denom.firstPrize.split(' ')[0]}
-                </p>
-              </div>
-
-              <div className="pt-2 text-[11px] font-bold text-[#006633] group-hover:underline flex items-center justify-between">
-                <span>Details</span>
-                <ChevronRight className="w-3.5 h-3.5" />
-              </div>
-            </div>
-          ))}
+        <div className="pt-2 border-t border-slate-100 flex items-center justify-between text-xs font-bold text-[#006633]">
+          <span className="group-hover:underline">View Results</span>
+          <ChevronRight className="w-3.5 h-3.5 group-hover:translate-x-0.5 transition-transform" />
         </div>
-      </section>
+      </div>
+    ))}
+  </div>
+</section>
 
+{/* 6. FEATURE SHOWCASE CARDS */}
+<section className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 space-y-6 mb-16">
+  <div className="bg-white p-5 rounded-2xl border border-slate-200 shadow-xs">
+    <h2 className="text-xl sm:text-2xl font-black text-slate-900 tracking-tight">
+      Explore Platform Features
+    </h2>
+  </div>
+  <div className="grid sm:grid-cols-2 lg:grid-cols-4 gap-5">
+    {/* Card 1 */}
+    <div className="bg-white rounded-2xl p-6 border border-slate-200 hover:border-emerald-300 hover:shadow-md transition-all shadow-xs flex flex-col items-start text-left group">
+      <div className="p-2.5 rounded-xl bg-emerald-50 text-[#006633] mb-4">
+        <ShieldCheck className="w-6 h-6" />
+      </div>
+      <h4 className="text-slate-900 font-extrabold text-base mb-1.5 group-hover:text-[#006633] transition-colors">Digital Bond Locker</h4>
+      <p className="text-slate-500 text-xs font-medium leading-relaxed mb-6 flex-1">Save your bond numbers securely in browser storage and get auto-match alerts.</p>
+      <button
+        type="button"
+        onClick={() => onNavigate('locker')}
+        className="w-full bg-[#006633] hover:bg-[#004D26] text-white font-black text-xs py-3 rounded-xl text-center transition-colors cursor-pointer shadow-xs"
+      >
+        Open My Locker
+      </button>
+    </div>
+    {/* Card 2 */}
+    <div className="bg-white rounded-2xl p-6 border border-slate-200 hover:border-emerald-300 hover:shadow-md transition-all shadow-xs flex flex-col items-start text-left group">
+      <div className="p-2.5 rounded-xl bg-amber-50 text-amber-600 mb-4">
+        <Calculator className="w-6 h-6" />
+      </div>
+      <h4 className="text-slate-900 font-extrabold text-base mb-1.5 group-hover:text-[#006633] transition-colors">Filer Net Tax Calculator</h4>
+      <p className="text-slate-500 text-xs font-medium leading-relaxed mb-6 flex-1">Calculate exact FBR 15% vs 30% tax deductions on all prize tiers.</p>
+      <button
+        type="button"
+        onClick={() => onNavigate('calculator')}
+        className="w-full bg-[#006633] hover:bg-[#004D26] text-white font-black text-xs py-3 rounded-xl text-center transition-colors cursor-pointer shadow-xs"
+      >
+        Calculate Tax
+      </button>
+    </div>
+    {/* Card 3 */}
+    <div className="bg-white rounded-2xl p-6 border border-slate-200 hover:border-emerald-300 hover:shadow-md transition-all shadow-xs flex flex-col items-start text-left group">
+      <div className="p-2.5 rounded-xl bg-emerald-50 text-[#006633] mb-4">
+        <Newspaper className="w-6 h-6" />
+      </div>
+      <h4 className="text-slate-900 font-extrabold text-base mb-1.5 group-hover:text-[#006633] transition-colors">Print Gazette Scans</h4>
+      <p className="text-slate-500 text-xs font-medium leading-relaxed mb-6 flex-1">Download official high-resolution newspaper scans and SBP PDFs.</p>
+      <button
+        type="button"
+        onClick={() => onNavigate('newspaper')}
+        className="w-full bg-[#006633] hover:bg-[#004D26] text-white font-black text-xs py-3 rounded-xl text-center transition-colors cursor-pointer shadow-xs"
+      >
+        Browse Archives
+      </button>
+    </div>
+    {/* Card 4 */}
+    <div className="bg-white rounded-2xl p-6 border border-slate-200 hover:border-emerald-300 hover:shadow-md transition-all shadow-xs flex flex-col items-start text-left group">
+      <div className="p-2.5 rounded-xl bg-amber-50 text-amber-600 mb-4">
+        <MapPin className="w-6 h-6" />
+      </div>
+      <h4 className="text-slate-900 font-extrabold text-base mb-1.5 group-hover:text-[#006633] transition-colors">Draw Schedule 2026</h4>
+      <p className="text-slate-500 text-xs font-medium leading-relaxed mb-6 flex-1">Complete calendar of upcoming draws across Lahore, Karachi, Quetta & Peshawar.</p>
+      <button
+        type="button"
+        onClick={() => onNavigate('schedule')}
+        className="w-full bg-[#006633] hover:bg-[#004D26] text-white font-black text-xs py-3 rounded-xl text-center transition-colors cursor-pointer shadow-xs"
+      >
+        View Calendar
+      </button>
+    </div>
+  </div>
+</section>
+    
       {/* VIDEO GUIDE WIDGET */}
       <section className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
         <VideoGuideWidget onNavigate={onNavigate} />
