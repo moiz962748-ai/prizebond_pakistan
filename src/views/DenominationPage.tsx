@@ -557,73 +557,7 @@ export const DenominationPage: React.FC<DenominationPageProps> = ({
       {/* ADSENSE PLACEHOLDER */}
       <AdSensePlaceholder slot="banner" />
 
-      {/* INSTANT CHECKER SECTION */}
-      <section className="bg-white rounded-2xl p-6 sm:p-8 border border-slate-200 shadow-xs space-y-6">
-        <div>
-          <div className="text-xs font-black text-[#006633] uppercase tracking-wider mb-1">
-            Instant Automated Search
-          </div>
-          <h2 className="text-xl sm:text-2xl font-black text-slate-900 tracking-tight">
-            Check Your {denomInfo.label}
-          </h2>
-        </div>
-
-        <BondCheckerTool
-          initialDenomination={denomInfo.value as DenominationValue}
-          onNavigate={onNavigate}
-        />
-      </section>
-
-      {/* 24. RELATED DENOMINATIONS CARDS */}
-      <section className="bg-white rounded-2xl p-6 sm:p-8 border border-slate-200 shadow-xs space-y-5">
-        <div className="flex flex-col sm:flex-row sm:items-center justify-between gap-3 border-b border-slate-100 pb-3">
-          <div>
-            <div className="text-xs font-black text-[#006633] uppercase tracking-wider">
-              National Savings Portfolio
-            </div>
-            <h2 className="text-xl sm:text-2xl font-black text-slate-900 tracking-tight">
-              Other Prize Bond Denominations
-            </h2>
-          </div>
-
-          <button
-            type="button"
-            onClick={() => onNavigate('prizebonds')}
-            className="text-xs font-bold text-[#006633] hover:underline cursor-pointer"
-          >
-            Explore All Bonds Hub →
-          </button>
-        </div>
-
-        <div className="grid grid-cols-2 sm:grid-cols-3 lg:grid-cols-6 gap-3">
-          {DENOMINATIONS.map((d) => (
-            <div
-              key={d.value}
-              onClick={() => onNavigate('denomination', d.value)}
-              className={`p-4 rounded-xl border transition-all cursor-pointer space-y-2 ${
-                d.value === activeDenom
-                  ? 'bg-emerald-50 border-[#006633] ring-2 ring-[#006633] shadow-xs'
-                  : 'bg-slate-50 hover:bg-white hover:border-emerald-300 border-slate-200'
-              }`}
-            >
-              <div className="flex items-center justify-between text-xs">
-                <span className="font-black text-slate-900">Rs. {d.value}</span>
-                {d.value === activeDenom && (
-                  <span className="text-[9px] font-black uppercase bg-[#006633] text-white px-1.5 py-0.5 rounded">
-                    Active
-                  </span>
-                )}
-              </div>
-              <div className="text-[11px] font-bold text-emerald-900 truncate">
-                {d.firstPrize}
-              </div>
-              <div className="text-[10px] text-slate-500 font-medium">
-                {d.isPremium ? 'Premium' : 'Bearer'}
-              </div>
-            </div>
-          ))}
-        </div>
-      </section>
+      
     </div>
   );
 };

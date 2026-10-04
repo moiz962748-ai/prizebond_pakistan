@@ -149,23 +149,36 @@ export const PrizeBondsPage: React.FC<PrizeBondsPageProps> = ({ onNavigate }) =>
         </div>
       </div>
 
-      {/* QUICK CHECKER TOOL EMBED */}
-      <section className="bg-white rounded-2xl p-6 sm:p-8 border border-slate-200 shadow-xs space-y-4">
-        <div className="flex flex-col sm:flex-row sm:items-center justify-between gap-2 border-b border-slate-100 pb-3">
-          <div>
-            <div className="text-xs font-black text-[#006633] uppercase tracking-wider">
-              Instant Gazette Search
+{/* QUICK CHECKER TOOL EMBED (Green Checker Card Only) */}
+      <section className="bg-[#003B1D] rounded-2xl p-6 sm:p-8 border border-[#006633] shadow-md text-white space-y-6">
+        <div className="flex flex-col sm:flex-row sm:items-center justify-between gap-3 border-b border-emerald-800 pb-4">
+          <div className="space-y-1">
+            <div className="inline-flex items-center gap-1.5 px-3 py-1 rounded-full bg-emerald-900/80 border border-emerald-700/60 text-yellow-300 text-xs font-bold">
+              <ShieldCheck className="w-4 h-4 text-yellow-300" />
+              <span>VERIFIED CDNS & SBP GAZETTE CHECKER ENGINE</span>
             </div>
-            <h2 className="text-lg sm:text-xl font-black text-slate-900">
-              Check Any Prize Bond Number
+            <h2 className="text-xl sm:text-2xl font-black text-white tracking-tight">
+              Check Your Prize Bond
             </h2>
+            <p className="text-xs sm:text-sm text-emerald-100/90">
+              Select denomination, enter 6-digit bond number, and evaluate against published winning lists instantly.
+            </p>
           </div>
-          <span className="text-xs text-slate-500 font-bold bg-emerald-50 text-[#004D26] px-3 py-1 rounded-full w-max">
-            Instant Database Match
+          <span className="text-xs text-yellow-300 font-bold bg-emerald-900/80 border border-emerald-700/60 px-3 py-1.5 rounded-xl w-max flex items-center gap-1.5">
+            <Clock className="w-3.5 h-3.5" /> Data Updated: 15 Aug 2026
           </span>
         </div>
 
-        <BondCheckerTool onNavigate={onNavigate} />
+        {/* Action Button to Navigate to Checker View (Aligned to Left) */}
+        <div className="pt-2 flex justify-start">
+          <button
+            onClick={() => onNavigate('checker')}
+            className="px-6 py-3 bg-yellow-400 hover:bg-yellow-300 text-[#004D26] font-black text-xs sm:text-sm rounded-xl shadow-md flex items-center justify-center gap-2 transition-transform active:scale-98 cursor-pointer"
+          >
+            <CheckCircle2 className="w-4 h-4 text-[#004D26]" />
+            <span>Check Prize Bond Now</span>
+          </button>
+        </div>
       </section>
 
       {/* DENOMINATIONS HUB SECTION */}
@@ -380,61 +393,7 @@ export const PrizeBondsPage: React.FC<PrizeBondsPageProps> = ({ onNavigate }) =>
         </div>
       </section>
 
-      {/* BEARER VS PREMIUM COMPARISON GUIDANCE */}
-      <section className="grid grid-cols-1 md:grid-cols-2 gap-6">
-        <div className="bg-white rounded-2xl p-6 border border-slate-200 shadow-xs space-y-4">
-          <div className="w-10 h-10 bg-emerald-100 text-[#006633] rounded-xl flex items-center justify-center">
-            <Layers className="w-5 h-5" />
-          </div>
-          <h3 className="text-lg font-black text-slate-900">
-            Standard Bearer Prize Bonds
-          </h3>
-          <p className="text-xs sm:text-sm text-slate-600 leading-relaxed">
-            Issued in Rs. 100, 200, 750, and 1,500 values. Bearer bonds are unregistered paper certificates available for purchase at any bank or savings center without requiring CNIC registration. They pay no regular profit interest, but participate in 4 quarterly prize draws every year.
-          </p>
-          <ul className="space-y-2 text-xs text-slate-700 pt-1">
-            <li className="flex items-center gap-2">
-              <CheckCircle2 className="w-4 h-4 text-[#006633] shrink-0" />
-              <span>100% principal money backed by Federal Government</span>
-            </li>
-            <li className="flex items-center gap-2">
-              <CheckCircle2 className="w-4 h-4 text-[#006633] shrink-0" />
-              <span>Instant liquidity & easy over-the-counter transfer</span>
-            </li>
-            <li className="flex items-center gap-2">
-              <CheckCircle2 className="w-4 h-4 text-[#006633] shrink-0" />
-              <span>Eligible for 1st, 2nd, and 3rd draw prizes</span>
-            </li>
-          </ul>
-        </div>
-
-        <div className="bg-slate-900 text-white rounded-2xl p-6 border border-slate-800 shadow-md space-y-4">
-          <div className="w-10 h-10 bg-amber-400 text-slate-950 rounded-xl flex items-center justify-center font-black">
-            <Banknote className="w-5 h-5" />
-          </div>
-          <h3 className="text-lg font-black text-white">
-            Registered Premium Prize Bonds
-          </h3>
-          <p className="text-xs sm:text-sm text-slate-300 leading-relaxed">
-            Issued in Rs. 25,000 and Rs. 40,000 denominations. Registered directly under your CNIC with direct profit interest transfers to your bank account every 6 months, plus entry into quarterly draw prizes up to Rs. 8 Crore.
-          </p>
-          <ul className="space-y-2 text-xs text-amber-200/90 pt-1">
-            <li className="flex items-center gap-2">
-              <CheckCircle2 className="w-4 h-4 text-amber-400 shrink-0" />
-              <span>CNIC registered security protected against loss or theft</span>
-            </li>
-            <li className="flex items-center gap-2">
-              <CheckCircle2 className="w-4 h-4 text-amber-400 shrink-0" />
-              <span>Bi-annual profit credited directly to investor bank accounts</span>
-            </li>
-            <li className="flex items-center gap-2">
-              <CheckCircle2 className="w-4 h-4 text-amber-400 shrink-0" />
-              <span>Highest draw prize awards in Pakistan (up to Rs. 80 Million)</span>
-            </li>
-          </ul>
-        </div>
-      </section>
-
+      
       {/* FAQS SECTION */}
       <section className="bg-white rounded-2xl p-6 sm:p-8 border border-slate-200 shadow-xs space-y-6">
         <div className="flex items-center justify-between border-b border-slate-100 pb-3">

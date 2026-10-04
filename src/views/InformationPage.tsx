@@ -173,6 +173,7 @@ export const InformationPage: React.FC<InformationPageProps> = ({
                 <span className="px-3 py-1 bg-emerald-100 text-[#004D26] text-xs font-black rounded-lg uppercase tracking-wider flex items-center gap-1.5">
                   <BookOpen className="w-3.5 h-3.5 text-[#006633]" /> {currentArticle.category}
                 </span>
+
                 <div className="flex items-center gap-3 text-xs text-slate-500 font-medium">
                   <span className="flex items-center gap-1">
                     <Clock className="w-3.5 h-3.5 text-slate-400" /> {currentArticle.readTime}
@@ -204,7 +205,7 @@ export const InformationPage: React.FC<InformationPageProps> = ({
               <div className="flex items-center gap-2 text-[#004D26] text-xs sm:text-sm font-black uppercase tracking-wider">
                 <Sparkles className="w-4 h-4 text-amber-500" />
                 <span>Quick Answer</span>
-              </div>
+            </div>
 
               <div className="text-slate-800 text-xs sm:text-sm font-medium leading-relaxed bg-white/80 p-4 rounded-xl border border-emerald-100 shadow-xs">
                 {currentArticle.shortSummary}
@@ -472,28 +473,28 @@ export const InformationPage: React.FC<InformationPageProps> = ({
                                 </th>
                               ))}
                             </tr>
-                          </thead>
-                          <tbody className="divide-y divide-slate-100 font-medium bg-white">
-                            {sec.tableData.rows.map((row, rIdx) => (
-                              <tr key={rIdx} className="hover:bg-emerald-50/40 transition-colors">
-                                {row.map((c, cIdx) => (
-                                  <td
-                                    key={cIdx}
-                                    className={`p-3.5 ${
-                                      cIdx === 0
-                                        ? 'font-bold text-slate-900 bg-slate-50/50'
-                                        : 'text-slate-700'
-                                    }`}
-                                  >
-                                    {c}
-                                  </td>
-                                ))}
-                              </tr>
-                            ))}
-                          </tbody>
-                        </table>
-                      </div>
+                        </thead>
+                        <tbody className="divide-y divide-slate-100 font-medium bg-white">
+                          {sec.tableData.rows.map((row, rIdx) => (
+                            <tr key={rIdx} className="hover:bg-emerald-50/40 transition-colors">
+                              {row.map((c, cIdx) => (
+                                <td
+                                  key={cIdx}
+                                  className={`p-3.5 ${
+                                    cIdx === 0
+                                      ? 'font-bold text-slate-900 bg-slate-50/50'
+                                      : 'text-slate-700'
+                                  }`}
+                                >
+                                  {c}
+                                </td>
+                              ))}
+                            </tr>
+                          ))}
+                        </tbody>
+                      </table>
                     </div>
+                  </div>
                   )}
                 </section>
               ))}
@@ -650,1073 +651,853 @@ export const InformationPage: React.FC<InformationPageProps> = ({
                     </div>
                   );
                 })}
-              </div>
-            </section>
-
-            {/* 13. PREVIOUS / NEXT ARTICLE NAVIGATION */}
-            <nav className="grid grid-cols-1 sm:grid-cols-2 gap-4 pt-2">
-              {prevArticle ? (
-                <button
-                  type="button"
-                  onClick={() => onNavigate('information', prevArticle.slug)}
-                  className="p-4 bg-white hover:bg-emerald-50/50 rounded-2xl border border-slate-200 hover:border-emerald-300 text-left transition-all space-y-1 group cursor-pointer"
-                >
-                  <div className="text-[10px] font-extrabold text-slate-400 uppercase tracking-wider flex items-center gap-1">
-                    ← Previous Guide
-                  </div>
-                  <div className="text-xs font-bold text-slate-900 group-hover:text-[#006633] truncate">
-                    {prevArticle.title}
-                  </div>
-                </button>
-              ) : (
-                <div />
-              )}
-
-              {nextArticle ? (
-                <button
-                  type="button"
-                  onClick={() => onNavigate('information', nextArticle.slug)}
-                  className="p-4 bg-white hover:bg-emerald-50/50 rounded-2xl border border-slate-200 hover:border-emerald-300 text-right transition-all space-y-1 group cursor-pointer"
-                >
-                  <div className="text-[10px] font-extrabold text-slate-400 uppercase tracking-wider flex items-center justify-end gap-1">
-                    Next Guide →
-                  </div>
-                  <div className="text-xs font-bold text-slate-900 group-hover:text-[#006633] truncate">
-                    {nextArticle.title}
-                  </div>
-                </button>
-              ) : (
-                <div />
-              )}
-            </nav>
-          </div>
-
-          {/* Sidebar Column */}
-          <aside className="space-y-6">
-            {/* 12. RELATED TOOLS */}
-            <div className="p-5 rounded-2xl bg-slate-900 text-white space-y-4 shadow-md border border-slate-800">
-              <h3 className="text-sm font-black text-white flex items-center gap-2">
-                <ShieldCheck className="w-4 h-4 text-amber-400" />
-                Useful Tools & Pages
-              </h3>
-              <p className="text-xs text-slate-300 leading-relaxed font-medium">
-                Access official verification tools and draw result repositories.
-              </p>
-
-              <div className="space-y-2 text-xs">
-                <button
-                  type="button"
-                  onClick={() => onNavigate('checker')}
-                  className="w-full p-3 bg-amber-400 hover:bg-amber-300 text-slate-950 font-black rounded-xl text-left flex items-center justify-between transition-colors cursor-pointer shadow-xs"
-                >
-                  <span>Prize Bond Checker</span>
-                  <ArrowRight className="w-4 h-4 text-slate-950" />
-                </button>
-
-                <button
-                  type="button"
-                  onClick={() => onNavigate('results')}
-                  className="w-full p-3 bg-slate-800 hover:bg-slate-700 text-white font-bold rounded-xl border border-slate-700 text-left flex items-center justify-between transition-colors cursor-pointer"
-                >
-                  <span>Draw Results Hub</span>
-                  <ChevronRight className="w-4 h-4 text-slate-400" />
-                </button>
-
-                <button
-                  type="button"
-                  onClick={() => onNavigate('schedule')}
-                  className="w-full p-3 bg-slate-800 hover:bg-slate-700 text-white font-bold rounded-xl border border-slate-700 text-left flex items-center justify-between transition-colors cursor-pointer"
-                >
-                  <span>2026 Draw Schedule</span>
-                  <ChevronRight className="w-4 h-4 text-slate-400" />
-                </button>
-
-                <button
-                  type="button"
-                  onClick={() => onNavigate('prizebonds')}
-                  className="w-full p-3 bg-slate-800 hover:bg-slate-700 text-white font-bold rounded-xl border border-slate-700 text-left flex items-center justify-between transition-colors cursor-pointer"
-                >
-                  <span>Prize Bond Denominations</span>
-                  <ChevronRight className="w-4 h-4 text-slate-400" />
-                </button>
-              </div>
             </div>
+          </section>
 
-            {/* 11. RELATED ARTICLES */}
-            <div className="p-5 rounded-2xl bg-white border border-slate-200 shadow-xs space-y-3">
-              <h3 className="text-xs font-extrabold text-slate-400 uppercase tracking-wider">
-                Related Information Guides
-              </h3>
-              <div className="space-y-3">
-                {relatedArticles.map((art) => (
-                  <button
-                    key={art.slug}
-                    type="button"
-                    onClick={() => onNavigate('information', art.slug)}
-                    className="w-full text-left p-3.5 rounded-xl border border-slate-100 hover:border-emerald-400 hover:bg-emerald-50/40 transition-all space-y-1 group cursor-pointer"
-                  >
-                    <div className="flex items-center justify-between text-[10px] font-bold text-slate-400">
-                      <span className="text-[#006633] uppercase font-mono">{art.category}</span>
-                      <span>{art.readTime}</span>
-                    </div>
-                    <div className="text-xs font-bold text-slate-900 group-hover:text-[#006633] transition-colors leading-snug">
-                      {art.title}
-                    </div>
-                  </button>
-                ))}
-              </div>
-            </div>
+          {/* VIDEO GUIDE TUTORIAL WIDGET FOR ARTICLE VIEW */}
+          <VideoGuideWidget
+            categoryBadge="🎬 PRIZE BOND KNOWLEDGE TUTORIAL"
+            title="Video Guide: How to Buy, Hold, & Claim Prize Bonds in Pakistan"
+            subtitle="Watch our expert guide on purchasing bonds from SBP field offices, maintaining registers, and filing prize claims."
+            summaryTitle="📌 National Savings Guide Summary"
+            summaryItems={[
+                {
+                  title: 'Authorized Purchase Points',
+                  desc: 'Buy genuine bonds at SBP BSC branches, Commercial Banks, or National Savings Centers.',
+                },
+                {
+                  title: 'Claim Verification Standards',
+                  desc: 'Physical bonds must be clean, un-tampered, and match official gazette serials.',
+                },
+                {
+                  title: 'WHT Tax Deductions',
+                  desc: 'FBR withholding tax applies automatically at payout time (15% Filer / 30% Non-Filer).',
+                },
+                {
+                  title: 'Claim Processing Buffer',
+                  desc: 'Small prizes paid over counter; large prizes processed via SBP Treasury within 15-30 days.',
+                },
+            ]}
+            duration="03:40"
+            onNavigate={onNavigate}
+          />
 
-            {/* AdSense Sidebar Slot */}
-            <AdSensePlaceholder slot="sidebar" />
-          </aside>
-        </div>
-
-        {/* CORRECTION REPORT MODAL */}
-        {showCorrectionModal && (
-          <div className="fixed inset-0 bg-slate-900/60 backdrop-blur-xs z-50 flex items-center justify-center p-4">
-            <div className="bg-white rounded-2xl max-w-md w-full p-6 space-y-4 shadow-xl border border-slate-200 relative">
+          {/* 13. PREVIOUS / NEXT ARTICLE NAVIGATION */}
+          <nav className="grid grid-cols-1 sm:grid-cols-2 gap-4 pt-2">
+            {prevArticle ? (
               <button
                 type="button"
-                onClick={() => {
-                  setShowCorrectionModal(false);
-                  setCorrectionSubmitted(false);
-                }}
-                className="absolute top-4 right-4 text-slate-400 hover:text-slate-600 cursor-pointer"
+                onClick={() => onNavigate('information', prevArticle.slug)}
+                className="p-4 bg-white hover:bg-emerald-50/50 rounded-2xl border border-slate-200 hover:border-emerald-300 text-left transition-all space-y-1 group cursor-pointer"
               >
-                <X className="w-5 h-5" />
-              </button>
-
-              <div className="flex items-center gap-2">
-                <AlertCircle className="w-5 h-5 text-amber-500" />
-                <h3 className="text-base font-black text-slate-900">
-                  Report Information Error
-                </h3>
-              </div>
-
-              {!correctionSubmitted ? (
-                <form
-                  onSubmit={(e) => {
-                    e.preventDefault();
-                    setCorrectionSubmitted(true);
-                  }}
-                  className="space-y-3 text-xs"
-                >
-                  <p className="text-slate-600 font-medium">
-                    Help us maintain 100% factual accuracy. If you noticed an outdated rule or mistake in <strong>{currentArticle.title}</strong>, please describe it below:
-                  </p>
-
-                  <textarea
-                    rows={4}
-                    value={correctionNote}
-                    onChange={(e) => setCorrectionNote(e.target.value)}
-                    placeholder="Describe the discrepancy or quote the incorrect paragraph..."
-                    className="w-full p-3 bg-slate-50 border border-slate-200 rounded-xl text-slate-800 text-xs font-medium focus:outline-none focus:border-[#006633]"
-                    required
-                  />
-
-                  <div className="flex items-center justify-end gap-2 pt-2">
-                    <button
-                      type="button"
-                      onClick={() => setShowCorrectionModal(false)}
-                      className="px-4 py-2 bg-slate-100 hover:bg-slate-200 text-slate-700 font-bold rounded-xl cursor-pointer"
-                    >
-                      Cancel
-                    </button>
-                    <button
-                      type="submit"
-                      className="px-4 py-2 bg-[#006633] hover:bg-[#004D26] text-white font-extrabold rounded-xl shadow-xs cursor-pointer"
-                    >
-                      Submit Report
-                    </button>
-                  </div>
-                </form>
-              ) : (
-                <div className="p-4 bg-emerald-50 text-[#004D26] rounded-xl text-xs font-bold space-y-2 text-center">
-                  <Check className="w-6 h-6 text-[#006633] mx-auto" />
-                  <div>Thank you! Your correction report has been received by our editorial team.</div>
-                  <button
-                    type="button"
-                    onClick={() => {
-                      setShowCorrectionModal(false);
-                      setCorrectionSubmitted(false);
-                      setCorrectionNote('');
-                    }}
-                    className="mt-2 px-4 py-1.5 bg-[#006633] text-white rounded-lg cursor-pointer"
-                  >
-                    Close
-                  </button>
+                <div className="text-[10px] font-extrabold text-slate-400 uppercase tracking-wider flex items-center gap-1">
+                  ← Previous Guide
                 </div>
-              )}
-            </div>
-          </div>
-        )}
-      </div>
-    );
-  }
+                <div className="text-xs font-bold text-slate-900 group-hover:text-[#006633] truncate">
+                  {prevArticle.title}
+                </div>
+              </button>
+            ) : (
+              <div />
+            )}
 
-  // MASTER INFORMATION HUB VIEW
-  return (
-    <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-6 space-y-10">
-      {/* 02. BREADCRUMB */}
-      <Breadcrumbs
-        items={[
-          { label: 'Home', onClick: () => onNavigate('home') },
-          { label: 'Information' },
-        ]}
-      />
-
-      {/* 03. HERO */}
-      <section className="bg-white rounded-2xl p-6 sm:p-10 border border-slate-200 shadow-xs relative overflow-hidden space-y-4">
-        <div className="absolute top-0 right-0 w-80 h-80 bg-emerald-50 rounded-full blur-3xl -z-0 pointer-events-none transform translate-x-20 -translate-y-20 opacity-80" />
-
-        <div className="relative z-10 space-y-3">
-          <div className="flex flex-wrap items-center gap-2">
-            <span className="px-3 py-1 rounded-full bg-emerald-100 text-[#004D26] text-xs font-black uppercase tracking-wider flex items-center gap-1.5">
-              <BookOpen className="w-3.5 h-3.5 text-[#006633]" /> Official Knowledge & Information Directory
-            </span>
-            <LastUpdatedBadge date="15 August 2026" />
-          </div>
-
-          <h1 className="text-2xl sm:text-4xl font-black text-slate-900 tracking-tight leading-tight">
-            Prize Bond Information
-          </h1>
-
-          <p className="text-xs sm:text-sm text-slate-600 max-w-3xl leading-relaxed font-medium">
-            Understand Prize Bond denominations, prizes, draws, results and how to check your Prize Bond using clear, verified government facts and interactive tools.
-          </p>
-        </div>
-      </section>
-
-      {/* 04. START HERE */}
-      <section className="bg-white rounded-2xl p-6 sm:p-8 border border-slate-200 shadow-xs space-y-6">
-        <div className="flex flex-col sm:flex-row sm:items-center justify-between gap-2 border-b border-slate-100 pb-4">
-          <div>
-            <div className="text-xs font-black text-[#006633] uppercase tracking-wider">
-              Beginner&apos;s Guidance Path
-            </div>
-            <h2 className="text-xl sm:text-2xl font-black text-slate-900 tracking-tight">
-              New to Prize Bonds? Start Here
-            </h2>
-          </div>
-          <span className="text-xs font-bold text-slate-500 bg-slate-100 px-3 py-1 rounded-full w-max">
-            5-Step Guided Journey
-          </span>
+            {nextArticle ? (
+              <button
+                type="button"
+                onClick={() => onNavigate('information', nextArticle.slug)}
+                className="p-4 bg-white hover:bg-emerald-50/50 rounded-2xl border border-slate-200 hover:border-emerald-300 text-right transition-all space-y-1 group cursor-pointer"
+              >
+                <div className="text-[10px] font-extrabold text-slate-400 uppercase tracking-wider flex items-center justify-end gap-1">
+                  Next Guide →
+                </div>
+                <div className="text-xs font-bold text-slate-900 group-hover:text-[#006633] truncate">
+                  {nextArticle.title}
+                </div>
+              </button>
+            ) : (
+              <div />
+            )}
+          </nav>
         </div>
 
-        <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-5 gap-4">
-          <button
-            type="button"
-            onClick={() => onNavigate('information', 'how-prize-bonds-work')}
-            className="p-4 bg-slate-50 hover:bg-emerald-50/60 rounded-xl border border-slate-200 hover:border-emerald-300 transition-all text-left space-y-2 group cursor-pointer"
-          >
-            <div className="flex items-center justify-between">
-              <span className="text-xs font-black text-[#006633] font-mono bg-emerald-100 px-2 py-0.5 rounded">
-                01
-              </span>
-              <ArrowRight className="w-4 h-4 text-slate-400 group-hover:text-[#006633] group-hover:translate-x-0.5 transition-transform" />
-            </div>
-            <h3 className="text-xs font-black text-slate-900 group-hover:text-[#006633] transition-colors">
-              Understand Prize Bonds
+        {/* Sidebar Column */}
+        <aside className="space-y-6">
+          {/* 12. RELATED TOOLS */}
+          <div className="p-5 rounded-2xl bg-slate-900 text-white space-y-4 shadow-md border border-slate-800">
+            <h3 className="text-sm font-black text-white flex items-center gap-2">
+              <ShieldCheck className="w-4 h-4 text-amber-400" />
+              Useful Tools & Pages
             </h3>
-            <p className="text-[11px] text-slate-500 leading-snug">
-              Learn basics, security guarantee, and ownership rules.
+            <p className="text-xs text-slate-300 leading-relaxed font-medium">
+              Access official verification tools and draw result repositories.
             </p>
-          </button>
 
-          <button
-            type="button"
-            onClick={() => onNavigate('prizebonds')}
-            className="p-4 bg-slate-50 hover:bg-emerald-50/60 rounded-xl border border-slate-200 hover:border-emerald-300 transition-all text-left space-y-2 group cursor-pointer"
-          >
-            <div className="flex items-center justify-between">
-              <span className="text-xs font-black text-[#006633] font-mono bg-emerald-100 px-2 py-0.5 rounded">
-                02
-              </span>
-              <ArrowRight className="w-4 h-4 text-slate-400 group-hover:text-[#006633] group-hover:translate-x-0.5 transition-transform" />
-            </div>
-            <h3 className="text-xs font-black text-slate-900 group-hover:text-[#006633] transition-colors">
-              Explore Denominations
-            </h3>
-            <p className="text-[11px] text-slate-500 leading-snug">
-              Browse Rs. 100 to Rs. 40,000 Premium categories.
-            </p>
-          </button>
-
-          <button
-            type="button"
-            onClick={() => onNavigate('information', 'prize-money-and-tax')}
-            className="p-4 bg-slate-50 hover:bg-emerald-50/60 rounded-xl border border-slate-200 hover:border-emerald-300 transition-all text-left space-y-2 group cursor-pointer"
-          >
-            <div className="flex items-center justify-between">
-              <span className="text-xs font-black text-[#006633] font-mono bg-emerald-100 px-2 py-0.5 rounded">
-                03
-              </span>
-              <ArrowRight className="w-4 h-4 text-slate-400 group-hover:text-[#006633] group-hover:translate-x-0.5 transition-transform" />
-            </div>
-            <h3 className="text-xs font-black text-slate-900 group-hover:text-[#006633] transition-colors">
-              Understand Draws & Prizes
-            </h3>
-            <p className="text-[11px] text-slate-500 leading-snug">
-              Prize amounts, draw cycles, and tax deduction rates.
-            </p>
-          </button>
-
-          <button
-            type="button"
-            onClick={() => onNavigate('results')}
-            className="p-4 bg-slate-50 hover:bg-emerald-50/60 rounded-xl border border-slate-200 hover:border-emerald-300 transition-all text-left space-y-2 group cursor-pointer"
-          >
-            <div className="flex items-center justify-between">
-              <span className="text-xs font-black text-[#006633] font-mono bg-emerald-100 px-2 py-0.5 rounded">
-                04
-              </span>
-              <ArrowRight className="w-4 h-4 text-slate-400 group-hover:text-[#006633] group-hover:translate-x-0.5 transition-transform" />
-            </div>
-            <h3 className="text-xs font-black text-slate-900 group-hover:text-[#006633] transition-colors">
-              Check Gazette Results
-            </h3>
-            <p className="text-[11px] text-slate-500 leading-snug">
-              Access official published SBP draw gazette lists.
-            </p>
-          </button>
-
-          <button
-            type="button"
-            onClick={() => onNavigate('checker')}
-            className="p-4 bg-emerald-50 hover:bg-emerald-100/80 rounded-xl border border-emerald-200 transition-all text-left space-y-2 group cursor-pointer"
-          >
-            <div className="flex items-center justify-between">
-              <span className="text-xs font-black text-white font-mono bg-[#006633] px-2 py-0.5 rounded">
-                05
-              </span>
-              <ArrowRight className="w-4 h-4 text-[#006633] group-hover:translate-x-0.5 transition-transform" />
-            </div>
-            <h3 className="text-xs font-black text-[#004D26] group-hover:text-emerald-950 transition-colors">
-              Check Your Bond
-            </h3>
-            <p className="text-[11px] text-slate-600 leading-snug">
-              Enter serial numbers for instant automated matching.
-            </p>
-          </button>
-        </div>
-      </section>
-
-      {/* 05. MAIN INFORMATION TOPICS DIRECTORY */}
-      <section className="space-y-6">
-        <div className="bg-white p-5 rounded-2xl border border-slate-200 shadow-xs flex flex-col sm:flex-row sm:items-center justify-between gap-3">
-          <div>
-            <div className="text-xs font-black text-[#006633] uppercase tracking-wider">
-              Structured Directory
-            </div>
-            <h2 className="text-xl sm:text-2xl font-black text-slate-900 tracking-tight">
-              Main Information Directory
-            </h2>
-          </div>
-          <p className="text-xs text-slate-500 max-w-md">
-            Click any topic card to explore factual guides and transition directly to tools.
-          </p>
-        </div>
-
-        <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-5">
-          <div className="bg-white rounded-2xl p-5 border border-slate-200 hover:border-emerald-300 shadow-xs transition-all flex flex-col justify-between space-y-4 group">
-            <div className="space-y-2">
-              <div className="w-10 h-10 bg-emerald-100 text-[#006633] rounded-xl flex items-center justify-center font-black text-sm">
-                01
-              </div>
-              <h3 className="text-base font-black text-slate-900 group-hover:text-[#006633] transition-colors">
-                Prize Bond Basics
-              </h3>
-              <p className="text-xs text-slate-600 leading-relaxed">
-                Explain what Prize Bonds are, capital safety, issuer authority (CDNS & SBP), and ownership rules.
-              </p>
-            </div>
-            <div className="pt-2 border-t border-slate-100 space-y-2">
-              <button
-                type="button"
-                onClick={() => onNavigate('information', 'how-prize-bonds-work')}
-                className="w-full py-2 bg-[#006633] hover:bg-[#004D26] text-white text-xs font-black rounded-xl transition-colors cursor-pointer text-center block"
-              >
-                Learn About Prize Bonds
-              </button>
-              <button
-                type="button"
-                onClick={() => onNavigate('information', 'how-prize-bonds-work')}
-                className="w-full text-center text-[11px] font-bold text-slate-500 hover:text-[#006633] flex items-center justify-center gap-1 cursor-pointer"
-              >
-                <span>Functional Bridge: How Bonds Work</span>
-                <ArrowUpRight className="w-3 h-3" />
-              </button>
-            </div>
-          </div>
-
-          <div className="bg-white rounded-2xl p-5 border border-slate-200 hover:border-emerald-300 shadow-xs transition-all flex flex-col justify-between space-y-4 group">
-            <div className="space-y-2">
-              <div className="w-10 h-10 bg-emerald-100 text-[#006633] rounded-xl flex items-center justify-center font-black text-sm">
-                02
-              </div>
-              <h3 className="text-base font-black text-slate-900 group-hover:text-[#006633] transition-colors">
-                Prize Bond Denominations
-              </h3>
-              <p className="text-xs text-slate-600 leading-relaxed">
-                Explore available denominations from Rs. 100 bearer bonds up to Rs. 40,000 Premium registered bonds.
-              </p>
-            </div>
-            <div className="pt-2 border-t border-slate-100 space-y-2">
-              <button
-                type="button"
-                onClick={() => onNavigate('prizebonds')}
-                className="w-full py-2 bg-[#006633] hover:bg-[#004D26] text-white text-xs font-black rounded-xl transition-colors cursor-pointer text-center block"
-              >
-                View Prize Bonds
-              </button>
-              <button
-                type="button"
-                onClick={() => onNavigate('prizebonds')}
-                className="w-full text-center text-[11px] font-bold text-slate-500 hover:text-[#006633] flex items-center justify-center gap-1 cursor-pointer"
-              >
-                <span>Functional Bridge: View All Categories</span>
-                <ArrowUpRight className="w-3 h-3" />
-              </button>
-            </div>
-          </div>
-
-          <div className="bg-white rounded-2xl p-5 border border-slate-200 hover:border-emerald-300 shadow-xs transition-all flex flex-col justify-between space-y-4 group">
-            <div className="space-y-2">
-              <div className="w-10 h-10 bg-emerald-100 text-[#006633] rounded-xl flex items-center justify-center font-black text-sm">
-                03
-              </div>
-              <h3 className="text-base font-black text-slate-900 group-hover:text-[#006633] transition-colors">
-                Prize Bond Draws
-              </h3>
-              <p className="text-xs text-slate-600 leading-relaxed">
-                Explain how quarterly draws work, SBP draw locations, computerized randomized machinery, and committees.
-              </p>
-            </div>
-            <div className="pt-2 border-t border-slate-100 space-y-2">
-              <button
-                type="button"
-                onClick={() => onNavigate('schedule')}
-                className="w-full py-2 bg-[#006633] hover:bg-[#004D26] text-white text-xs font-black rounded-xl transition-colors cursor-pointer text-center block"
-              >
-                Learn About Draws
-              </button>
-              <button
-                type="button"
-                onClick={() => onNavigate('schedule')}
-                className="w-full text-center text-[11px] font-bold text-slate-500 hover:text-[#006633] flex items-center justify-center gap-1 cursor-pointer"
-              >
-                <span>Functional Bridge: View Draw Schedule</span>
-                <ArrowUpRight className="w-3 h-3" />
-              </button>
-            </div>
-          </div>
-
-          <div className="bg-white rounded-2xl p-5 border border-slate-200 hover:border-emerald-300 shadow-xs transition-all flex flex-col justify-between space-y-4 group">
-            <div className="space-y-2">
-              <div className="w-10 h-10 bg-emerald-100 text-[#006633] rounded-xl flex items-center justify-center font-black text-sm">
-                04
-              </div>
-              <h3 className="text-base font-black text-slate-900 group-hover:text-[#006633] transition-colors">
-                Prize Structure
-              </h3>
-              <p className="text-xs text-slate-600 leading-relaxed">
-                Explain prize categories (1st, 2nd, 3rd) and denomination-specific prize money distribution payouts.
-              </p>
-            </div>
-            <div className="pt-2 border-t border-slate-100 space-y-2">
-              <button
-                type="button"
-                onClick={() => onNavigate('information', 'prize-money-and-tax')}
-                className="w-full py-2 bg-[#006633] hover:bg-[#004D26] text-white text-xs font-black rounded-xl transition-colors cursor-pointer text-center block"
-              >
-                View Prize Structure
-              </button>
-              <button
-                type="button"
-                onClick={() => onNavigate('prizebonds')}
-                className="w-full text-center text-[11px] font-bold text-slate-500 hover:text-[#006633] flex items-center justify-center gap-1 cursor-pointer"
-              >
-                <span>Functional Bridge: Prize Bond Hub</span>
-                <ArrowUpRight className="w-3 h-3" />
-              </button>
-            </div>
-          </div>
-
-          <div className="bg-white rounded-2xl p-5 border border-slate-200 hover:border-emerald-300 shadow-xs transition-all flex flex-col justify-between space-y-4 group">
-            <div className="space-y-2">
-              <div className="w-10 h-10 bg-[#004D26] text-white rounded-xl flex items-center justify-center font-black text-sm">
-                05
-              </div>
-              <h3 className="text-base font-black text-slate-900 group-hover:text-[#006633] transition-colors">
-                Regular vs Premium
-              </h3>
-              <p className="text-xs text-slate-600 leading-relaxed">
-                Explain factual differences between physical bearer bonds and registered Premium bonds with direct profits.
-              </p>
-            </div>
-            <div className="pt-2 border-t border-slate-100 space-y-2">
-              <button
-                type="button"
-                onClick={() => onNavigate('information', 'how-prize-bonds-work')}
-                className="w-full py-2 bg-[#006633] hover:bg-[#004D26] text-white text-xs font-black rounded-xl transition-colors cursor-pointer text-center block"
-              >
-                Compare Prize Bonds
-              </button>
-              <button
-                type="button"
-                onClick={() => onNavigate('prizebonds')}
-                className="w-full text-center text-[11px] font-bold text-slate-500 hover:text-[#006633] flex items-center justify-center gap-1 cursor-pointer"
-              >
-                <span>Functional Bridge: Compare Categories</span>
-                <ArrowUpRight className="w-3 h-3" />
-              </button>
-            </div>
-          </div>
-
-          <div className="bg-white rounded-2xl p-5 border border-slate-200 hover:border-emerald-300 shadow-xs transition-all flex flex-col justify-between space-y-4 group">
-            <div className="space-y-2">
-              <div className="w-10 h-10 bg-[#004D26] text-white rounded-xl flex items-center justify-center font-black text-sm">
-                06
-              </div>
-              <h3 className="text-base font-black text-slate-900 group-hover:text-[#006633] transition-colors">
-                How to Check
-              </h3>
-              <p className="text-xs text-slate-600 leading-relaxed">
-                Explain the automated checking process for single bond numbers, bulk lists, and continuous serial ranges.
-              </p>
-            </div>
-            <div className="pt-2 border-t border-slate-100 space-y-2">
-              <button
-                type="button"
-                onClick={() => onNavigate('information', 'how-to-check-prize-bonds')}
-                className="w-full py-2 bg-[#006633] hover:bg-[#004D26] text-white text-xs font-black rounded-xl transition-colors cursor-pointer text-center block"
-              >
-                Learn How to Check
-              </button>
+            <div className="space-y-2 text-xs">
               <button
                 type="button"
                 onClick={() => onNavigate('checker')}
-                className="w-full text-center text-[11px] font-bold text-slate-500 hover:text-[#006633] flex items-center justify-center gap-1 cursor-pointer"
+                className="w-full p-3 bg-amber-400 hover:bg-amber-300 text-slate-950 font-black rounded-xl text-left flex items-center justify-between transition-colors cursor-pointer shadow-xs"
               >
-                <span>Functional Bridge: Open Checker</span>
-                <ArrowUpRight className="w-3 h-3" />
+                <span>Prize Bond Checker</span>
+                <ArrowRight className="w-4 h-4 text-slate-950" />
               </button>
-            </div>
-          </div>
 
-          <div className="bg-white rounded-2xl p-5 border border-slate-200 hover:border-emerald-300 shadow-xs transition-all flex flex-col justify-between space-y-4 group">
-            <div className="space-y-2">
-              <div className="w-10 h-10 bg-[#004D26] text-white rounded-xl flex items-center justify-center font-black text-sm">
-                07
-              </div>
-              <h3 className="text-base font-black text-slate-900 group-hover:text-[#006633] transition-colors">
-                Prize Bond Results
-              </h3>
-              <p className="text-xs text-slate-600 leading-relaxed">
-                Explain how users can locate official published gazettes, verify 1st/2nd/3rd prize winners, and download PDF lists.
-              </p>
-            </div>
-            <div className="pt-2 border-t border-slate-100 space-y-2">
               <button
                 type="button"
                 onClick={() => onNavigate('results')}
-                className="w-full py-2 bg-[#006633] hover:bg-[#004D26] text-white text-xs font-black rounded-xl transition-colors cursor-pointer text-center block"
+                className="w-full p-3 bg-slate-800 hover:bg-slate-700 text-white font-bold rounded-xl border border-slate-700 text-left flex items-center justify-between transition-colors cursor-pointer"
               >
-                View Results
+                <span>Draw Results Hub</span>
+                <ChevronRight className="w-4 h-4 text-slate-400" />
               </button>
+
               <button
                 type="button"
-                onClick={() => onNavigate('results')}
-                className="w-full text-center text-[11px] font-bold text-slate-500 hover:text-[#006633] flex items-center justify-center gap-1 cursor-pointer"
+                onClick={() => onNavigate('schedule')}
+                className="w-full p-3 bg-slate-800 hover:bg-slate-700 text-white font-bold rounded-xl border border-slate-700 text-left flex items-center justify-between transition-colors cursor-pointer"
               >
-                <span>Functional Bridge: View Gazette Results</span>
-                <ArrowUpRight className="w-3 h-3" />
+                <span>2026 Draw Schedule</span>
+                <ChevronRight className="w-4 h-4 text-slate-400" />
+              </button>
+
+              <button
+                type="button"
+                onClick={() => onNavigate('prizebonds')}
+                className="w-full p-3 bg-slate-800 hover:bg-slate-700 text-white font-bold rounded-xl border border-slate-700 text-left flex items-center justify-between transition-colors cursor-pointer"
+              >
+                <span>Prize Bond Denominations</span>
+                <ChevronRight className="w-4 h-4 text-slate-400" />
               </button>
             </div>
           </div>
 
-          <div className="bg-white rounded-2xl p-5 border border-slate-200 hover:border-emerald-300 shadow-xs transition-all flex flex-col justify-between space-y-4 group">
-            <div className="space-y-2">
-              <div className="w-10 h-10 bg-[#004D26] text-white rounded-xl flex items-center justify-center font-black text-sm">
-                08
-              </div>
-              <h3 className="text-base font-black text-slate-900 group-hover:text-[#006633] transition-colors">
-                Knowledge FAQs
-              </h3>
-              <p className="text-xs text-slate-600 leading-relaxed">
-                Common questions regarding taxes, claim deadlines, lost bonds, encashment banks, and CDNS regulations.
-              </p>
-            </div>
-            <div className="pt-2 border-t border-slate-100 space-y-2">
-              <button
-                type="button"
-                onClick={() => onNavigate('faqs')}
-                className="w-full py-2 bg-[#006633] hover:bg-[#004D26] text-white text-xs font-black rounded-xl transition-colors cursor-pointer text-center block"
-              >
-                View FAQs
-              </button>
-              <button
-                type="button"
-                onClick={() => onNavigate('faqs')}
-                className="w-full text-center text-[11px] font-bold text-slate-500 hover:text-[#006633] flex items-center justify-center gap-1 cursor-pointer"
-              >
-                <span>Functional Bridge: Open All FAQs</span>
-                <ArrowUpRight className="w-3 h-3" />
-              </button>
-            </div>
-          </div>
-        </div>
-      </section>
-
-      {/* 06. PRIZE BOND DENOMINATIONS PREVIEW */}
-      <section className="bg-white rounded-2xl p-6 sm:p-8 border border-slate-200 shadow-xs space-y-6">
-        <div className="flex flex-col sm:flex-row sm:items-center justify-between gap-3 border-b border-slate-100 pb-4">
-          <div>
-            <div className="text-xs font-black text-[#006633] uppercase tracking-wider">
-              Denomination Preview
-            </div>
-            <h2 className="text-xl sm:text-2xl font-black text-slate-900 tracking-tight">
-              Active Prize Bond Denominations
-            </h2>
-          </div>
-
-          <button
-            type="button"
-            onClick={() => onNavigate('prizebonds')}
-            className="px-4 py-2 bg-[#006633] hover:bg-[#004D26] text-white font-black text-xs rounded-xl transition-colors cursor-pointer flex items-center gap-1.5 w-max"
-          >
-            <span>View All Prize Bonds</span>
-            <ArrowRight className="w-4 h-4" />
-          </button>
-        </div>
-
-        <div className="grid grid-cols-2 sm:grid-cols-3 lg:grid-cols-6 gap-3">
-          {DENOMINATIONS.map((d) => (
-            <button
-              key={d.value}
-              type="button"
-              onClick={() => onNavigate('denomination', d.value)}
-              className="p-3.5 bg-slate-50 hover:bg-emerald-50/80 rounded-xl border border-slate-200 hover:border-emerald-300 transition-all text-left space-y-2 group cursor-pointer"
-            >
-              <div className="flex items-center justify-between">
-                <span
-                  className={`text-[9px] font-black uppercase px-1.5 py-0.5 rounded ${
-                    d.isPremium ? 'bg-amber-100 text-amber-900' : 'bg-slate-200 text-slate-800'
-                  }`}
+          {/* 11. RELATED ARTICLES */}
+          <div className="p-5 rounded-2xl bg-white border border-slate-200 shadow-xs space-y-3">
+            <h3 className="text-xs font-extrabold text-slate-400 uppercase tracking-wider">
+              Related Information Guides
+            </h3>
+            <div className="space-y-3">
+              {relatedArticles.map((art) => (
+                <button
+                  key={art.slug}
+                  type="button"
+                  onClick={() => onNavigate('information', art.slug)}
+                  className="w-full text-left p-3.5 rounded-xl border border-slate-100 hover:border-emerald-400 hover:bg-emerald-50/40 transition-all space-y-1 group cursor-pointer"
                 >
-                  {d.isPremium ? 'Premium' : 'Bearer'}
-                </span>
-                <ChevronRight className="w-3.5 h-3.5 text-slate-400 group-hover:text-[#006633] transition-colors" />
-              </div>
+                  <div className="flex items-center justify-between text-[10px] font-bold text-slate-400">
+                    <span className="text-[#006633] uppercase font-mono">{art.category}</span>
+                    <span>{art.readTime}</span>
+                  </div>
+                  <div className="text-xs font-bold text-slate-900 group-hover:text-[#006633] transition-colors leading-snug">
+                    {art.title}
+                  </div>
+                </button>
+              ))}
+            </div>
+          </div>
 
-              <div>
-                <strong className="text-xs font-black text-slate-900 group-hover:text-[#006633] block">
-                  {d.label}
-                </strong>
-                <span className="text-[10px] text-slate-500 block mt-0.5">
-                  1st: {d.firstPrize}
-                </span>
-              </div>
+          {/* AdSense Sidebar Slot */}
+          <AdSensePlaceholder slot="sidebar" />
+        </aside>
+      </div>
+
+      {/* CORRECTION REPORT MODAL */}
+      {showCorrectionModal && (
+        <div className="fixed inset-0 bg-slate-900/60 backdrop-blur-xs z-50 flex items-center justify-center p-4">
+          <div className="bg-white rounded-2xl max-w-md w-full p-6 space-y-4 shadow-xl border border-slate-200 relative">
+            <button
+              type="button"
+              onClick={() => {
+                setShowCorrectionModal(false);
+                setCorrectionSubmitted(false);
+              }}
+              className="absolute top-4 right-4 text-slate-400 hover:text-slate-600 cursor-pointer"
+            >
+              <X className="w-5 h-5" />
             </button>
-          ))}
-        </div>
-      </section>
 
-      {/* 07. HOW THE SYSTEM WORKS */}
-      <section className="bg-slate-900 text-white rounded-2xl p-6 sm:p-8 border border-slate-800 shadow-md space-y-6">
-        <div className="text-center space-y-2 max-w-xl mx-auto">
-          <span className="px-3 py-1 rounded-full bg-amber-400/20 text-amber-300 text-[10px] font-black uppercase tracking-wider">
-            System Process Workflow
+            <div className="flex items-center gap-2">
+              <AlertCircle className="w-5 h-5 text-amber-500" />
+              <h3 className="text-base font-black text-slate-900">
+                Report Information Error
+              </h3>
+            </div>
+
+            {!correctionSubmitted ? (
+              <form
+                onSubmit={(e) => {
+                  e.preventDefault();
+                  setCorrectionSubmitted(true);
+                }}
+                className="space-y-3 text-xs"
+              >
+                <p className="text-slate-600 font-medium">
+                  Help us maintain 100% factual accuracy. If you noticed an outdated rule or mistake in <strong>{currentArticle.title}</strong>, please describe it below:
+                </p>
+
+                <textarea
+                  rows={4}
+                  value={correctionNote}
+                  onChange={(e) => setCorrectionNote(e.target.value)}
+                  placeholder="Describe the discrepancy or quote the incorrect paragraph..."
+                  className="w-full p-3 bg-slate-50 border border-slate-200 rounded-xl text-slate-800 text-xs font-medium focus:outline-none focus:border-[#006633]"
+                  required
+                />
+
+                <div className="flex items-center justify-end gap-2 pt-2">
+                  <button
+                    type="button"
+                    onClick={() => setShowCorrectionModal(false)}
+                    className="px-4 py-2 bg-slate-100 hover:bg-slate-200 text-slate-700 font-bold rounded-xl cursor-pointer"
+                  >
+                    Cancel
+                  </button>
+                  <button
+                    type="submit"
+                    className="px-4 py-2 bg-[#006633] hover:bg-[#004D26] text-white font-extrabold rounded-xl shadow-xs cursor-pointer"
+                  >
+                    Submit Report
+                  </button>
+                </div>
+              </form>
+            ) : (
+              <div className="p-4 bg-emerald-50 text-[#004D26] rounded-xl text-xs font-bold space-y-2 text-center">
+                <Check className="w-6 h-6 text-[#006633] mx-auto" />
+                <div>Thank you! Your correction report has been received by our editorial team.</div>
+                <button
+                  type="button"
+                  onClick={() => {
+                    setShowCorrectionModal(false);
+                    setCorrectionSubmitted(false);
+                    setCorrectionNote('');
+                  }}
+                  className="mt-2 px-4 py-1.5 bg-[#006633] text-white rounded-lg cursor-pointer"
+                >
+                  Close
+                </button>
+              </div>
+            )}
+          </div>
+        </div>
+      )}
+  </div>
+  );
+};
+
+// MASTER INFORMATION HUB VIEW
+return (
+  <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-6 space-y-10">
+    {/* 02. BREADCRUMB */}
+    <Breadcrumbs
+      items={[
+        { label: 'Home', onClick: () => onNavigate('home') },
+        { label: 'Information' },
+      ]}
+    />
+
+    {/* 03. HERO */}
+    <section className="bg-white rounded-2xl p-6 sm:p-10 border border-slate-200 shadow-xs relative overflow-hidden space-y-4">
+      <div className="absolute top-0 right-0 w-80 h-80 bg-emerald-50 rounded-full blur-3xl -z-0 pointer-events-none transform translate-x-20 -translate-y-20 opacity-80" />
+
+      <div className="relative z-10 space-y-3">
+        <div className="flex flex-wrap items-center gap-2">
+          <span className="px-3 py-1 rounded-full bg-emerald-100 text-[#004D26] text-xs font-black uppercase tracking-wider flex items-center gap-1.5">
+            <BookOpen className="w-3.5 h-3.5 text-[#006633]" /> Official Knowledge & Information Directory
           </span>
-          <h2 className="text-xl sm:text-2xl font-black text-white">
-            How PrizeBonds Pakistan Works
-          </h2>
-          <p className="text-xs text-slate-300">
-            A simple 4-step workflow guiding users from selecting denominations to verifying prize status.
+          <LastUpdatedBadge date="15 August 2026" />
+        </div>
+
+        <h1 className="text-2xl sm:text-4xl font-black text-slate-900 tracking-tight leading-tight">
+          Prize Bond Information
+        </h1>
+
+        <p className="text-xs sm:text-sm text-slate-600 max-w-3xl leading-relaxed font-medium">
+          Understand Prize Bond denominations, prizes, draws, results and how to check your Prize Bond using clear, verified government facts and interactive tools.
+        </p>
+      </div>
+    </section>
+
+    {/* 07. HOW THE SYSTEM WORKS */}
+    <section className="bg-slate-900 text-white rounded-2xl p-6 sm:p-8 border border-slate-800 shadow-md space-y-6">
+      <div className="text-center space-y-2 max-w-xl mx-auto">
+        <span className="px-3 py-1 rounded-full bg-amber-400/20 text-amber-300 text-[10px] font-black uppercase tracking-wider">
+          System Process Workflow
+        </span>
+        <h2 className="text-xl sm:text-2xl font-black text-white">
+          How PrizeBonds Pakistan Works
+        </h2>
+        <p className="text-xs text-slate-300">
+          A simple 4-step workflow guiding users from selecting denominations to verifying prize status.
+        </p>
+      </div>
+
+      <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-4 pt-2">
+        <div className="p-4 bg-slate-800/90 rounded-xl border border-slate-700/80 text-center space-y-2 relative">
+          <div className="w-8 h-8 bg-amber-400 text-slate-950 font-black text-xs rounded-full flex items-center justify-center mx-auto">
+            1
+          </div>
+          <h3 className="text-xs font-black text-amber-300 uppercase tracking-wider">
+            Choose Denomination
+          </h3>
+          <p className="text-[11px] text-slate-300 leading-relaxed">
+            Select your bond value (Rs. 100 to 40,000 Premium) to view specifications.
           </p>
         </div>
 
-        <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-4 pt-2">
-          <div className="p-4 bg-slate-800/90 rounded-xl border border-slate-700/80 text-center space-y-2 relative">
-            <div className="w-8 h-8 bg-amber-400 text-slate-950 font-black text-xs rounded-full flex items-center justify-center mx-auto">
-              1
-            </div>
-            <h3 className="text-xs font-black text-amber-300 uppercase tracking-wider">
-              Choose Denomination
-            </h3>
-            <p className="text-[11px] text-slate-300 leading-relaxed">
-              Select your bond value (Rs. 100 to 40,000 Premium) to view specifications.
-            </p>
+        <div className="p-4 bg-slate-800/90 rounded-xl border border-slate-700/80 text-center space-y-2 relative">
+          <div className="w-8 h-8 bg-amber-400 text-slate-950 font-black text-xs rounded-full flex items-center justify-center mx-auto">
+            2
           </div>
-
-          <div className="p-4 bg-slate-800/90 rounded-xl border border-slate-700/80 text-center space-y-2 relative">
-            <div className="w-8 h-8 bg-amber-400 text-slate-950 font-black text-xs rounded-full flex items-center justify-center mx-auto">
-              2
-            </div>
-            <h3 className="text-xs font-black text-amber-300 uppercase tracking-wider">
-              Find Draw
-            </h3>
-            <p className="text-[11px] text-slate-300 leading-relaxed">
-              Check upcoming draw schedules and field office venue announcements.
-            </p>
-          </div>
-
-          <div className="p-4 bg-slate-800/90 rounded-xl border border-slate-700/80 text-center space-y-2 relative">
-            <div className="w-8 h-8 bg-amber-400 text-slate-950 font-black text-xs rounded-full flex items-center justify-center mx-auto">
-              3
-            </div>
-            <h3 className="text-xs font-black text-amber-300 uppercase tracking-wider">
-              View Result
-            </h3>
-            <p className="text-[11px] text-slate-300 leading-relaxed">
-              Access published official SBP winning gazette lists for any draw date.
-            </p>
-          </div>
-
-          <div className="p-4 bg-slate-800/90 rounded-xl border border-slate-700/80 text-center space-y-2 relative">
-            <div className="w-8 h-8 bg-emerald-500 text-white font-black text-xs rounded-full flex items-center justify-center mx-auto">
-              4
-            </div>
-            <h3 className="text-xs font-black text-emerald-400 uppercase tracking-wider">
-              Check Bond
-            </h3>
-            <p className="text-[11px] text-slate-300 leading-relaxed">
-              Run automated matching for single, bulk, or sequential series numbers.
-            </p>
-          </div>
+          <h3 className="text-xs font-black text-amber-300 uppercase tracking-wider">
+            Find Draw
+          </h3>
+          <p className="text-[11px] text-slate-300 leading-relaxed">
+            Check upcoming draw schedules and field office venue announcements.
+          </p>
         </div>
-      </section>
 
-      {/* 08. QUICK ACCESS */}
-      <section className="bg-white rounded-2xl p-6 sm:p-8 border border-slate-200 shadow-xs space-y-5">
-        <div className="border-b border-slate-100 pb-3">
+        <div className="p-4 bg-slate-800/90 rounded-xl border border-slate-700/80 text-center space-y-2 relative">
+          <div className="w-8 h-8 bg-amber-400 text-slate-950 font-black text-xs rounded-full flex items-center justify-center mx-auto">
+            3
+          </div>
+          <h3 className="text-xs font-black text-amber-300 uppercase tracking-wider">
+            View Result
+          </h3>
+          <p className="text-[11px] text-slate-300 leading-relaxed">
+            Access published official SBP winning gazette lists for any draw date.
+          </p>
+        </div>
+
+        <div className="p-4 bg-slate-800/90 rounded-xl border border-slate-700/80 text-center space-y-2 relative">
+          <div className="w-8 h-8 bg-emerald-500 text-white font-black text-xs rounded-full flex items-center justify-center mx-auto">
+            4
+          </div>
+          <h3 className="text-xs font-black text-emerald-400 uppercase tracking-wider">
+            Check Bond
+          </h3>
+          <p className="text-[11px] text-slate-300 leading-relaxed">
+            Run automated matching for single, bulk, or sequential series numbers.
+          </p>
+        </div>
+      </div>
+    </section>
+
+    {/* 05. MAIN INFORMATION TOPICS DIRECTORY */}
+    <section className="space-y-6">
+      <div className="bg-white p-5 rounded-2xl border border-slate-200 shadow-xs flex flex-col sm:flex-row sm:items-center justify-between gap-3">
+        <div>
           <div className="text-xs font-black text-[#006633] uppercase tracking-wider">
-            Direct Utility Shortcuts
+            Structured Directory
           </div>
           <h2 className="text-xl sm:text-2xl font-black text-slate-900 tracking-tight">
-            Need Something Specific?
+            Main Information Directory
+          </h2>
+        </div>
+        <p className="text-xs text-slate-500 max-w-md">
+          Click any topic card to explore factual guides and transition directly to tools.
+        </p>
+      </div>
+
+      <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-5">
+        <div className="bg-white rounded-2xl p-5 border border-slate-200 hover:border-emerald-300 shadow-xs transition-all flex flex-col justify-between space-y-4 group">
+          <div className="space-y-2">
+            <div className="w-10 h-10 bg-emerald-100 text-[#006633] rounded-xl flex items-center justify-center font-black text-sm">
+              01
+            </div>
+            <h3 className="text-base font-black text-slate-900 group-hover:text-[#006633] transition-colors">
+              Prize Bond Basics
+            </h3>
+            <p className="text-xs text-slate-600 leading-relaxed">
+              Explain what Prize Bonds are, capital safety, issuer authority (CDNS & SBP), and ownership rules.
+            </p>
+          </div>
+          <div className="pt-2 border-t border-slate-100 space-y-2">
+            <button
+              type="button"
+              onClick={() => onNavigate('information', 'how-prize-bonds-work')}
+              className="w-full py-2 bg-[#006633] hover:bg-[#004D26] text-white text-xs font-black rounded-xl transition-colors cursor-pointer text-center block"
+            >
+              Learn About Prize Bonds
+            </button>
+            <button
+              type="button"
+              onClick={() => onNavigate('information', 'how-prize-bonds-work')}
+              className="w-full text-center text-[11px] font-bold text-slate-500 hover:text-[#006633] flex items-center justify-center gap-1 cursor-pointer"
+            >
+              <span>Functional Bridge: How Bonds Work</span>
+              <ArrowUpRight className="w-3 h-3" />
+            </button>
+          </div>
+        </div>
+
+        <div className="bg-white rounded-2xl p-5 border border-slate-200 hover:border-emerald-300 shadow-xs transition-all flex flex-col justify-between space-y-4 group">
+          <div className="space-y-2">
+            <div className="w-10 h-10 bg-emerald-100 text-[#006633] rounded-xl flex items-center justify-center font-black text-sm">
+              02
+            </div>
+            <h3 className="text-base font-black text-slate-900 group-hover:text-[#006633] transition-colors">
+              Prize Bond Denominations
+            </h3>
+            <p className="text-xs text-slate-600 leading-relaxed">
+              Explore available denominations from Rs. 100 bearer bonds up to Rs. 40,000 Premium registered bonds.
+            </p>
+          </div>
+          <div className="pt-2 border-t border-slate-100 space-y-2">
+            <button
+              type="button"
+              onClick={() => onNavigate('prizebonds')}
+              className="w-full py-2 bg-[#006633] hover:bg-[#004D26] text-white text-xs font-black rounded-xl transition-colors cursor-pointer text-center block"
+            >
+              View Prize Bonds
+            </button>
+            <button
+              type="button"
+              onClick={() => onNavigate('prizebonds')}
+              className="w-full text-center text-[11px] font-bold text-slate-500 hover:text-[#006633] flex items-center justify-center gap-1 cursor-pointer"
+            >
+              <span>Functional Bridge: View All Categories</span>
+              <ArrowUpRight className="w-3 h-3" />
+            </button>
+          </div>
+        </div>
+
+        <div className="bg-white rounded-2xl p-5 border border-slate-200 hover:border-emerald-300 shadow-xs transition-all flex flex-col justify-between space-y-4 group">
+          <div className="space-y-2">
+            <div className="w-10 h-10 bg-emerald-100 text-[#006633] rounded-xl flex items-center justify-center font-black text-sm">
+              03
+            </div>
+            <h3 className="text-base font-black text-slate-900 group-hover:text-[#006633] transition-colors">
+              Prize Bond Draws
+            </h3>
+            <p className="text-xs text-slate-600 leading-relaxed">
+              Explain how quarterly draws work, SBP draw locations, computerized randomized machinery, and committees.
+            </p>
+          </div>
+          <div className="pt-2 border-t border-slate-100 space-y-2">
+            <button
+              type="button"
+              onClick={() => onNavigate('schedule')}
+              className="w-full py-2 bg-[#006633] hover:bg-[#004D26] text-white text-xs font-black rounded-xl transition-colors cursor-pointer text-center block"
+            >
+              Learn About Draws
+            </button>
+            <button
+              type="button"
+              onClick={() => onNavigate('schedule')}
+              className="w-full text-center text-[11px] font-bold text-slate-500 hover:text-[#006633] flex items-center justify-center gap-1 cursor-pointer"
+            >
+              <span>Functional Bridge: View Draw Schedule</span>
+              <ArrowUpRight className="w-3 h-3" />
+            </button>
+          </div>
+        </div>
+
+        <div className="bg-white rounded-2xl p-5 border border-slate-200 hover:border-emerald-300 shadow-xs transition-all flex flex-col justify-between space-y-4 group">
+          <div className="space-y-2">
+            <div className="w-10 h-10 bg-emerald-100 text-[#006633] rounded-xl flex items-center justify-center font-black text-sm">
+              04
+            </div>
+            <h3 className="text-base font-black text-slate-900 group-hover:text-[#006633] transition-colors">
+              Prize Structure
+            </h3>
+            <p className="text-xs text-slate-600 leading-relaxed">
+              Explain prize categories (1st, 2nd, 3rd) and denomination-specific prize money distribution payouts.
+            </p>
+          </div>
+          <div className="pt-2 border-t border-slate-100 space-y-2">
+            <button
+              type="button"
+              onClick={() => onNavigate('information', 'prize-money-and-tax')}
+              className="w-full py-2 bg-[#006633] hover:bg-[#004D26] text-white text-xs font-black rounded-xl transition-colors cursor-pointer text-center block"
+            >
+              View Prize Structure
+            </button>
+            <button
+              type="button"
+              onClick={() => onNavigate('prizebonds')}
+              className="w-full text-center text-[11px] font-bold text-slate-500 hover:text-[#006633] flex items-center justify-center gap-1 cursor-pointer"
+            >
+              <span>Functional Bridge: Prize Bond Hub</span>
+              <ArrowUpRight className="w-3 h-3" />
+            </button>
+          </div>
+        </div>
+
+        <div className="bg-white rounded-2xl p-5 border border-slate-200 hover:border-emerald-300 shadow-xs transition-all flex flex-col justify-between space-y-4 group">
+          <div className="space-y-2">
+            <div className="w-10 h-10 bg-[#004D26] text-white rounded-xl flex items-center justify-center font-black text-sm">
+              05
+            </div>
+            <h3 className="text-base font-black text-slate-900 group-hover:text-[#006633] transition-colors">
+              Regular vs Premium
+            </h3>
+            <p className="text-xs text-slate-600 leading-relaxed">
+              Explain factual differences between physical bearer bonds and registered Premium bonds with direct profits.
+            </p>
+          </div>
+          <div className="pt-2 border-t border-slate-100 space-y-2">
+            <button
+              type="button"
+              onClick={() => onNavigate('information', 'how-prize-bonds-work')}
+              className="w-full py-2 bg-[#006633] hover:bg-[#004D26] text-white text-xs font-black rounded-xl transition-colors cursor-pointer text-center block"
+            >
+              Compare Prize Bonds
+            </button>
+            <button
+              type="button"
+              onClick={() => onNavigate('prizebonds')}
+              className="w-full text-center text-[11px] font-bold text-slate-500 hover:text-[#006633] flex items-center justify-center gap-1 cursor-pointer"
+            >
+              <span>Functional Bridge: Compare Categories</span>
+              <ArrowUpRight className="w-3 h-3" />
+            </button>
+          </div>
+        </div>
+
+        <div className="bg-white rounded-2xl p-5 border border-slate-200 hover:border-emerald-300 shadow-xs transition-all flex flex-col justify-between space-y-4 group">
+          <div className="space-y-2">
+            <div className="w-10 h-10 bg-[#004D26] text-white rounded-xl flex items-center justify-center font-black text-sm">
+              06
+            </div>
+            <h3 className="text-base font-black text-slate-900 group-hover:text-[#006633] transition-colors">
+              How to Check
+            </h3>
+            <p className="text-xs text-slate-600 leading-relaxed">
+              Explain the automated checking process for single bond numbers, bulk lists, and continuous serial ranges.
+            </p>
+          </div>
+          <div className="pt-2 border-t border-slate-100 space-y-2">
+            <button
+              type="button"
+              onClick={() => onNavigate('information', 'how-to-check-prize-bonds')}
+              className="w-full py-2 bg-[#006633] hover:bg-[#004D26] text-white text-xs font-black rounded-xl transition-colors cursor-pointer text-center block"
+            >
+              Learn How to Check
+            </button>
+            <button
+              type="button"
+              onClick={() => onNavigate('checker')}
+              className="w-full text-center text-[11px] font-bold text-slate-500 hover:text-[#006633] flex items-center justify-center gap-1 cursor-pointer"
+            >
+              <span>Functional Bridge: Open Checker</span>
+              <ArrowUpRight className="w-3 h-3" />
+            </button>
+          </div>
+        </div>
+
+        <div className="bg-white rounded-2xl p-5 border border-slate-200 hover:border-emerald-300 shadow-xs transition-all flex flex-col justify-between space-y-4 group">
+          <div className="space-y-2">
+            <div className="w-10 h-10 bg-[#004D26] text-white rounded-xl flex items-center justify-center font-black text-sm">
+              07
+            </div>
+            <h3 className="text-base font-black text-slate-900 group-hover:text-[#006633] transition-colors">
+              Prize Bond Results
+            </h3>
+            <p className="text-xs text-slate-600 leading-relaxed">
+              Explain how users can locate official published gazettes, verify 1st/2nd/3rd prize winners, and download PDF lists.
+            </p>
+          </div>
+          <div className="pt-2 border-t border-slate-100 space-y-2">
+            <button
+              type="button"
+              onClick={() => onNavigate('results')}
+              className="w-full py-2 bg-[#006633] hover:bg-[#004D26] text-white text-xs font-black rounded-xl transition-colors cursor-pointer text-center block"
+            >
+              View Results
+            </button>
+            <button
+              type="button"
+              onClick={() => onNavigate('results')}
+              className="w-full text-center text-[11px] font-bold text-slate-500 hover:text-[#006633] flex items-center justify-center gap-1 cursor-pointer"
+            >
+              <span>Functional Bridge: View Gazette Results</span>
+              <ArrowUpRight className="w-3 h-3" />
+            </button>
+          </div>
+        </div>
+
+        <div className="bg-white rounded-2xl p-5 border border-slate-200 hover:border-emerald-300 shadow-xs transition-all flex flex-col justify-between space-y-4 group">
+          <div className="space-y-2">
+            <div className="w-10 h-10 bg-[#004D26] text-white rounded-xl flex items-center justify-center font-black text-sm">
+              08
+            </div>
+            <h3 className="text-base font-black text-slate-900 group-hover:text-[#006633] transition-colors">
+              Knowledge FAQs
+            </h3>
+            <p className="text-xs text-slate-600 leading-relaxed">
+              Common questions regarding taxes, claim deadlines, lost bonds, encashment banks, and CDNS regulations.
+            </p>
+          </div>
+          <div className="pt-2 border-t border-slate-100 space-y-2">
+            <button
+              type="button"
+              onClick={() => onNavigate('faqs')}
+              className="w-full py-2 bg-[#006633] hover:bg-[#004D26] text-white text-xs font-black rounded-xl transition-colors cursor-pointer text-center block"
+            >
+              View FAQs
+            </button>
+            <button
+              type="button"
+              onClick={() => onNavigate('faqs')}
+              className="w-full text-center text-[11px] font-bold text-slate-500 hover:text-[#006633] flex items-center justify-center gap-1 cursor-pointer"
+            >
+              <span>Functional Bridge: Open All FAQs</span>
+              <ArrowUpRight className="w-3 h-3" />
+            </button>
+          </div>
+        </div>
+      </div>
+    </section>
+
+    {/* 08. QUICK ACCESS */}
+    <section className="bg-white rounded-2xl p-6 sm:p-8 border border-slate-200 shadow-xs space-y-5">
+      <div className="border-b border-slate-100 pb-3">
+        <div className="text-xs font-black text-[#006633] uppercase tracking-wider">
+          Direct Utility Shortcuts
+        </div>
+        <h2 className="text-xl sm:text-2xl font-black text-slate-900 tracking-tight">
+          Need Something Specific?
+        </h2>
+      </div>
+
+      <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-4">
+        <button
+          type="button"
+          onClick={() => onNavigate('checker')}
+          className="p-5 bg-emerald-50 hover:bg-emerald-100/80 rounded-2xl border border-emerald-200 text-left space-y-3 transition-all cursor-pointer group shadow-xs"
+        >
+          <div className="w-10 h-10 bg-[#006633] text-white rounded-xl flex items-center justify-center">
+            <Search className="w-5 h-5" />
+          </div>
+          <div>
+            <h3 className="text-sm font-black text-slate-900 group-hover:text-[#006633]">
+              Check a Prize Bond
+            </h3>
+            <p className="text-xs text-slate-600 mt-1">
+              Automated database verification tool.
+            </p>
+          </div>
+          <span className="text-xs font-extrabold text-[#006633] flex items-center gap-1 pt-1">
+            <span>Open Checker</span>
+            <ArrowRight className="w-3.5 h-3.5" />
+          </span>
+        </button>
+
+        <button
+          type="button"
+          onClick={() => onNavigate('results')}
+          className="p-5 bg-slate-50 hover:bg-slate-100 rounded-2xl border border-slate-200 text-left space-y-3 transition-all cursor-pointer group"
+        >
+          <div className="w-10 h-10 bg-slate-800 text-white rounded-xl flex items-center justify-center">
+            <FileText className="w-5 h-5" />
+          </div>
+          <div>
+            <h3 className="text-sm font-black text-slate-900 group-hover:text-[#006633]">
+              View List
+            </h3>
+            <p className="text-xs text-slate-600 mt-1">
+              Official gazette lists & PDF updates.
+            </p>
+          </div>
+          <span className="text-xs font-extrabold text-slate-800 flex items-center gap-1 pt-1">
+            <span>View Results</span>
+            <ArrowRight className="w-3.5 h-3.5" />
+          </span>
+        </button>
+
+        <button
+          type="button"
+          onClick={() => onNavigate('schedule')}
+          className="p-5 bg-slate-50 hover:bg-slate-100 rounded-2xl border border-slate-200 text-left space-y-3 transition-all cursor-pointer group"
+        >
+          <div className="w-10 h-10 bg-slate-800 text-white rounded-xl flex items-center justify-center">
+            <Calendar className="w-5 h-5" />
+          </div>
+          <div>
+            <h3 className="text-sm font-black text-slate-900 group-hover:text-[#006633]">
+              View Draw Schedule
+            </h3>
+            <p className="text-xs text-slate-600 mt-1">
+              Complete 2026 draw calendar & cities.
+            </p>
+          </div>
+          <span className="text-xs font-extrabold text-slate-800 flex items-center gap-1 pt-1">
+            <span>View Schedule</span>
+            <ArrowRight className="w-3.5 h-3.5" />
+          </span>
+        </button>
+      </div>
+    </section>
+
+    {/* ADSENSE PLACEHOLDER */}
+    <AdSensePlaceholder slot="banner" />
+
+    {/* 10. FAQ PREVIEW & AEO DIRECT ANSWERS */}
+    <section className="bg-white rounded-2xl p-6 sm:p-8 border border-slate-200 shadow-xs space-y-8">
+      <div className="flex flex-col sm:flex-row sm:items-center justify-between gap-3 border-b border-slate-100 pb-4">
+        <div>
+          <div className="text-xs font-black text-[#006633] uppercase tracking-wider">
+            Direct Answers & Knowledge
+          </div>
+          <h2 className="text-xl sm:text-2xl font-black text-slate-900 tracking-tight">
+            Frequently Asked Questions
           </h2>
         </div>
 
-        <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-4">
-          <button
-            type="button"
-            onClick={() => onNavigate('checker')}
-            className="p-5 bg-emerald-50 hover:bg-emerald-100/80 rounded-2xl border border-emerald-200 text-left space-y-3 transition-all cursor-pointer group shadow-xs"
+        <button
+          type="button"
+          onClick={() => onNavigate('faqs')}
+          className="px-4 py-2 bg-slate-100 hover:bg-slate-200 text-slate-800 font-extrabold text-xs rounded-xl transition-colors cursor-pointer w-max"
+        >
+          View All FAQs →
+        </button>
+      </div>
+
+      <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
+        {aeoAnswers.map((aeo, idx) => (
+          <div
+            key={idx}
+            className="p-4 bg-emerald-50/60 rounded-xl border border-emerald-200 space-y-2"
           >
-            <div className="w-10 h-10 bg-[#006633] text-white rounded-xl flex items-center justify-center">
-              <Search className="w-5 h-5" />
-            </div>
-            <div>
-              <h3 className="text-sm font-black text-slate-900 group-hover:text-[#006633]">
-                Check a Prize Bond
-              </h3>
-              <p className="text-xs text-slate-600 mt-1">
-                Automated database verification tool.
-              </p>
-            </div>
-            <span className="text-xs font-extrabold text-[#006633] flex items-center gap-1 pt-1">
-              <span>Open Checker</span>
-              <ArrowRight className="w-3.5 h-3.5" />
-            </span>
-          </button>
-
-          <button
-            type="button"
-            onClick={() => onNavigate('results')}
-            className="p-5 bg-slate-50 hover:bg-slate-100 rounded-2xl border border-slate-200 text-left space-y-3 transition-all cursor-pointer group"
-          >
-            <div className="w-10 h-10 bg-slate-800 text-white rounded-xl flex items-center justify-center">
-              <FileText className="w-5 h-5" />
-            </div>
-            <div>
-              <h3 className="text-sm font-black text-slate-900 group-hover:text-[#006633]">
-                View Latest Results
-              </h3>
-              <p className="text-xs text-slate-600 mt-1">
-                Official gazette lists & PDF updates.
-              </p>
-            </div>
-            <span className="text-xs font-extrabold text-slate-800 flex items-center gap-1 pt-1">
-              <span>View Results</span>
-              <ArrowRight className="w-3.5 h-3.5" />
-            </span>
-          </button>
-
-          <button
-            type="button"
-            onClick={() => onNavigate('schedule')}
-            className="p-5 bg-slate-50 hover:bg-slate-100 rounded-2xl border border-slate-200 text-left space-y-3 transition-all cursor-pointer group"
-          >
-            <div className="w-10 h-10 bg-slate-800 text-white rounded-xl flex items-center justify-center">
-              <Calendar className="w-5 h-5" />
-            </div>
-            <div>
-              <h3 className="text-sm font-black text-slate-900 group-hover:text-[#006633]">
-                View Draw Schedule
-              </h3>
-              <p className="text-xs text-slate-600 mt-1">
-                Complete 2026 draw calendar & cities.
-              </p>
-            </div>
-            <span className="text-xs font-extrabold text-slate-800 flex items-center gap-1 pt-1">
-              <span>View Schedule</span>
-              <ArrowRight className="w-3.5 h-3.5" />
-            </span>
-          </button>
-
-          <button
-            type="button"
-            onClick={() => onNavigate('prizebonds')}
-            className="p-5 bg-slate-50 hover:bg-slate-100 rounded-2xl border border-slate-200 text-left space-y-3 transition-all cursor-pointer group"
-          >
-            <div className="w-10 h-10 bg-slate-800 text-white rounded-xl flex items-center justify-center">
-              <Layers className="w-5 h-5" />
-            </div>
-            <div>
-              <h3 className="text-sm font-black text-slate-900 group-hover:text-[#006633]">
-                Find a Denomination
-              </h3>
-              <p className="text-xs text-slate-600 mt-1">
-                Browse all 6 active bond categories.
-              </p>
-            </div>
-            <span className="text-xs font-extrabold text-slate-800 flex items-center gap-1 pt-1">
-              <span>Browse Categories</span>
-              <ArrowRight className="w-3.5 h-3.5" />
-            </span>
-          </button>
-        </div>
-      </section>
-
-      {/* ADSENSE PLACEHOLDER */}
-      <AdSensePlaceholder slot="banner" />
-
-      {/* 09. FEATURED GUIDES */}
-      <section className="bg-white rounded-2xl p-6 sm:p-8 border border-slate-200 shadow-xs space-y-6">
-        <div className="flex flex-col sm:flex-row sm:items-center justify-between gap-3 border-b border-slate-100 pb-4">
-          <div>
-            <div className="text-xs font-black text-[#006633] uppercase tracking-wider">
-              Knowledge Base
-            </div>
-            <h2 className="text-xl sm:text-2xl font-black text-slate-900 tracking-tight">
-              Featured Prize Bond Guides
-            </h2>
-          </div>
-          <span className="text-xs font-bold text-slate-500">
-            Showing {ARTICLES.length} Educational Guides
-          </span>
-        </div>
-
-        <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">
-          {ARTICLES.map((art) => (
-            <div
-              key={art.slug}
-              className="bg-white rounded-2xl p-5 border border-slate-200 hover:border-emerald-300 shadow-xs transition-all flex flex-col justify-between space-y-4 group"
-            >
-              <div className="space-y-3">
-                <div className="flex items-center justify-between text-[11px]">
-                  <span className="px-2.5 py-0.5 rounded-md bg-emerald-100 text-[#004D26] font-black uppercase">
-                    {art.category}
-                  </span>
-                  <span className="text-slate-500 font-medium">{art.readTime}</span>
-                </div>
-
-                <div>
-                  <h3 className="text-base font-black text-slate-900 group-hover:text-[#006633] transition-colors leading-snug">
-                    {art.title}
-                  </h3>
-                  <p className="text-xs text-slate-600 mt-1.5 line-clamp-3 leading-relaxed">
-                    {art.shortSummary}
-                  </p>
-                </div>
-              </div>
-
-              <div className="pt-3 border-t border-slate-100 flex items-center justify-between text-xs">
-                <span className="text-[10px] text-slate-400 font-medium">
-                  Updated: {art.lastUpdated}
-                </span>
-                <button
-                  type="button"
-                  onClick={() => onNavigate('information', art.slug)}
-                  className="font-black text-[#006633] hover:underline flex items-center gap-1 cursor-pointer"
-                >
-                  <span>Read Guide</span>
-                  <ArrowRight className="w-3.5 h-3.5" />
-                </button>
-              </div>
-            </div>
-          ))}
-        </div>
-      </section>
-
-      {/* 10. FAQ PREVIEW & AEO DIRECT ANSWERS */}
-      <section className="bg-white rounded-2xl p-6 sm:p-8 border border-slate-200 shadow-xs space-y-8">
-        <div className="flex flex-col sm:flex-row sm:items-center justify-between gap-3 border-b border-slate-100 pb-4">
-          <div>
-            <div className="text-xs font-black text-[#006633] uppercase tracking-wider">
-              Direct Answers & Knowledge
-            </div>
-            <h2 className="text-xl sm:text-2xl font-black text-slate-900 tracking-tight">
-              Frequently Asked Questions
-            </h2>
-          </div>
-
-          <button
-            type="button"
-            onClick={() => onNavigate('faqs')}
-            className="px-4 py-2 bg-slate-100 hover:bg-slate-200 text-slate-800 font-extrabold text-xs rounded-xl transition-colors cursor-pointer w-max"
-          >
-            View All FAQs →
-          </button>
-        </div>
-
-        <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
-          {aeoAnswers.map((aeo, idx) => (
-            <div
-              key={idx}
-              className="p-4 bg-emerald-50/60 rounded-xl border border-emerald-200 space-y-2"
-            >
-              <h3 className="text-xs font-black text-emerald-950 flex items-center gap-1.5">
-                <CheckCircle2 className="w-4 h-4 text-[#006633] shrink-0" />
-                <span>{aeo.q}</span>
-              </h3>
-              <p className="text-xs text-slate-700 leading-relaxed font-medium">
-                {aeo.a}
-              </p>
-              <div className="pt-1">
-                <button
-                  type="button"
-                  onClick={() => onNavigate(aeo.link)}
-                  className="text-[11px] font-black text-[#006633] hover:underline flex items-center gap-1 cursor-pointer"
-                >
-                  <span>{aeo.linkLabel}</span>
-                  <ArrowRight className="w-3 h-3" />
-                </button>
-              </div>
-            </div>
-          ))}
-        </div>
-
-        <div className="space-y-3 pt-2">
-          {FAQS.slice(0, 5).map((faq) => {
-            const isOpen = openFaqId === faq.id;
-            return (
-              <div
-                key={faq.id}
-                className="border border-slate-200 rounded-xl overflow-hidden transition-colors"
+            <h3 className="text-xs font-black text-emerald-950 flex items-center gap-1.5">
+              <CheckCircle2 className="w-4 h-4 text-[#006633] shrink-0" />
+              <span>{aeo.q}</span>
+            </h3>
+            <p className="text-xs text-slate-700 leading-relaxed font-medium">
+              {aeo.a}
+            </p>
+            <div className="pt-1">
+              <button
+                type="button"
+                onClick={() => onNavigate(aeo.link)}
+                className="text-[11px] font-black text-[#006633] hover:underline flex items-center gap-1 cursor-pointer"
               >
-                <button
-                  type="button"
-                  onClick={() => setOpenFaqId(isOpen ? null : faq.id)}
-                  className="w-full text-left p-4 bg-slate-50 hover:bg-slate-100/80 font-extrabold text-xs sm:text-sm text-slate-900 flex items-center justify-between gap-3 cursor-pointer"
-                >
-                  <span>{faq.question}</span>
-                  {isOpen ? (
-                    <ChevronUp className="w-4 h-4 text-slate-500 shrink-0" />
-                  ) : (
-                    <ChevronDown className="w-4 h-4 text-slate-500 shrink-0" />
-                  )}
-                </button>
-                {isOpen && (
-                  <div className="p-4 bg-white text-xs sm:text-sm text-slate-600 leading-relaxed border-t border-slate-200">
-                    {faq.answer}
-                  </div>
+                <span>{aeo.linkLabel}</span>
+                <ArrowRight className="w-3 h-3" />
+              </button>
+            </div>
+          </div>
+        ))}
+      </div>
+
+      <div className="space-y-3 pt-2">
+        {FAQS.slice(0, 5).map((faq) => {
+          const isOpen = openFaqId === faq.id;
+          return (
+            <div
+              key={faq.id}
+              className="border border-slate-200 rounded-xl overflow-hidden transition-colors"
+            >
+              <button
+                type="button"
+                onClick={() => setOpenFaqId(isOpen ? null : faq.id)}
+                className="w-full text-left p-4 bg-slate-50 hover:bg-slate-100/80 font-extrabold text-xs sm:text-sm text-slate-900 flex items-center justify-between gap-3 cursor-pointer"
+              >
+                <span>{faq.question}</span>
+                {isOpen ? (
+                  <ChevronUp className="w-4 h-4 text-slate-500 shrink-0" />
+                ) : (
+                  <ChevronDown className="w-4 h-4 text-slate-500 shrink-0" />
                 )}
-              </div>
-            );
-          })}
-        </div>
-      </section>
+              </button>
+              {isOpen && (
+                <div className="p-4 bg-white text-xs sm:text-sm text-slate-600 leading-relaxed border-t border-slate-200">
+                  {faq.answer}
+                </div>
+              )}
+            </div>
+          );
+        })}
+      </div>
+    </section>
 
-      {/* VIDEO GUIDE TUTORIAL WIDGET */}
-      <VideoGuideWidget
-        categoryBadge="🎬 PRIZE BOND KNOWLEDGE TUTORIAL"
-        title="Video Guide: How to Buy, Hold, & Claim Prize Bonds in Pakistan"
-        subtitle="Watch our expert guide on purchasing bonds from SBP field offices, maintaining registers, and filing prize claims."
-        summaryTitle="📌 National Savings Guide Summary"
-        summaryItems={[
-          {
-            title: 'Authorized Purchase Points',
-            desc: 'Buy genuine bonds at SBP BSC branches, Commercial Banks, or National Savings Centers.',
-          },
-          {
-            title: 'Claim Verification Standards',
-            desc: 'Physical bonds must be clean, un-tampered, and match official gazette serials.',
-          },
-          {
-            title: 'WHT Tax Deductions',
-            desc: 'FBR withholding tax applies automatically at payout time (15% Filer / 30% Non-Filer).',
-          },
-          {
-            title: 'Claim Processing Buffer',
-            desc: 'Small prizes paid over counter; large prizes processed via SBP Treasury within 15-30 days.',
-          },
-        ]}
-        duration="03:40"
-        onNavigate={onNavigate}
-      />
+    {/* VIDEO GUIDE TUTORIAL WIDGET FOR HUB VIEW (ADDED AFTER FAQs) */}
+    <VideoGuideWidget
+      categoryBadge="🎬 PRIZE BOND KNOWLEDGE TUTORIAL"
+      title="Video Guide: How to Buy, Hold, & Claim Prize Bonds in Pakistan"
+      subtitle="Watch our expert guide on purchasing bonds from SBP field offices, maintaining registers, and filing prize claims."
+      summaryTitle="📌 National Savings Guide Summary"
+      summaryItems={[
+        {
+          title: 'Authorized Purchase Points',
+          desc: 'Buy genuine bonds at SBP BSC branches, Commercial Banks, or National Savings Centers.',
+        },
+        {
+          title: 'Claim Verification Standards',
+          desc: 'Physical bonds must be clean, un-tampered, and match official gazette serials.',
+        },
+        {
+          title: 'WHT Tax Deductions',
+          desc: 'FBR withholding tax applies automatically at payout time (15% Filer / 30% Non-Filer).',
+        },
+        {
+          title: 'Claim Processing Buffer',
+          desc: 'Small prizes paid over counter; large prizes processed via SBP Treasury within 15-30 days.',
+        },
+      ]}
+      duration="03:40"
+      onNavigate={onNavigate}
+    />
 
-      {/* 11. TRUST / DATA TRANSPARENCY APPROACH */}
-      <section className="bg-slate-50 rounded-2xl p-6 sm:p-8 border border-slate-200 text-xs text-slate-600 space-y-3">
-        <div className="flex items-center gap-2 font-black text-slate-900 text-sm">
-          <ShieldCheck className="w-5 h-5 text-[#006633]" />
-          <span>Information & Data Approach</span>
-        </div>
-        <p className="leading-relaxed">
-          PrizeBond Pakistan is an independent informational and research portal. All Prize Bond specifications, draw calendars, and winning gazette lists displayed on this site are extracted directly from official gazettes issued by the Central Directorate of National Savings (CDNS) and State Bank of Pakistan (SBP). Information is updated continuously as new official gazettes are released.
-        </p>
-        <div className="flex flex-wrap items-center gap-4 text-[11px] text-slate-500 font-medium pt-1 border-t border-slate-200/80">
-          <span>Data Sources: CDNS Gazette Publications & SBP BSC Official Announcements</span>
-          <span>•</span>
-          <span>Last Updated: 15 August 2026</span>
-        </div>
-      </section>
+    {/* 11. TRUST / DATA TRANSPARENCY APPROACH */}
+    <section className="bg-slate-50 rounded-2xl p-6 sm:p-8 border border-slate-200 text-xs text-slate-600 space-y-3">
+      <div className="flex items-center gap-2 font-black text-slate-900 text-sm">
+        <ShieldCheck className="w-5 h-5 text-[#006633]" />
+        <span>Information & Data Approach</span>
+      </div>
+      <p className="leading-relaxed">
+        PrizeBond Pakistan is an independent informational and research portal. All Prize Bond specifications, draw calendars, and winning gazette lists displayed on this site are extracted directly from official gazettes issued by the Central Directorate of National Savings (CDNS) and State Bank of Pakistan (SBP). Information is updated continuously as new official gazettes are released.
+      </p>
+      <div className="flex flex-wrap items-center gap-4 text-[11px] text-slate-500 font-medium pt-1 border-t border-slate-200/80">
+        <span>Data Sources: CDNS Gazette Publications & SBP BSC Official Announcements</span>
+        <span>•</span>
+        <span>Last Updated: 15 August 2026</span>
+      </div>
+    </section>
 
-      {/* 12. INTERNAL LINKING */}
-      <section className="bg-white rounded-2xl p-6 border border-slate-200 space-y-4">
-        <h3 className="text-xs font-black text-slate-400 uppercase tracking-wider">
-          Quick Internal Navigation Links
-        </h3>
-        <div className="flex flex-wrap gap-2 text-xs">
-          <button
-            type="button"
-            onClick={() => onNavigate('prizebonds')}
-            className="px-3 py-1.5 bg-slate-100 hover:bg-emerald-100 text-slate-800 hover:text-[#004D26] font-extrabold rounded-lg transition-colors cursor-pointer"
-          >
-            Explore Prize Bond Denominations
-          </button>
-          <button
-            type="button"
-            onClick={() => onNavigate('results')}
-            className="px-3 py-1.5 bg-slate-100 hover:bg-emerald-100 text-slate-800 hover:text-[#004D26] font-extrabold rounded-lg transition-colors cursor-pointer"
-          >
-            View Complete Gazette Results
-          </button>
-          <button
-            type="button"
-            onClick={() => onNavigate('schedule')}
-            className="px-3 py-1.5 bg-slate-100 hover:bg-emerald-100 text-slate-800 hover:text-[#004D26] font-extrabold rounded-lg transition-colors cursor-pointer"
-          >
-            View Official Draw Schedule
-          </button>
-          <button
-            type="button"
-            onClick={() => onNavigate('checker')}
-            className="px-3 py-1.5 bg-slate-100 hover:bg-emerald-100 text-slate-800 hover:text-[#004D26] font-extrabold rounded-lg transition-colors cursor-pointer"
-          >
-            Check Your Prize Bond Serial Numbers
-          </button>
-          <button
-            type="button"
-            onClick={() => onNavigate('faqs')}
-            className="px-3 py-1.5 bg-slate-100 hover:bg-emerald-100 text-slate-800 hover:text-[#004D26] font-extrabold rounded-lg transition-colors cursor-pointer"
-          >
-            Browse Prize Bond FAQs
-          </button>
-        </div>
-      </section>
-    </div>
+    {/* 12. INTERNAL LINKING */}
+    <section className="bg-white rounded-2xl p-6 border border-slate-200 space-y-4">
+      <h3 className="text-xs font-black text-slate-400 uppercase tracking-wider">
+        Quick Internal Navigation Links
+      </h3>
+      <div className="flex flex-wrap gap-2 text-xs">
+        <button
+          type="button"
+          onClick={() => onNavigate('prizebonds')}
+          className="px-3 py-1.5 bg-slate-100 hover:bg-emerald-100 text-slate-800 hover:text-[#004D26] font-extrabold rounded-lg transition-colors cursor-pointer"
+        >
+          Explore Prize Bond Denominations
+        </button>
+        <button
+          type="button"
+          onClick={() => onNavigate('results')}
+          className="px-3 py-1.5 bg-slate-100 hover:bg-emerald-100 text-slate-800 hover:text-[#004D26] font-extrabold rounded-lg transition-colors cursor-pointer"
+        >
+          View Complete Gazette Results
+        </button>
+        <button
+          type="button"
+          onClick={() => onNavigate('schedule')}
+          className="px-3 py-1.5 bg-slate-100 hover:bg-emerald-100 text-slate-800 hover:text-[#004D26] font-extrabold rounded-lg transition-colors cursor-pointer"
+        >
+          View Official Draw Schedule
+        </button>
+        <button
+          type="button"
+          onClick={() => onNavigate('checker')}
+          className="px-3 py-1.5 bg-slate-100 hover:bg-emerald-100 text-slate-800 hover:text-[#004D26] font-extrabold rounded-lg transition-colors cursor-pointer"
+        >
+          Check Your Prize Bond Serial Numbers
+        </button>
+        <button
+          type="button"
+          onClick={() => onNavigate('faqs')}
+          className="px-3 py-1.5 bg-slate-100 hover:bg-emerald-100 text-slate-800 hover:text-[#004D26] font-extrabold rounded-lg transition-colors cursor-pointer"
+        >
+          Browse Prize Bond FAQs
+        </button>
+      </div>
+    </section>
+  </div>
   );
 };
