@@ -375,59 +375,7 @@ export const HomePage: React.FC<HomePageProps> = ({ onNavigate, cmsContent = {},
         </div>
       </section>
 
-      {/* 07. FAQS ACCORDION */}
-      <section className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 space-y-6">
-        <div className="bg-white p-6 sm:p-8 rounded-2xl border border-slate-200 shadow-xs space-y-6">
-          <div className="flex items-center justify-between border-b border-slate-100 pb-4">
-            <div>
-              <div className="text-xs font-black text-[#006633] uppercase tracking-wider flex items-center gap-1.5">
-                <HelpCircle className="w-4 h-4" /> FAQ Knowledge Desk
-              </div>
-              <h2 className="text-xl sm:text-2xl font-black text-slate-900 tracking-tight">
-                Frequently Asked Questions
-              </h2>
-            </div>
-            <button
-              type="button"
-              onClick={() => onNavigate('faqs')}
-              className="text-xs font-bold text-[#006633] hover:underline cursor-pointer"
-            >
-              View All FAQs →
-            </button>
-          </div>
-
-          <div className="space-y-3">
-            {FAQS.slice(0, 4).map((faq: FaqItem) => {
-              const isOpen = openFaqId === faq.id;
-              return (
-                <div
-                  key={faq.id}
-                  className="border border-slate-200 rounded-xl overflow-hidden transition-colors"
-                >
-                  <button
-                    type="button"
-                    onClick={() => setOpenFaqId(isOpen ? null : faq.id)}
-                    className="w-full text-left p-4 bg-slate-50 hover:bg-slate-100 flex items-center justify-between font-extrabold text-xs sm:text-sm text-slate-900 cursor-pointer"
-                  >
-                    <span>{faq.question}</span>
-                    <ChevronDown
-                      className={`w-4 h-4 text-slate-400 transition-transform ${
-                        isOpen ? 'rotate-180 text-[#006633]' : ''
-                      }`}
-                    />
-                  </button>
-                  {isOpen && (
-                    <div className="p-4 bg-white text-xs sm:text-sm text-slate-600 leading-relaxed border-t border-slate-100">
-                      {faq.answer}
-                    </div>
-                  )}
-                </div>
-              );
-            })}
-          </div>
-        </div>
-      </section>
-
+      
       {/* 08. TRUST FOOTER STAMP */}
       <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
         <div className="p-5 bg-white rounded-2xl border border-slate-200 text-xs text-slate-600 flex flex-col md:flex-row items-center justify-between gap-4 shadow-xs">
