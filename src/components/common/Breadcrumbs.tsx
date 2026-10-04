@@ -12,33 +12,35 @@ interface BreadcrumbsProps {
 
 export const Breadcrumbs: React.FC<BreadcrumbsProps> = ({ items }) => {
   return (
-    <nav className="flex items-center text-xs text-emerald-900/70 font-medium py-2 overflow-x-auto whitespace-nowrap">
-      <button
-        onClick={items[0]?.onClick}
-        className="flex items-center gap-1 hover:text-emerald-700 transition-colors cursor-pointer"
-        aria-label="Home"
-      >
-        <Home className="w-3.5 h-3.5" />
-        <span>Home</span>
-      </button>
+    <nav className="w-full overflow-x-auto whitespace-nowrap py-2 scrollbar-none">
+      <div className="flex items-center text-xs text-emerald-900/70 font-medium">
+        <button
+          onClick={items[0]?.onClick}
+          className="flex items-center gap-1 hover:text-emerald-700 transition-colors cursor-pointer shrink-0"
+          aria-label="Home"
+        >
+          <Home className="w-3.5 h-3.5" />
+          <span>Home</span>
+        </button>
 
-      {items.map((item, index) => (
-        <React.Fragment key={index}>
-          <ChevronRight className="w-3 h-3 mx-1.5 text-slate-400 shrink-0" />
-          {item.onClick && index < items.length - 1 ? (
-            <button
-              onClick={item.onClick}
-              className="hover:text-emerald-700 hover:underline transition-colors cursor-pointer"
-            >
-              {item.label}
-            </button>
-          ) : (
-            <span className="text-emerald-950 font-semibold text-slate-800">
-              {item.label}
-            </span>
-          )}
-        </React.Fragment>
-      ))}
+        {items.map((item, index) => (
+          <React.Fragment key={index}>
+            <ChevronRight className="w-3 h-3 mx-1.5 text-slate-400 shrink-0" />
+            {item.onClick && index < items.length - 1 ? (
+              <button
+                onClick={item.onClick}
+                className="hover:text-emerald-700 hover:underline transition-colors cursor-pointer shrink-0"
+              >
+                {item.label}
+              </button>
+            ) : (
+              <span className="text-emerald-950 font-semibold text-slate-800 shrink-0 truncate">
+                {item.label}
+              </span>
+            )}
+          </React.Fragment>
+        ))}
+      </div>
     </nav>
   );
 };

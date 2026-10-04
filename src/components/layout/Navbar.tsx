@@ -93,17 +93,94 @@ export const Navbar: React.FC<NavbarProps> = ({
               Home
             </button>
 
-            {/* Results Button */}
-            <button
-              onClick={() => handleNavClick('results')}
-              className={`px-3 py-1.5 rounded font-semibold text-xs transition-colors cursor-pointer ${
-                activeView === 'results'
-                  ? 'text-[#006633] border-b-2 border-[#006633] pb-1'
-                  : 'text-slate-600 hover:text-[#006633]'
-              }`}
+            {/* Results & Lists Dropdown (Desktop) */}
+            <div
+              className="relative"
+              onMouseEnter={() => setActiveDropdown('results')}
+              onMouseLeave={() => setActiveDropdown(null)}
             >
-              Results
-            </button>
+              <button
+                onClick={() => handleNavClick('results')}
+                className={`px-3 py-1.5 rounded font-semibold text-xs flex items-center gap-1 transition-colors cursor-pointer ${
+                  activeView === 'results' || activeView === 'denomination' || activeView === 'newspaper'
+                    ? 'text-[#006633] border-b-2 border-[#006633] pb-1'
+                    : 'text-slate-600 hover:text-[#006633]'
+                }`}
+              >
+                <span>Results & Lists</span>
+                <ChevronDown className="w-3 h-3 opacity-70" />
+              </button>
+
+              {activeDropdown === 'results' && (
+                <div className="absolute top-full left-0 w-72 pt-2 z-50 animate-in fade-in slide-in-from-top-1 duration-150">
+                  <div className="bg-white rounded-xl shadow-xl border border-slate-200 py-2 overflow-hidden">
+                    <div className="px-3.5 py-1.5 text-[10px] font-bold uppercase tracking-wider text-slate-400 bg-slate-50 border-b border-slate-100">
+                      Results & Lists Hub
+                    </div>
+                    
+                    {/* Latest Draw */}
+                    <button
+                      onClick={() => handleNavClick('results')}
+                      className="w-full text-left px-3.5 py-2 text-xs font-black text-[#006633] bg-emerald-50/50 hover:bg-emerald-100/60 transition-colors flex items-center justify-between cursor-pointer"
+                    >
+                      <span>Latest Draw Results</span>
+                      <Sparkles className="w-3.5 h-3.5 text-amber-500" />
+                    </button>
+                    <div className="my-1 border-t border-slate-100"></div>
+
+                    {/* Denomination Lists */}
+                    {[
+                      { label: '100 Prize Bond List', val: '100' },
+                      { label: '200 Prize Bond List', val: '200' },
+                      { label: '750 Prize Bond List', val: '750' },
+                      { label: '1,500 Prize Bond List', val: '1500' },
+                      { label: '25,000 Premium Bond List', val: '25000' },
+                      { label: '40,000 Premium Bond List', val: '40000' },
+                    ].map((item) => (
+                      <button
+                        key={item.val}
+                        onClick={() => handleNavClick('denomination', item.val)}
+                        className="w-full text-left px-3.5 py-2 text-xs text-slate-700 hover:bg-emerald-50 hover:text-[#006633] transition-colors cursor-pointer"
+                      >
+                        {item.label}
+                      </button>
+                    ))}
+
+                    <div className="my-1 border-t border-slate-100"></div>
+                    <div className="px-3.5 py-1 text-[10px] font-bold uppercase tracking-wider text-slate-400 bg-slate-50">
+                      Search Gazette Archive (2020–2026)
+                    </div>
+
+                    {/* Archive Sublinks */}
+                    {[
+                      { label: '2026 Gazette List', param: '2026' },
+                      { label: '2025 Gazette List', param: '2025' },
+                      { label: '2024 Gazette List', param: '2024' },
+                      { label: '2023 Gazette List', param: '2023' },
+                    ].map((archive) => (
+                      <button
+                        key={archive.param}
+                        onClick={() => handleNavClick('results', archive.param)}
+                        className="w-full text-left px-5 py-1.5 text-xs text-slate-600 hover:bg-emerald-50 hover:text-[#006633] transition-colors cursor-pointer flex items-center gap-1.5"
+                      >
+                        <span className="w-1.5 h-1.5 rounded-full bg-slate-400"></span>
+                        <span>{archive.label}</span>
+                      </button>
+                    ))}
+
+                    <div className="my-1 border-t border-slate-100"></div>
+
+                    {/* Prize Bond Newspaper */}
+                    <button
+                      onClick={() => handleNavClick('newspaper')}
+                      className="w-full text-left px-3.5 py-2 text-xs font-bold text-slate-800 hover:bg-emerald-50 hover:text-[#006633] transition-colors cursor-pointer"
+                    >
+                      Prize Bond Newspaper
+                    </button>
+                  </div>
+                </div>
+              )}
+            </div>
 
             {/* Prize Bond Checker */}
             <button
@@ -251,11 +328,11 @@ export const Navbar: React.FC<NavbarProps> = ({
                       { label: "How to Claim Prize Money & Tax Rates", actionType: "information", param: "prize-money-and-tax" },
                     ].map((item, index) => (
                       <button
-                        key={index} // Unique index key lagane se error khatam ho jayega
+                        key={index}
                         onClick={() =>
-                          item.actionType === 'news'
-                            ? handleNavClick('news')
-                            : handleNavClick('information', item.param)
+                          item.actionType === 'information'
+                            ? handleNavClick('information', item.param)
+                            : handleNavClick('news')
                         }
                         className="w-full text-left px-3.5 py-2 text-xs text-slate-700 hover:bg-emerald-50 hover:text-[#006633] transition-colors cursor-pointer"
                       >
@@ -292,7 +369,7 @@ export const Navbar: React.FC<NavbarProps> = ({
 
             <button
               onClick={() => setMobileMenuOpen(!mobileMenuOpen)}
-              className="p-2.5 rounded-lg bg-slate-100 text-slate-700 lg:hidden border border-slate-200"
+              className="p-2.5 rounded-lg bg-slate-100 text-slate-700 lg:hidden border border-slate-200 cursor-pointer"
               aria-label="Toggle menu"
             >
               {mobileMenuOpen ? <X className="w-5 h-5" /> : <Menu className="w-5 h-5" />}
@@ -303,24 +380,85 @@ export const Navbar: React.FC<NavbarProps> = ({
 
       {/* Mobile Drawer Menu */}
       {mobileMenuOpen && (
-        <div className="lg:hidden bg-white border-b border-slate-200 px-4 py-4 space-y-4 max-h-[80vh] overflow-y-auto animate-in slide-in-from-top-2 duration-200">
+        <div className="lg:hidden bg-white border-b border-slate-200 px-4 py-5 space-y-4 max-h-[82vh] overflow-y-auto animate-in slide-in-from-top-2 duration-200 shadow-xl">
           <button
             onClick={() => handleNavClick('home')}
-            className="w-full text-left font-bold text-sm text-slate-800 py-2 border-b border-slate-100 flex items-center justify-between"
+            className="w-full text-left font-extrabold text-sm text-slate-800 py-2 border-b border-slate-100 flex items-center justify-between cursor-pointer"
           >
             <span>Home</span>
           </button>
 
-          <button
-            onClick={() => handleNavClick('results')}
-            className="w-full text-left font-bold text-sm text-slate-800 py-2 border-b border-slate-100 flex items-center justify-between"
-          >
-            <span>Results</span>
-          </button>
+          {/* Results & Lists Section (Mobile) */}
+          <div className="py-2 border-b border-slate-100 space-y-2">
+            <div className="flex items-center justify-between">
+              <span className="text-xs font-extrabold text-[#004D26] uppercase tracking-wider">
+                Results & Lists Hub
+              </span>
+              <button
+                type="button"
+                onClick={() => handleNavClick('results')}
+                className="text-[11px] font-bold text-[#006633] hover:underline cursor-pointer"
+              >
+                Latest Results →
+              </button>
+            </div>
+            
+            <div className="grid grid-cols-2 gap-1.5">
+              {[
+                { label: 'Rs. 100 List', val: '100' },
+                { label: 'Rs. 200 List', val: '200' },
+                { label: 'Rs. 750 List', val: '750' },
+                { label: 'Rs. 1,500 List', val: '1500' },
+                { label: '25K Premium', val: '25000' },
+                { label: '40K Premium', val: '40000' },
+              ].map((item) => (
+                <button
+                  key={item.val}
+                  onClick={() => handleNavClick('denomination', item.val)}
+                  className="text-left text-xs font-bold px-3 py-2.5 bg-emerald-50/60 text-[#004D26] rounded-lg border border-emerald-100 cursor-pointer hover:bg-emerald-100/70 transition-colors"
+                >
+                  {item.label}
+                </button>
+              ))}
+            </div>
+
+            {/* Archive Sub-links for Mobile */}
+            <div className="pt-2 space-y-1">
+              <span className="text-[10px] font-bold uppercase tracking-wider text-slate-400 block px-1">
+                Gazette Archive (2020–2026)
+              </span>
+              <div className="grid grid-cols-2 gap-1.5">
+                {[
+                  { label: '2026 List', param: '2026' },
+                  { label: '2025 List', param: '2025' },
+                  { label: '2024 List', param: '2024' },
+                  { label: '2023 List', param: '2023' },
+                ].map((archive) => (
+                  <button
+                    key={archive.param}
+                    onClick={() => handleNavClick('results', archive.param)}
+                    className="text-left text-xs font-semibold px-3 py-2 bg-slate-50 text-slate-700 rounded-lg border border-slate-200 cursor-pointer hover:bg-emerald-50 hover:text-[#006633] transition-colors"
+                  >
+                    {archive.label}
+                  </button>
+                ))}
+              </div>
+            </div>
+
+            {/* Newspaper Link */}
+            <div className="pt-1">
+              <button
+                onClick={() => handleNavClick('newspaper')}
+                className="w-full text-center text-xs font-black py-2.5 bg-slate-900 text-white rounded-lg cursor-pointer shadow-xs hover:bg-slate-800 transition-colors"
+              >
+                Prize Bond Newspaper Scans
+              </button>
+            </div>
+          </div>
 
           <button
             onClick={() => handleNavClick('checker')}
-            className="w-full text-left font-bold text-sm bg-[#006633] text-white px-4 py-3 rounded-xl flex items-center justify-between shadow-xs"
+            className="w-full text-left font-bold text-sm bg-[#006633] text-white px-4 py-3 rounded-xl flex items-center justify-between shadow-xs cursor-pointer"
           >
             <span className="flex items-center gap-2">
               <CheckCircle2 className="w-4 h-4" /> Prize Bond Checker
@@ -342,7 +480,7 @@ export const Navbar: React.FC<NavbarProps> = ({
                 View Full Schedule →
               </button>
             </div>
-            <div className="grid grid-cols-2 gap-1.5">
+            <div className="grid grid-cols-1 gap-1.5">
               {[
                 { label: '2026 Draw Schedule', param: '2026' },
                 { label: 'Upcoming Draw', param: 'upcoming' },
@@ -353,7 +491,7 @@ export const Navbar: React.FC<NavbarProps> = ({
                 <button
                   key={item.param}
                   onClick={() => handleNavClick('schedule', item.param)}
-                  className="text-xs bg-slate-50 p-2 rounded-lg text-slate-700 font-semibold text-left cursor-pointer hover:bg-emerald-50"
+                  className="text-xs bg-slate-50 px-3 py-2.5 rounded-lg text-slate-700 font-bold text-left cursor-pointer hover:bg-emerald-50 hover:text-[#006633] transition-colors"
                 >
                   {item.label}
                 </button>
@@ -361,7 +499,7 @@ export const Navbar: React.FC<NavbarProps> = ({
             </div>
           </div>
 
-          {/* Prize Bonds Dropdown Hub Section */}
+          {/* Prize Bonds Hub Section */}
           <div className="py-2 border-b border-slate-100 space-y-2">
             <div className="flex items-center justify-between">
               <span className="text-xs font-extrabold text-[#004D26] uppercase tracking-wider">
@@ -376,19 +514,19 @@ export const Navbar: React.FC<NavbarProps> = ({
                 <Sparkles className="w-3 h-3 text-amber-500" />
               </button>
             </div>
-            <div className="grid grid-cols-3 gap-1.5">
+            <div className="grid grid-cols-2 gap-1.5">
               {[
-                { label: 'Rs. 100', val: '100' },
-                { label: 'Rs. 200', val: '200' },
-                { label: 'Rs. 750', val: '750' },
-                { label: 'Rs. 1,500', val: '1500' },
-                { label: '25K Premium', val: '25000' },
-                { label: '40K Premium', val: '40000' },
+                { label: '100 Prize Bond', val: '100' },
+                { label: '200 Prize Bond', val: '200' },
+                { label: '750 Prize Bond', val: '750' },
+                { label: '1,500 Prize Bond', val: '1500' },
+                { label: '25,000 Premium', val: '25000' },
+                { label: '40,000 Premium', val: '40000' },
               ].map((item) => (
                 <button
                   key={item.val}
                   onClick={() => handleNavClick('denomination', item.val)}
-                  className="text-center text-xs font-bold py-2 bg-emerald-50 text-[#004D26] rounded-lg border border-emerald-100 cursor-pointer"
+                  className="text-left text-xs font-bold px-3 py-2.5 bg-emerald-50/60 text-[#004D26] rounded-lg border border-emerald-100 cursor-pointer hover:bg-emerald-100/70 transition-colors"
                 >
                   {item.label}
                 </button>
@@ -396,26 +534,26 @@ export const Navbar: React.FC<NavbarProps> = ({
             </div>
           </div>
 
-          {/* News & Savings Section */}
-          <div className="py-2 space-y-1.5">
-            <span className="text-xs font-extrabold text-[#004D26] uppercase tracking-wider block mb-1">
+          {/* News & Savings Section (Fixed Handlers) */}
+          <div className="py-2 space-y-1.5 border-b border-slate-100 pb-3">
+            <span className="text-xs font-extrabold text-[#004D26] uppercase tracking-wider block mb-1.5">
               News & Savings
             </span>
             <button
-              onClick={() => handleNavClick('news')}
-              className="w-full text-left px-3 py-2 text-xs font-bold text-slate-700 bg-slate-50 hover:bg-emerald-50 rounded-lg cursor-pointer"
+              onClick={() => handleNavClick('information', 'information')}
+              className="w-full text-left px-3 py-2.5 text-xs font-bold text-slate-700 bg-slate-50 hover:bg-emerald-50 hover:text-[#006633] rounded-lg cursor-pointer transition-colors"
             >
               Prize Bond News & Updates
             </button>
             <button
-              onClick={() => handleNavClick('information', 'national-savings-rates')}
-              className="w-full text-left px-3 py-2 text-xs font-bold text-slate-700 bg-slate-50 hover:bg-emerald-50 rounded-lg cursor-pointer"
+              onClick={() => handleNavClick('information', 'information')}
+              className="w-full text-left px-3 py-2.5 text-xs font-bold text-slate-700 bg-slate-50 hover:bg-emerald-50 hover:text-[#006633] rounded-lg cursor-pointer transition-colors"
             >
               National Savings Profit Rates (2026)
             </button>
             <button
               onClick={() => handleNavClick('information', 'prize-money-and-tax')}
-              className="w-full text-left px-3 py-2 text-xs font-bold text-slate-700 bg-slate-50 hover:bg-emerald-50 rounded-lg cursor-pointer"
+              className="w-full text-left px-3 py-2.5 text-xs font-bold text-slate-700 bg-slate-50 hover:bg-emerald-50 hover:text-[#006633] rounded-lg cursor-pointer transition-colors"
             >
               How to Claim Prize Money & Tax Rates
             </button>
@@ -425,7 +563,7 @@ export const Navbar: React.FC<NavbarProps> = ({
           <div className="pt-2">
             <button
               onClick={() => handleNavClick('latest-draw')}
-              className="w-full bg-[#006633] text-white py-3 rounded-xl font-black text-xs text-center shadow-xs cursor-pointer hover:bg-[#004D26]"
+              className="w-full bg-[#006633] text-white py-3.5 rounded-xl font-black text-xs text-center shadow-xs cursor-pointer hover:bg-[#004D26] transition-colors"
             >
               LATEST DRAW
             </button>
