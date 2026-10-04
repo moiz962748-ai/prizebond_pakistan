@@ -326,7 +326,108 @@ export const HomePage: React.FC<HomePageProps> = ({ onNavigate, cmsContent = {},
 </section>
     
       
-      
+      {/* 06. EDUCATIONAL ARTICLES */}
+      <section className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 space-y-6">
+        <div className="flex flex-col sm:flex-row sm:items-center justify-between gap-3 bg-white p-5 rounded-2xl border border-slate-200 shadow-xs">
+          <div>
+            <div className="text-xs font-black text-[#006633] uppercase tracking-wider flex items-center gap-1.5">
+              <FileText className="w-4 h-4" /> Educational Guides
+            </div>
+            <h2 className="text-xl sm:text-2xl font-black text-slate-900 tracking-tight">
+              Prize Bond Guides & Rules
+            </h2>
+          </div>
+          <button
+            type="button"
+            onClick={() => onNavigate('information', 'hub')}
+            className="text-xs font-bold text-[#006633] hover:underline flex items-center gap-1 cursor-pointer"
+          >
+            <span>All Knowledge Hub</span>
+            <ChevronRight className="w-4 h-4" />
+          </button>
+        </div>
+
+        <div className="grid grid-cols-1 md:grid-cols-3 gap-5">
+          {ARTICLES.slice(0, 3).map((art: InfoArticle) => (
+            <div
+              key={art.slug}
+              onClick={() => onNavigate('information', art.slug)}
+              className="bg-white p-5 rounded-2xl border border-slate-200 hover:border-emerald-300 hover:shadow-xs transition-all cursor-pointer space-y-3 flex flex-col justify-between group"
+            >
+              <div className="space-y-2">
+                <span className="text-[10px] font-black uppercase tracking-wider text-[#006633] bg-emerald-100 px-2.5 py-0.5 rounded">
+                  {art.category}
+                </span>
+                <h3 className="text-base font-black text-slate-900 group-hover:text-[#006633] transition-colors leading-snug">
+                  {art.title}
+                </h3>
+                <p className="text-xs text-slate-500 line-clamp-2 leading-relaxed font-medium">
+                  {art.shortSummary}
+                </p>
+              </div>
+
+              <div className="pt-3 border-t border-slate-100 flex items-center justify-between text-xs font-bold text-[#006633]">
+                <span>Read Full Article</span>
+                <ArrowRight className="w-3.5 h-3.5 group-hover:translate-x-0.5 transition-transform" />
+              </div>
+            </div>
+          ))}
+        </div>
+      </section>
+
+      {/* 07. FAQS ACCORDION */}
+      <section className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 space-y-6">
+        <div className="bg-white p-6 sm:p-8 rounded-2xl border border-slate-200 shadow-xs space-y-6">
+          <div className="flex items-center justify-between border-b border-slate-100 pb-4">
+            <div>
+              <div className="text-xs font-black text-[#006633] uppercase tracking-wider flex items-center gap-1.5">
+                <HelpCircle className="w-4 h-4" /> FAQ Knowledge Desk
+              </div>
+              <h2 className="text-xl sm:text-2xl font-black text-slate-900 tracking-tight">
+                Frequently Asked Questions
+              </h2>
+            </div>
+            <button
+              type="button"
+              onClick={() => onNavigate('faqs')}
+              className="text-xs font-bold text-[#006633] hover:underline cursor-pointer"
+            >
+              View All FAQs →
+            </button>
+          </div>
+
+          <div className="space-y-3">
+            {FAQS.slice(0, 4).map((faq: FaqItem) => {
+              const isOpen = openFaqId === faq.id;
+              return (
+                <div
+                  key={faq.id}
+                  className="border border-slate-200 rounded-xl overflow-hidden transition-colors"
+                >
+                  <button
+                    type="button"
+                    onClick={() => setOpenFaqId(isOpen ? null : faq.id)}
+                    className="w-full text-left p-4 bg-slate-50 hover:bg-slate-100 flex items-center justify-between font-extrabold text-xs sm:text-sm text-slate-900 cursor-pointer"
+                  >
+                    <span>{faq.question}</span>
+                    <ChevronDown
+                      className={`w-4 h-4 text-slate-400 transition-transform ${
+                        isOpen ? 'rotate-180 text-[#006633]' : ''
+                      }`}
+                    />
+                  </button>
+                  {isOpen && (
+                    <div className="p-4 bg-white text-xs sm:text-sm text-slate-600 leading-relaxed border-t border-slate-100">
+                      {faq.answer}
+                    </div>
+                  )}
+                </div>
+              );
+            })}
+          </div>
+        </div>
+      </section>
+
       {/* 08. TRUST FOOTER STAMP */}
       <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
         <div className="p-5 bg-white rounded-2xl border border-slate-200 text-xs text-slate-600 flex flex-col md:flex-row items-center justify-between gap-4 shadow-xs">
