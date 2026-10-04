@@ -990,58 +990,7 @@ export const SchedulePage: React.FC<SchedulePageProps> = ({
         </div>
       </div>
 
-      {/* 26 & 27. AEO DIRECT ANSWERS */}
-      <section className="bg-emerald-50/80 rounded-2xl p-6 sm:p-8 border border-emerald-200 space-y-6">
-        <div className="flex items-center gap-2 text-[#006633] font-black text-xs uppercase tracking-wider">
-          <HelpCircle className="w-4 h-4 text-[#006633]" />
-          <span>Direct Answer / Search Summary</span>
-        </div>
-
-        <div className="space-y-4">
-          <div className="space-y-1">
-            <h2 className="text-lg sm:text-xl font-black text-slate-900">
-              When is the next Prize Bond draw?
-            </h2>
-            <p className="text-xs sm:text-sm text-slate-700 leading-relaxed">
-              The next scheduled Prize Bond draw is for <strong>Rs. {nextDraw.denomination} Prize Bond (Draw #{nextDraw.drawNo})</strong>, scheduled for <strong>{nextDraw.date} ({nextDraw.day})</strong> at the <strong>State Bank of Pakistan, {nextDraw.city}</strong> field office. Official winning results will be published immediately following SBP gazette release.
-            </p>
-          </div>
-
-          <div className="space-y-1 pt-2 border-t border-emerald-200/60">
-            <h3 className="text-base font-extrabold text-slate-900">
-              How often are Prize Bond draws held in Pakistan?
-            </h3>
-            <p className="text-xs sm:text-sm text-slate-700 leading-relaxed">
-              Prize Bond draws for each individual denomination are conducted once every 3 months (quarterly) by the Central Directorate of National Savings (CDNS). With six official denominations available (Rs. 100, 200, 750, 1500, 25,000 Premium, and 40,000 Premium), a total of 36 draw events take place annually across major cities in Pakistan.
-            </p>
-          </div>
-        </div>
-      </section>
-
-      {/* 28. SEO SUPPORTING CONTENT AREA */}
-      <article className="bg-white rounded-2xl p-6 sm:p-8 border border-slate-200 shadow-xs space-y-4 text-xs sm:text-sm text-slate-700 leading-relaxed">
-        <h2 className="text-xl font-black text-slate-900 tracking-tight">
-          About the Prize Bond Draw Schedule in Pakistan
-        </h2>
-        <p>
-          The official National Prize Bond draw schedule is issued annually by the Central Directorate of National Savings (CDNS) under the Ministry of Finance, Government of Pakistan. The calendar details the precise draw dates, venue cities, and draw numbers for all six active Prize Bond denominations.
-        </p>
-
-        <h3 className="text-base font-bold text-slate-900 pt-2">
-          How to Read the Draw Schedule
-        </h3>
-        <p>
-          Each record in the schedule displays five critical attributes: the draw serial number, denomination value (Rs. 100 to Rs. 40,000 Premium), scheduled date, day of the week, and the host SBP BSC field office city. Draw events typically take place around the 10th or 15th day of every month. If a draw date coincides with an official gazetted public holiday, the draw automatically moves to the next working day.
-        </p>
-
-        <h3 className="text-base font-bold text-slate-900 pt-2">
-          Draw Venues and Gazette Dissemination
-        </h3>
-        <p>
-          Draws are rotated among eleven provincial centers: Karachi, Lahore, Islamabad, Rawalpindi, Peshawar, Quetta, Multan, Faisalabad, Sialkot, Hyderabad, and Muzaffarabad. A committee formed by SBP and local dignitaries oversees the computerized draw process. Winning lists are published as official gazettes on the same evening and remain claimable for six years under national savings regulations.
-        </p>
-      </article>
-
+      
       {/* 51 / 16. FREQUENTLY ASKED QUESTIONS */}
       <section className="bg-white rounded-2xl p-6 sm:p-8 border border-slate-200 shadow-xs space-y-6">
         <div>
@@ -1084,33 +1033,6 @@ export const SchedulePage: React.FC<SchedulePageProps> = ({
         </div>
       </section>
 
-      {/* VIDEO GUIDE TUTORIAL WIDGET */}
-      <VideoGuideWidget
-        categoryBadge="🎬 DRAW SCHEDULE TUTORIAL"
-        title="Video Guide: How to Read & Track the Annual Prize Bond Schedule"
-        subtitle="Watch our quick guide on tracking upcoming draw dates, host city venues, and gazette release times."
-        summaryTitle="📌 Annual Draw Schedule Summary"
-        summaryItems={[
-          {
-            title: 'Annual Draw Calendar',
-            desc: 'Official dates released annually by Central Directorate of National Savings.',
-          },
-          {
-            title: 'Public Holiday Adjustments',
-            desc: 'If a draw falls on a public holiday, it moves to the next working day.',
-          },
-          {
-            title: 'Rotating Host Cities',
-            desc: 'Draws rotate across 11 major State Bank field offices nationwide.',
-          },
-          {
-            title: 'Gazette Publication Time',
-            desc: 'Official winning lists published on the evening of the draw date.',
-          },
-        ]}
-        duration="02:15"
-        onNavigate={onNavigate}
-      />
 
       {/* 29 & 30. TRUST, DATA SOURCE & LAST UPDATED FOOTER BLOCK */}
       <div className="p-5 bg-slate-100 rounded-2xl border border-slate-200 text-xs text-slate-600 flex flex-col md:flex-row items-center justify-between gap-4">
