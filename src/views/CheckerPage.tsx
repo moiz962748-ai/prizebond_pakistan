@@ -188,73 +188,7 @@ export const CheckerPage: React.FC<CheckerPageProps> = ({ initialNumber = '', on
         </div>
       </div>
 
-      {/* 10. SUPPORTED PRIZE BONDS GRID */}
-      <section className="bg-white rounded-2xl p-6 sm:p-8 border border-slate-200 shadow-xs space-y-6">
-        <div>
-          <div className="text-xs font-extrabold text-[#006633] uppercase tracking-wider mb-1">
-            All Pakistani Denominations
-          </div>
-          <h2 className="text-xl sm:text-2xl font-black text-slate-900 tracking-tight">
-            Supported Prize Bond Denominations
-          </h2>
-          <p className="text-xs text-slate-500 mt-1">
-            Our automated checker fully supports all 6 National Savings & State Bank of Pakistan Prize Bonds.
-          </p>
-        </div>
-
-        <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-4">
-          {DENOMINATIONS.map((denom) => (
-            <div
-              key={denom.value}
-              className="p-5 rounded-2xl border border-slate-200 bg-slate-50/50 hover:bg-white hover:shadow-md transition-all space-y-3 flex flex-col justify-between"
-            >
-              <div>
-                <div className="flex items-center justify-between mb-2">
-                  <span className="text-xs font-black text-[#006633] bg-emerald-100 px-2.5 py-0.5 rounded-full">
-                    {denom.formattedAmount}
-                  </span>
-                  {denom.isPremium && (
-                    <span className="text-[10px] font-black bg-amber-400 text-slate-950 px-2 py-0.5 rounded uppercase">
-                      Premium
-                    </span>
-                  )}
-                </div>
-
-                <h3 className="text-base font-black text-slate-900">{denom.label}</h3>
-                <p className="text-xs text-slate-500 mt-1 line-clamp-2">{denom.description}</p>
-
-                <div className="mt-3 pt-3 border-t border-slate-200/60 text-xs space-y-1 text-slate-700 font-semibold">
-                  <div>1st Prize: <strong className="text-[#006633]">{denom.firstPrize}</strong></div>
-                  <div>Frequency: <span className="text-slate-500">{denom.drawFrequency}</span></div>
-                </div>
-              </div>
-
-              <div className="pt-2 flex items-center justify-between gap-2 border-t border-slate-200 text-xs">
-                <button
-                  type="button"
-                  onClick={() => {
-                    const el = document.getElementById('checker-tool-card');
-                    if (el) el.scrollIntoView({ behavior: 'smooth' });
-                  }}
-                  className="px-3 py-1.5 bg-[#006633] text-white hover:bg-[#004D26] font-bold rounded-lg cursor-pointer"
-                >
-                  Check Rs. {denom.value}
-                </button>
-
-                <button
-                  type="button"
-                  onClick={() => onNavigate('denomination', denom.value)}
-                  className="text-slate-600 hover:text-slate-900 font-bold flex items-center gap-1 cursor-pointer"
-                >
-                  <span>Specs</span>
-                  <ArrowRight className="w-3.5 h-3.5" />
-                </button>
-              </div>
-            </div>
-          ))}
-        </div>
-      </section>
-
+      
       {/* 12. DRAW SCHEDULE CONNECTION BANNER */}
       <section className="bg-gradient-to-r from-[#003B1D] via-[#004D26] to-[#003B1D] text-white rounded-2xl p-6 sm:p-8 shadow-lg flex flex-col md:flex-row items-center justify-between gap-6 border border-emerald-600/40">
         <div className="space-y-2 text-center md:text-left">
@@ -281,90 +215,8 @@ export const CheckerPage: React.FC<CheckerPageProps> = ({ initialNumber = '', on
         </button>
       </section>
 
-      {/* 13. PRIZE BOND INFORMATION & GUIDES */}
-      <section className="bg-white rounded-2xl p-6 sm:p-8 border border-slate-200 shadow-xs space-y-6">
-        <div>
-          <div className="text-xs font-extrabold text-[#006633] uppercase tracking-wider mb-1">
-            Knowledge Base & Educational Guides
-          </div>
-          <h2 className="text-xl sm:text-2xl font-black text-slate-900 tracking-tight">
-            Essential Guides for Prize Bond Holders
-          </h2>
-          <p className="text-xs text-slate-500 mt-1">
-            Learn about claim procedures, tax deductions, and official SBP regulations.
-          </p>
-        </div>
-
-        <div className="grid grid-cols-1 md:grid-cols-3 gap-5">
-          {ARTICLES.slice(0, 3).map((art) => (
-            <div
-              key={art.slug}
-              className="p-5 rounded-2xl border border-slate-200 bg-slate-50/50 hover:bg-white hover:shadow-md transition-all space-y-3 flex flex-col justify-between"
-            >
-              <div className="space-y-2">
-                <span className="text-[10px] font-bold uppercase tracking-wider text-[#006633] bg-emerald-100 px-2.5 py-0.5 rounded">
-                  {art.category}
-                </span>
-                <h3 className="text-base font-black text-slate-900 leading-snug">{art.title}</h3>
-                <p className="text-xs text-slate-500 line-clamp-3 leading-relaxed">
-                  {art.shortSummary}
-                </p>
-              </div>
-
-              <div className="pt-3 border-t border-slate-200 flex items-center justify-between text-xs">
-                <span className="text-slate-400 font-medium">{art.readTime}</span>
-                <button
-                  type="button"
-                  onClick={() => onNavigate('information', art.slug)}
-                  className="text-[#006633] hover:underline font-extrabold flex items-center gap-1 cursor-pointer"
-                >
-                  <span>Read Guide</span>
-                  <ArrowRight className="w-3.5 h-3.5" />
-                </button>
-              </div>
-            </div>
-          ))}
-        </div>
-      </section>
-
-      {/* 14. AEO / DIRECT ANSWER BLOCK */}
-      <section className="bg-emerald-50/80 rounded-2xl p-6 sm:p-8 border border-emerald-200 space-y-3">
-        <div className="flex items-center gap-2 text-[#006633] font-black text-xs uppercase tracking-wider">
-          <BookOpen className="w-4 h-4 text-[#006633]" />
-          <span>Direct Answer / Search Summary</span>
-        </div>
-        <h2 className="text-lg sm:text-xl font-black text-slate-900">
-          How does the Prize Bond Checker work?
-        </h2>
-        <p className="text-xs sm:text-sm text-slate-700 leading-relaxed">
-          The PrizeBond Pakistan online checker compares user-submitted 6-digit bond numbers against the official published winning draw lists issued by the Central Directorate of National Savings (CDNS) and the State Bank of Pakistan (SBP). Users can select their denomination (Rs. 100, 200, 750, 1500, 25,000, 40,000) and evaluate single bonds, bulk lists, or serial ranges against latest or historical draw gazettes instantly.
-        </p>
-      </section>
-
-      {/* 15. SEO CONTENT & EDUCATIONAL SECTION */}
-      <article className="bg-white rounded-2xl p-6 sm:p-8 border border-slate-200 shadow-xs space-y-4 text-xs sm:text-sm text-slate-700 leading-relaxed">
-        <h2 className="text-xl font-black text-slate-900 tracking-tight">
-          Prize Bond Checker Pakistan — Fast & Accurate Results Verification
-        </h2>
-        <p>
-          Checking Prize Bond draw results in Pakistan has evolved significantly. Historically, bondholders relied on physical printed gazettes or local newspaper supplements published days after draw events. PrizeBond Pakistan provides an online utility to evaluate bond numbers against official gazette databases instantly.
-        </p>
-        
-        <h3 className="text-base font-bold text-slate-900 pt-2">
-          Supported Denominations and Coverage
-        </h3>
-        <p>
-          Our checker engine supports all six official National Prize Bond denominations issued by the Government of Pakistan under CDNS and SBP-BSC rules: Rs. 100, Rs. 200, Rs. 750, Rs. 1,500, Rs. 25,000 Premium, and Rs. 40,000 Premium Registered Bonds.
-        </p>
-
-        <h3 className="text-base font-bold text-slate-900 pt-2">
-          Data Integrity & Safety
-        </h3>
-        <p>
-          All draw records are cross-verified against official gazettes released at State Bank of Pakistan field offices in Karachi, Lahore, Rawalpindi, Peshawar, Quetta, Multan, Faisalabad, Hyderabad, Sialkot, and Muzaffarabad. Unclaimed prize money remains claimable for up to six years from the date of draw publication under Central Directorate rules.
-        </p>
-      </article>
-
+      
+      
       {/* 16. FAQ ACCORDION SECTION */}
       <section className="bg-white rounded-2xl p-6 sm:p-8 border border-slate-200 shadow-xs space-y-6">
         <div>
