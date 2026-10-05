@@ -29,7 +29,7 @@ export default function RootLayout({
       suppressHydrationWarning
       className={`${geistSans.variable} ${geistMono.variable} h-full antialiased`}
     >
-      <script
+  <script
   type="application/ld+json"
   dangerouslySetInnerHTML={{
     __html: JSON.stringify({
@@ -68,6 +68,32 @@ export default function RootLayout({
       "thumbnailUrl": "https://prizebond-pakistan.vercel.app/thumbnail.jpg",
       "uploadDate": "2026-08-15T08:00:00+05:00",
       "duration": "PT3M40S"
+    })
+  }}
+/>
+
+<script
+  type="application/ld+json"
+  dangerouslySetInnerHTML={{
+    __html: JSON.stringify({
+      "@context": "https://schema.org",
+      "@type": "BlogPosting",
+      "headline": "Prize Bond Guides, Rules, and Official Draw Procedures",
+      "description": "Comprehensive guides on how to check prize bonds, understand tax deductions, and claim winning prizes under SBP regulations.",
+      "author": {
+        "@type": "Organization",
+        "name": "PrizeBond Pakistan Research Desk"
+      },
+      "publisher": {
+        "@type": "Organization",
+        "name": "PrizeBond Pakistan",
+        "logo": {
+          "@type": "ImageObject",
+          "url": "https://prizebond-pakistan.vercel.app/logo.png"
+        }
+      },
+      "datePublished": "2026-08-15",
+      "dateModified": "2026-08-15"
     })
   }}
 />
