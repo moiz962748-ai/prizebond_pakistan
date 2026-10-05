@@ -60,8 +60,48 @@ export default function Page() {
     window.scrollTo({ top: 0, behavior: 'smooth' });
   };
 
+  const jsonLd = {
+    '@context': 'https://schema.org',
+    '@type': 'Organization',
+    '@id': 'https://prizebond-pakistan.vercel.app/#organization',
+    name: 'Prize Bond Pakistan',
+    alternateName: ['Prize Bond PK', 'Pakistani Prize Bond Portal'],
+    url: 'https://prizebond-pakistan.vercel.app/',
+    logo: {
+      '@type': 'ImageObject',
+      url: 'https://prizebond-pakistan.vercel.app/logo.png',
+      width: '512',
+      height: '512',
+    },
+    description:
+      'Prize Bond Pakistan is an authoritative digital platform providing real-time prize bond draw search tools, complete gazette schedules, official winning lists, and historical result archives for Pakistani bondholders.',
+    foundingDate: '2024',
+    areaServed: {
+      '@type': 'Country',
+      name: 'Pakistan',
+    },
+    knowsAbout: [
+      'National Savings Pakistan',
+      'Prize Bond Draw Schedules',
+      'Prize Bond Results Verification',
+      'State Bank of Pakistan Prize Bonds',
+    ],
+    sameAs: [
+      'https://facebook.com/your-official-page',
+      'https://twitter.com/your-handle',
+      'https://youtube.com/@your-channel',
+    ],
+    contactPoint: {
+      '@type': 'ContactPoint',
+      contactType: 'customer service',
+      email: 'support@prizebond-pakistan.vercel.app',
+      availableLanguage: ['English', 'Urdu'],
+    },
+  };
+
   return (
     <div className="min-h-screen flex flex-col bg-slate-100 text-slate-900 font-sans">
+      
       {/* Search Modal Dialog */}
       <SearchModal
         isOpen={isSearchOpen}
@@ -80,6 +120,11 @@ export default function Page() {
 
       {/* Dynamic View Router */}
       <main className="flex-1">
+        <script
+          type="application/ld+json"
+          dangerouslySetInnerHTML={{ __html: JSON.stringify(jsonLd) }}
+        />
+
         {currentView === 'home' && (
           <HomePage 
             onNavigate={handleNavigate} 
@@ -153,7 +198,7 @@ export default function Page() {
       <Footer 
         onNavigate={handleNavigate} 
         cmsContent={cmsContent} 
-      />
+      />  
     </div>
   );
 }
