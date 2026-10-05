@@ -31,10 +31,20 @@ export const Navbar: React.FC<NavbarProps> = ({
   const [mobileMenuOpen, setMobileMenuOpen] = useState(false);
   const [activeDropdown, setActiveDropdown] = useState<string | null>(null);
 
+  // Mobile Accordion States for Dropdowns
+  const [mobileResultsOpen, setMobileResultsOpen] = useState(false);
+  const [mobileScheduleOpen, setMobileScheduleOpen] = useState(false);
+  const [mobilePrizeBondsOpen, setMobilePrizeBondsOpen] = useState(false);
+  const [mobileInfoOpen, setMobileInfoOpen] = useState(false);
+
   const handleNavClick = (view: string, param?: string) => {
     onNavigate(view, param);
     setActiveDropdown(null);
     setMobileMenuOpen(false);
+    setMobileResultsOpen(false);
+    setMobileScheduleOpen(false);
+    setMobilePrizeBondsOpen(false);
+    setMobileInfoOpen(false);
   };
 
   return (
@@ -388,72 +398,81 @@ export const Navbar: React.FC<NavbarProps> = ({
             <span>Home</span>
           </button>
 
-          {/* Results & Lists Section (Mobile) */}
+          {/* Results & Lists Section (Mobile Accordion) */}
           <div className="py-2 border-b border-slate-100 space-y-2">
             <div className="flex items-center justify-between">
-              <span className="text-xs font-extrabold text-[#004D26] uppercase tracking-wider">
-                Results & Lists Hub
-              </span>
               <button
                 type="button"
-                onClick={() => handleNavClick('results')}
-                className="text-[11px] font-bold text-[#006633] hover:underline cursor-pointer"
+                onClick={() => setMobileResultsOpen(!mobileResultsOpen)}
+                className="w-full flex items-center justify-between text-xs font-extrabold text-[#004D26] uppercase tracking-wider cursor-pointer py-1"
               >
-                Latest Results →
+                <span>Results & Lists Hub</span>
+                <ChevronDown className={`w-4 h-4 transition-transform duration-200 ${mobileResultsOpen ? 'rotate-180' : ''}`} />
               </button>
             </div>
             
-            <div className="grid grid-cols-2 gap-1.5">
-              {[
-                { label: 'Rs. 100 List', val: '100' },
-                { label: 'Rs. 200 List', val: '200' },
-                { label: 'Rs. 750 List', val: '750' },
-                { label: 'Rs. 1,500 List', val: '1500' },
-                { label: '25K Premium', val: '25000' },
-                { label: '40K Premium', val: '40000' },
-              ].map((item) => (
+            {mobileResultsOpen && (
+              <div className="space-y-2 pt-1 animate-in fade-in duration-150">
                 <button
-                  key={item.val}
-                  onClick={() => handleNavClick('denomination', item.val)}
-                  className="text-left text-xs font-bold px-3 py-2.5 bg-emerald-50/60 text-[#004D26] rounded-lg border border-emerald-100 cursor-pointer hover:bg-emerald-100/70 transition-colors"
+                  type="button"
+                  onClick={() => handleNavClick('results')}
+                  className="w-full text-left text-xs font-bold text-[#006633] mb-2 px-1 hover:underline cursor-pointer"
                 >
-                  {item.label}
+                  View Latest Results →
                 </button>
-              ))}
-            </div>
+                <div className="grid grid-cols-2 gap-1.5">
+                  {[
+                    { label: 'Rs. 100 List', val: '100' },
+                    { label: 'Rs. 200 List', val: '200' },
+                    { label: 'Rs. 750 List', val: '750' },
+                    { label: 'Rs. 1,500 List', val: '1500' },
+                    { label: '25K Premium', val: '25000' },
+                    { label: '40K Premium', val: '40000' },
+                  ].map((item) => (
+                    <button
+                      key={item.val}
+                      onClick={() => handleNavClick('denomination', item.val)}
+                      className="text-left text-xs font-bold px-3 py-2.5 bg-emerald-50/60 text-[#004D26] rounded-lg border border-emerald-100 cursor-pointer hover:bg-emerald-100/70 transition-colors"
+                    >
+                      {item.label}
+                    </button>
+                  ))}
+                </div>
 
-            {/* Archive Sub-links for Mobile */}
-            <div className="pt-2 space-y-1">
-              <span className="text-[10px] font-bold uppercase tracking-wider text-slate-400 block px-1">
-                Gazette Archive (2020–2026)
-              </span>
-              <div className="grid grid-cols-2 gap-1.5">
-                {[
-                  { label: '2026 List', param: '2026' },
-                  { label: '2025 List', param: '2025' },
-                  { label: '2024 List', param: '2024' },
-                  { label: '2023 List', param: '2023' },
-                ].map((archive) => (
+                {/* Archive Sub-links for Mobile */}
+                <div className="pt-2 space-y-1">
+                  <span className="text-[10px] font-bold uppercase tracking-wider text-slate-400 block px-1">
+                    Gazette Archive (2020–2026)
+                  </span>
+                  <div className="grid grid-cols-2 gap-1.5">
+                    {[
+                      { label: '2026 List', param: '2026' },
+                      { label: '2025 List', param: '2025' },
+                      { label: '2024 List', param: '2024' },
+                      { label: '2023 List', param: '2023' },
+                    ].map((archive) => (
+                      <button
+                        key={archive.param}
+                        onClick={() => handleNavClick('results', archive.param)}
+                        className="text-left text-xs font-semibold px-3 py-2 bg-slate-50 text-slate-700 rounded-lg border border-slate-200 cursor-pointer hover:bg-emerald-50 hover:text-[#006633] transition-colors"
+                      >
+                        {archive.label}
+                      </button>
+                    ))}
+                  </div>
+                </div>
+
+                {/* Newspaper Link */}
+                <div className="pt-1">
                   <button
-                    key={archive.param}
-                    onClick={() => handleNavClick('results', archive.param)}
-                    className="text-left text-xs font-semibold px-3 py-2 bg-slate-50 text-slate-700 rounded-lg border border-slate-200 cursor-pointer hover:bg-emerald-50 hover:text-[#006633] transition-colors"
+                    onClick={() => handleNavClick('newspaper')}
+                    className="w-full text-center text-xs font-black py-2.5 bg-slate-900 text-white rounded-lg cursor-pointer shadow-xs hover:bg-slate-800 transition-colors"
                   >
-                    {archive.label}
+                    Prize Bond Newspaper Scans
                   </button>
-                ))}
+                </div>
               </div>
-            </div>
-
-            {/* Newspaper Link */}
-            <div className="pt-1">
-              <button
-                onClick={() => handleNavClick('newspaper')}
-                className="w-full text-center text-xs font-black py-2.5 bg-slate-900 text-white rounded-lg cursor-pointer shadow-xs hover:bg-slate-800 transition-colors"
-              >
-                Prize Bond Newspaper Scans
-              </button>
-            </div>
+            )}
           </div>
 
           <button
@@ -466,97 +485,125 @@ export const Navbar: React.FC<NavbarProps> = ({
             <span className="text-xs bg-[#004D26] px-2 py-0.5 rounded">Check Now</span>
           </button>
 
-          {/* Schedule Section */}
+          {/* Schedule Section (Mobile Accordion) */}
           <div className="py-2 border-b border-slate-100 space-y-2">
-            <div className="flex items-center justify-between">
-              <span className="text-xs font-extrabold text-[#004D26] uppercase tracking-wider">
-                Draw Schedules
-              </span>
-              <button
-                type="button"
-                onClick={() => handleNavClick('schedule')}
-                className="text-[11px] font-bold text-[#006633] hover:underline cursor-pointer"
-              >
-                View Full Schedule →
-              </button>
-            </div>
-            <div className="grid grid-cols-1 gap-1.5">
-              {[
-                { label: '2026 Draw Schedule', param: '2026' },
-                { label: 'Upcoming Draw', param: 'upcoming' },
-                { label: 'Previous Draws', param: 'previous' },
-                { label: 'Draw Cities', param: 'cities' },
-                { label: 'Draw Calendar', param: 'calendar' },
-              ].map((item) => (
+            <button
+              type="button"
+              onClick={() => setMobileScheduleOpen(!mobileScheduleOpen)}
+              className="w-full flex items-center justify-between text-xs font-extrabold text-[#004D26] uppercase tracking-wider cursor-pointer py-1"
+            >
+              <span>Draw Schedules</span>
+              <ChevronDown className={`w-4 h-4 transition-transform duration-200 ${mobileScheduleOpen ? 'rotate-180' : ''}`} />
+            </button>
+
+            {mobileScheduleOpen && (
+              <div className="space-y-1.5 pt-1 animate-in fade-in duration-150">
                 <button
-                  key={item.param}
-                  onClick={() => handleNavClick('schedule', item.param)}
-                  className="text-xs bg-slate-50 px-3 py-2.5 rounded-lg text-slate-700 font-bold text-left cursor-pointer hover:bg-emerald-50 hover:text-[#006633] transition-colors"
+                  type="button"
+                  onClick={() => handleNavClick('schedule')}
+                  className="w-full text-left text-xs font-bold text-[#006633] mb-1 px-1 hover:underline cursor-pointer"
                 >
-                  {item.label}
+                  View Full Schedule →
                 </button>
-              ))}
-            </div>
+                <div className="grid grid-cols-1 gap-1.5">
+                  {[
+                    { label: '2026 Draw Schedule', param: '2026' },
+                    { label: 'Upcoming Draw', param: 'upcoming' },
+                    { label: 'Previous Draws', param: 'previous' },
+                    { label: 'Draw Cities', param: 'cities' },
+                    { label: 'Draw Calendar', param: 'calendar' },
+                  ].map((item) => (
+                    <button
+                      key={item.param}
+                      onClick={() => handleNavClick('schedule', item.param)}
+                      className="text-xs bg-slate-50 px-3 py-2.5 rounded-lg text-slate-700 font-bold text-left cursor-pointer hover:bg-emerald-50 hover:text-[#006633] transition-colors"
+                    >
+                      {item.label}
+                    </button>
+                  ))}
+                </div>
+              </div>
+            )}
           </div>
 
-          {/* Prize Bonds Hub Section */}
+          {/* Prize Bonds Hub Section (Mobile Accordion) */}
           <div className="py-2 border-b border-slate-100 space-y-2">
-            <div className="flex items-center justify-between">
-              <span className="text-xs font-extrabold text-[#004D26] uppercase tracking-wider">
-                Prize Bonds Hub
-              </span>
-              <button
-                type="button"
-                onClick={() => handleNavClick('prizebonds')}
-                className="text-[11px] font-bold text-[#006633] hover:underline cursor-pointer flex items-center gap-1"
-              >
-                <span>Hub (All)</span>
+            <button
+              type="button"
+              onClick={() => setMobilePrizeBondsOpen(!mobilePrizeBondsOpen)}
+              className="w-full flex items-center justify-between text-xs font-extrabold text-[#004D26] uppercase tracking-wider cursor-pointer py-1"
+            >
+              <span className="flex items-center gap-1">
+                <span>Prize Bonds Hub</span>
                 <Sparkles className="w-3 h-3 text-amber-500" />
-              </button>
-            </div>
-            <div className="grid grid-cols-2 gap-1.5">
-              {[
-                { label: '100 Prize Bond', val: '100' },
-                { label: '200 Prize Bond', val: '200' },
-                { label: '750 Prize Bond', val: '750' },
-                { label: '1,500 Prize Bond', val: '1500' },
-                { label: '25,000 Premium', val: '25000' },
-                { label: '40,000 Premium', val: '40000' },
-              ].map((item) => (
+              </span>
+              <ChevronDown className={`w-4 h-4 transition-transform duration-200 ${mobilePrizeBondsOpen ? 'rotate-180' : ''}`} />
+            </button>
+
+            {mobilePrizeBondsOpen && (
+              <div className="space-y-1.5 pt-1 animate-in fade-in duration-150">
                 <button
-                  key={item.val}
-                  onClick={() => handleNavClick('denomination', item.val)}
-                  className="text-left text-xs font-bold px-3 py-2.5 bg-emerald-50/60 text-[#004D26] rounded-lg border border-emerald-100 cursor-pointer hover:bg-emerald-100/70 transition-colors"
+                  type="button"
+                  onClick={() => handleNavClick('prizebonds')}
+                  className="w-full text-left text-xs font-bold text-[#006633] mb-1 px-1 hover:underline cursor-pointer"
                 >
-                  {item.label}
+                  Hub (All) →
                 </button>
-              ))}
-            </div>
+                <div className="grid grid-cols-2 gap-1.5">
+                  {[
+                    { label: '100 Prize Bond', val: '100' },
+                    { label: '200 Prize Bond', val: '200' },
+                    { label: '750 Prize Bond', val: '750' },
+                    { label: '1,500 Prize Bond', val: '1500' },
+                    { label: '25,000 Premium', val: '25000' },
+                    { label: '40,000 Premium', val: '40000' },
+                  ].map((item) => (
+                    <button
+                      key={item.val}
+                      onClick={() => handleNavClick('denomination', item.val)}
+                      className="text-left text-xs font-bold px-3 py-2.5 bg-emerald-50/60 text-[#004D26] rounded-lg border border-emerald-100 cursor-pointer hover:bg-emerald-100/70 transition-colors"
+                    >
+                      {item.label}
+                    </button>
+                  ))}
+                </div>
+              </div>
+            )}
           </div>
 
-          {/* News & Savings Section (Fixed Handlers) */}
+          {/* News & Savings Section (Mobile Accordion) */}
           <div className="py-2 space-y-1.5 border-b border-slate-100 pb-3">
-            <span className="text-xs font-extrabold text-[#004D26] uppercase tracking-wider block mb-1.5">
-              News & Savings
-            </span>
             <button
-              onClick={() => handleNavClick('information', 'information')}
-              className="w-full text-left px-3 py-2.5 text-xs font-bold text-slate-700 bg-slate-50 hover:bg-emerald-50 hover:text-[#006633] rounded-lg cursor-pointer transition-colors"
+              type="button"
+              onClick={() => setMobileInfoOpen(!mobileInfoOpen)}
+              className="w-full flex items-center justify-between text-xs font-extrabold text-[#004D26] uppercase tracking-wider cursor-pointer py-1 mb-1"
             >
-              Prize Bond News & Updates
+              <span>News & Savings</span>
+              <ChevronDown className={`w-4 h-4 transition-transform duration-200 ${mobileInfoOpen ? 'rotate-180' : ''}`} />
             </button>
-            <button
-              onClick={() => handleNavClick('information', 'information')}
-              className="w-full text-left px-3 py-2.5 text-xs font-bold text-slate-700 bg-slate-50 hover:bg-emerald-50 hover:text-[#006633] rounded-lg cursor-pointer transition-colors"
-            >
-              National Savings Profit Rates (2026)
-            </button>
-            <button
-              onClick={() => handleNavClick('information', 'prize-money-and-tax')}
-              className="w-full text-left px-3 py-2.5 text-xs font-bold text-slate-700 bg-slate-50 hover:bg-emerald-50 hover:text-[#006633] rounded-lg cursor-pointer transition-colors"
-            >
-              How to Claim Prize Money & Tax Rates
-            </button>
+
+            {mobileInfoOpen && (
+              <div className="space-y-1.5 pt-1 animate-in fade-in duration-150">
+                <button
+                  onClick={() => handleNavClick('information', 'information')}
+                  className="w-full text-left px-3 py-2.5 text-xs font-bold text-slate-700 bg-slate-50 hover:bg-emerald-50 hover:text-[#006633] rounded-lg cursor-pointer transition-colors"
+                >
+                  Prize Bond News & Updates
+                </button>
+                <button
+                  onClick={() => handleNavClick('information', 'national-savings-rates')}
+                  className="w-full text-left px-3 py-2.5 text-xs font-bold text-slate-700 bg-slate-50 hover:bg-emerald-50 hover:text-[#006633] rounded-lg cursor-pointer transition-colors"
+                >
+                  National Savings Profit Rates (2026)
+                </button>
+                <button
+                  onClick={() => handleNavClick('information', 'prize-money-and-tax')}
+                  className="w-full text-left px-3 py-2.5 text-xs font-bold text-slate-700 bg-slate-50 hover:bg-emerald-50 hover:text-[#006633] rounded-lg cursor-pointer transition-colors"
+                >
+                  How to Claim Prize Money & Tax Rates
+                </button>
+              </div>
+            )}
           </div>
 
           {/* Latest Draw CTA */}
