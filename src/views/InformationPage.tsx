@@ -144,39 +144,7 @@ export const InformationPage: React.FC<InformationPageProps> = ({
   if (!isHubView && currentArticle) {
     return (
       <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-6 space-y-8">
-        <script
-  type="application/ld+json"
-  dangerouslySetInnerHTML={{
-    __html: JSON.stringify({
-      "@context": "https://schema.org",
-      "@type": "FAQPage",
-      "mainEntity": [
-        {
-          "@type": "Question",
-          "name": "What are Prize Bonds in Pakistan?",
-          "acceptedAnswer": {
-            "@type": "Answer",
-            "text": "Prize Bonds are capital-guaranteed financial security certificates..."
-          }
-        }
-      ]
-    })
-  }}
-/>
-<script
-  type="application/ld+json"
-  dangerouslySetInnerHTML={{
-    __html: JSON.stringify({
-      "@context": "https://schema.org",
-      "@type": "VideoObject",
-      "name": "Video Guide: How to Buy, Hold, & Claim Prize Bonds in Pakistan",
-      "description": "Watch our expert guide on purchasing bonds from SBP field offices...",
-      "thumbnailUrl": "https://prizebond-pakistan.vercel.app/thumbnail.jpg",
-      "uploadDate": "2026-08-15T08:00:00+05:00",
-      "duration": "PT3M40S"
-    })
-  }}
-/>
+
         {/* 02. BREADCRUMB */}
         <div className="flex flex-col sm:flex-row sm:items-center justify-between gap-3 bg-white p-3.5 sm:p-4 rounded-xl border border-slate-200 shadow-xs">
           <Breadcrumbs
