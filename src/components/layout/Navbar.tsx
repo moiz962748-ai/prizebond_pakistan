@@ -290,12 +290,12 @@ export const Navbar: React.FC<NavbarProps> = ({
                     </button>
                     <div className="my-1 border-t border-slate-100"></div>
                     {[
-                      { label: '100 Prize Bond', val: '100' },
-                      { label: '200 Prize Bond', val: '200' },
-                      { label: '750 Prize Bond', val: '750' },
-                      { label: '1,500 Prize Bond', val: '1500' },
-                      { label: '25,000 Premium Bond', val: '25000' },
-                      { label: '40,000 Premium Bond', val: '40000' },
+                      { label: 'Rs. 100 Bond Details & Rules', val: '100' },
+                      { label: 'Rs. 200 Bond Details & Rules', val: '200' },
+                      { label: 'Rs. 750 Bond Details & Rules', val: '750' },
+                      { label: 'Rs. 1,500 Bond Details & Rules', val: '1500' },
+                      { label: 'Rs. 25,000 Premium Bond Info', val: '25000' },
+                      { label: 'Rs. 40,000 Premium Bond Info', val: '40000' },
                     ].map((item) => (
                       <button
                         key={item.val}
@@ -551,12 +551,12 @@ export const Navbar: React.FC<NavbarProps> = ({
                 </button>
                 <div className="grid grid-cols-2 gap-1.5">
                   {[
-                    { label: '100 Prize Bond', val: '100' },
-                    { label: '200 Prize Bond', val: '200' },
-                    { label: '750 Prize Bond', val: '750' },
-                    { label: '1,500 Prize Bond', val: '1500' },
-                    { label: '25,000 Premium', val: '25000' },
-                    { label: '40,000 Premium', val: '40000' },
+                    { label: 'Rs. 100 Bond Details & Rules', val: '100' },
+                    { label: 'Rs. 200 Bond Details & Rules', val: '200' },
+                    { label: 'Rs. 750 Bond Details & Rules', val: '750' },
+                    { label: 'Rs. 1,500 Bond Details & Rules', val: '1500' },
+                    { label: 'Rs. 25,000 Premium Bond Info', val: '25000' },
+                    { label: 'Rs. 40,000 Premium Bond Info', val: '40000' },
                   ].map((item) => (
                     <button
                       key={item.val}
