@@ -14,7 +14,7 @@ import { PrizeBondsPage } from '@/views/PrizeBondsPage';
 import { InformationPage } from '@/views/InformationPage';
 import { FaqPage } from '@/views/FaqPage';
 import { LatestDrawPage } from '@/views/LatestDrawPage';
-import { DrawDetailPage } from '@/views/DrawDetailPage';
+import { DrawDetailPage } from '@/components/results/DrawDetailPage';
 import { StaticInfoPages } from '@/views/StaticInfoPages';
 import { supabase } from '@/lib/supabase'; // Supabase client import
 

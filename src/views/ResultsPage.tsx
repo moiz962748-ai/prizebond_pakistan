@@ -156,14 +156,6 @@ export const ResultsPage: React.FC<ResultsPageProps> = ({
     setTimeout(() => setCopiedNumber(null), 2000);
   };
 
-  // Open corresponding text file in a new tab via API route
-  const handleViewResultFile = (draw: any) => {
-    const denom = draw.denomination;
-    const dateStr = draw.formattedDate || draw.draw_date || draw.date;
-    const url = `/api/get-bond-file?denom=${denom}&date=${encodeURIComponent(dateStr)}`;
-    window.open(url, '_blank');
-  };
-
   // Toggle Loading Simulation
   const handleSimulateLoading = () => {
     setIsLoadingSim(true);
@@ -251,7 +243,7 @@ export const ResultsPage: React.FC<ResultsPageProps> = ({
         <AdSensePlaceholder slot="banner" />
       </div>
 
-      {/* 07. RESULT FILTERS SECTION (City filter removed, grid adjusted) */}
+      {/* 07. RESULT FILTERS SECTION */}
       <section className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
         <div className="bg-white rounded-2xl p-5 border border-slate-200 shadow-xs space-y-4">
           <div className="flex flex-col md:flex-row md:items-center justify-between gap-4 border-b border-slate-100 pb-4">
@@ -359,8 +351,6 @@ export const ResultsPage: React.FC<ResultsPageProps> = ({
                 <option value="older">2021 & Previous Years</option>
               </select>
             </div>
-
-            
           </div>
         </div>
       </section>
@@ -467,8 +457,7 @@ export const ResultsPage: React.FC<ResultsPageProps> = ({
                     {paginatedResults.map((draw) => (
                       <tr
                         key={draw.id}
-                        className="hover:bg-emerald-50/60 transition-colors group cursor-pointer"
-                        onClick={() => handleViewResultFile(draw)}
+                        className="hover:bg-emerald-50/60 transition-colors group"
                       >
                         <td className="p-4 font-bold text-slate-900">
                           <span className="inline-block px-2.5 py-1 rounded-md bg-emerald-100 text-[#004D26] font-extrabold">
@@ -479,11 +468,13 @@ export const ResultsPage: React.FC<ResultsPageProps> = ({
                         <td className="p-4 text-slate-700 font-semibold">{draw.city}</td>
                         <td className="p-4 text-right">
                           <button
+                            type="button"
                             onClick={(e) => {
                               e.stopPropagation();
-                              handleViewResultFile(draw);
+                              const queryParam = `denom=${draw.denomination}&date=${encodeURIComponent(draw.formattedDate)}&city=${encodeURIComponent(draw.city)}`;
+                              onNavigate('draw-detail', queryParam);
                             }}
-                            className="px-4 py-2 bg-[#006633] text-white hover:bg-[#004D26] rounded-lg font-bold text-xs transition-colors cursor-pointer shadow-xs inline-flex items-center gap-1.5"
+                            className="px-4 py-2 bg-[#006633] text-white hover:bg-[#004D26] rounded-lg font-bold text-xs transition-colors cursor-pointer inline-flex items-center gap-1.5"
                           >
                             <span>View List</span>
                             <ArrowRight className="w-3.5 h-3.5" />
@@ -527,7 +518,10 @@ export const ResultsPage: React.FC<ResultsPageProps> = ({
                     </div>
 
                     <button
-                      onClick={() => handleViewResultFile(draw)}
+                      onClick={() => {
+                        const queryParam = `denom=${draw.denomination}&file=${encodeURIComponent(draw.fileName || '15-02-2019-Rs-100.txt')}&date=${encodeURIComponent(draw.formattedDate)}&city=${encodeURIComponent(draw.city)}`;
+                        onNavigate('draw-detail', queryParam);
+                      }}
                       className="w-full py-2 bg-[#006633] text-white font-bold text-xs rounded-lg flex items-center justify-center gap-1 cursor-pointer shadow-xs"
                     >
                       <span>View Full Draw Result</span>
@@ -583,8 +577,6 @@ export const ResultsPage: React.FC<ResultsPageProps> = ({
           )}
         </div>
       </section>
-
-      
     </div>
   );
 };

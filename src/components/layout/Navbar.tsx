@@ -138,18 +138,18 @@ export const Navbar: React.FC<NavbarProps> = ({
                     </button>
                     <div className="my-1 border-t border-slate-100"></div>
 
-                    {/* Denomination Lists */}
+                    {/* Denomination Lists - FIXED to point to 'results' view */}
                     {[
-                      { label: '100 Prize Bond List', val: '100' },
-                      { label: '200 Prize Bond List', val: '200' },
-                      { label: '750 Prize Bond List', val: '750' },
-                      { label: '1,500 Prize Bond List', val: '1500' },
-                      { label: '25,000 Premium Bond List', val: '25000' },
-                      { label: '40,000 Premium Bond List', val: '40000' },
+                      { label: 'Rs. 100 Draw Results & Lists', val: '100' },
+                      { label: 'Rs. 200 Draw Results & Lists', val: '200' },
+                      { label: 'Rs. 750 Draw Results & Lists', val: '750' },
+                      { label: 'Rs. 1,500 Draw Results & Lists', val: '1500' },
+                      { label: 'Rs. 25,000 Premium Gazette', val: '25000' },
+                      { label: 'Rs. 40,000 Premium Gazette', val: '40000' },
                     ].map((item) => (
                       <button
                         key={item.val}
-                        onClick={() => handleNavClick('denomination', item.val)}
+                        onClick={() => handleNavClick('results', item.val)}
                         className="w-full text-left px-3.5 py-2 text-xs text-slate-700 hover:bg-emerald-50 hover:text-[#006633] transition-colors cursor-pointer"
                       >
                         {item.label}
@@ -431,7 +431,7 @@ export const Navbar: React.FC<NavbarProps> = ({
                   ].map((item) => (
                     <button
                       key={item.val}
-                      onClick={() => handleNavClick('denomination', item.val)}
+                      onClick={() => handleNavClick('results', item.val)}
                       className="text-left text-xs font-bold px-3 py-2.5 bg-emerald-50/60 text-[#004D26] rounded-lg border border-emerald-100 cursor-pointer hover:bg-emerald-100/70 transition-colors"
                     >
                       {item.label}
@@ -485,7 +485,7 @@ export const Navbar: React.FC<NavbarProps> = ({
             <span className="text-xs bg-[#004D26] px-2 py-0.5 rounded">Check Now</span>
           </button>
 
-          {/* Schedule Section (Mobile Accordion) */}
+          {/* Schedule Section */}
           <div className="py-2 border-b border-slate-100 space-y-2">
             <button
               type="button"
@@ -526,7 +526,7 @@ export const Navbar: React.FC<NavbarProps> = ({
             )}
           </div>
 
-          {/* Prize Bonds Hub Section (Mobile Accordion) */}
+          {/* Prize Bonds Hub Section */}
           <div className="py-2 border-b border-slate-100 space-y-2">
             <button
               type="button"
@@ -571,7 +571,7 @@ export const Navbar: React.FC<NavbarProps> = ({
             )}
           </div>
 
-          {/* News & Savings Section (Mobile Accordion) */}
+          {/* News & Savings Section */}
           <div className="py-2 space-y-1.5 border-b border-slate-100 pb-3">
             <button
               type="button"
