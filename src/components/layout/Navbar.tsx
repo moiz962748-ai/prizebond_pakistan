@@ -343,7 +343,7 @@ export const Navbar: React.FC<NavbarProps> = ({
         
         {/* Hub Title Header */}
         <div className="px-3.5 py-1.5 text-[10px] font-bold uppercase tracking-wider text-slate-400 bg-slate-50 border-b border-slate-100">
-          Information Hub
+          News & Savings Hub
         </div>
         
         {/* Overview / Main Hub Link */}
@@ -351,7 +351,7 @@ export const Navbar: React.FC<NavbarProps> = ({
           onClick={() => handleNavClick('information', 'hub')}
           className="w-full text-left px-3.5 py-2 text-xs font-black text-[#006633] bg-emerald-50/50 hover:bg-emerald-100/60 transition-colors flex items-center justify-between cursor-pointer"
         >
-          <span>Information Hub Overview</span>
+          <span>News & Savings Hub Overview</span>
           <Sparkles className="w-3.5 h-3.5 text-amber-500" />
         </button>
         <div className="my-1 border-t border-slate-100"></div>
@@ -612,7 +612,7 @@ export const Navbar: React.FC<NavbarProps> = ({
       
       {/* Hub Title Header */}
       <div className="px-3.5 py-1.5 text-[10px] font-bold uppercase tracking-wider text-slate-400 border-b border-slate-200">
-        Information Hub
+        News & Savings Hub
       </div>
 
       {/* Overview / Main Hub Link */}
@@ -620,7 +620,7 @@ export const Navbar: React.FC<NavbarProps> = ({
         onClick={() => handleNavClick('information', 'hub')}
         className="w-full text-left px-3.5 py-2.5 text-xs font-black text-[#006633] bg-emerald-50/80 hover:bg-emerald-100/80 rounded-xl cursor-pointer transition-colors flex items-center justify-between border border-emerald-200 shadow-2xs"
       >
-        <span>Information Hub Overview</span>
+        <span>News & Savings Hub Overview</span>
         <Sparkles className="w-3.5 h-3.5 text-amber-500" />
       </button>
 
