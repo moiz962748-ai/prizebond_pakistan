@@ -316,51 +316,69 @@ export const Navbar: React.FC<NavbarProps> = ({
               )}
             </div>
 
-            {/* Information Dropdown */}
-            <div
-              className="relative"
-              onMouseEnter={() => setActiveDropdown('information')}
-              onMouseLeave={() => setActiveDropdown(null)}
-            >
-              <button
-                onClick={() => {
-                  setActiveDropdown(activeDropdown === 'information' ? null : 'information');
-                }}
-                className={`px-3 py-1.5 rounded font-semibold text-xs flex items-center gap-1 transition-colors cursor-pointer ${
-                  activeView === 'information'
-                    ? 'text-[#006633] border-b-2 border-[#006633] pb-1'
-                    : 'text-slate-600 hover:text-[#006633]'
-                }`}
-              >
-                <span>News & Savings</span>
-                <ChevronDown className="w-3 h-3 opacity-70" />
-              </button>
+            {/* Information / News & Savings Dropdown (Desktop) */}
+<div
+  className="relative"
+  onMouseEnter={() => setActiveDropdown('information')}
+  onMouseLeave={() => setActiveDropdown(null)}
+>
+  <button
+    onClick={() => {
+      setActiveDropdown(activeDropdown === 'information' ? null : 'information');
+      handleNavClick('information', 'hub');
+    }}
+    className={`px-3 py-1.5 rounded font-semibold text-xs flex items-center gap-1 transition-colors cursor-pointer ${
+      activeView === 'information'
+        ? 'text-[#006633] border-b-2 border-[#006633] pb-1'
+        : 'text-slate-600 hover:text-[#006633]'
+    }`}
+  >
+    <span>News & Savings</span>
+    <ChevronDown className="w-3 h-3 opacity-70" />
+  </button>
 
-              {activeDropdown === 'information' && (
-                <div className="absolute top-full left-0 w-64 pt-2 z-50 animate-in fade-in slide-in-from-top-1 duration-150">
-                  <div className="bg-white rounded-xl shadow-xl border border-slate-200 py-2 overflow-hidden">
-                    {[
-                      { label: "Prize Bond News & Updates", actionType: "information", param: "information" },
-                      { label: "National Savings Profit Rates (2026)", actionType: "information", param: "national-savings-rates" },
-                      { label: "How to Claim Prize Money & Tax Rates", actionType: "information", param: "prize-money-and-tax" },
-                    ].map((item, index) => (
-                      <button
-                        key={index}
-                        onClick={() =>
-                          item.actionType === 'information'
-                            ? handleNavClick('information', item.param)
-                            : handleNavClick('news')
-                        }
-                        className="w-full text-left px-3.5 py-2 text-xs text-slate-700 hover:bg-emerald-50 hover:text-[#006633] transition-colors cursor-pointer"
-                      >
-                        {item.label}
-                      </button>
-                    ))}
-                  </div>
-                </div>
-              )}
-            </div>
+  {activeDropdown === 'information' && (
+    <div className="absolute top-full left-0 w-72 pt-2 z-50 animate-in fade-in slide-in-from-top-1 duration-150">
+      <div className="bg-white rounded-xl shadow-xl border border-slate-200 py-2 overflow-hidden">
+        
+        {/* Hub Title Header */}
+        <div className="px-3.5 py-1.5 text-[10px] font-bold uppercase tracking-wider text-slate-400 bg-slate-50 border-b border-slate-100">
+          Information Hub
+        </div>
+        
+        {/* Overview / Main Hub Link */}
+        <button
+          onClick={() => handleNavClick('information', 'hub')}
+          className="w-full text-left px-3.5 py-2 text-xs font-black text-[#006633] bg-emerald-50/50 hover:bg-emerald-100/60 transition-colors flex items-center justify-between cursor-pointer"
+        >
+          <span>Information Hub Overview</span>
+          <Sparkles className="w-3.5 h-3.5 text-amber-500" />
+        </button>
+        <div className="my-1 border-t border-slate-100"></div>
 
+        {/* Sub-Hub Pages / Guides List with correct slugs mapping */}
+        {[
+          { label: "Prize Bond Basics (Beginner's Guide)", param: "prize-bond-basics-pakistan" },
+          { label: "How Prize Bonds Work", param: "how-prize-bonds-work" },
+          { label: "How to Buy Prize Bonds", param: "how-to-buy-prize-bonds" },
+          { label: "How to Check Prize Bonds", param: "how-to-check-prize-bonds" },
+          { label: "Prize Bond Rules", param: "prize-bond-rules" },
+          { label: "Prize Money & Tax Rates", param: "prize-money-and-tax" },
+          { label: "How to Claim a Prize", param: "how-to-claim-a-prize" },
+          { label: "Frequently Asked Questions", param: "frequently-asked-questions" },
+        ].map((subItem, index) => (
+          <button
+            key={index}
+            onClick={() => handleNavClick('information', subItem.param)}
+            className="w-full text-left px-3.5 py-2 text-xs text-slate-700 hover:bg-emerald-50 hover:text-[#006633] transition-colors cursor-pointer font-medium"
+          >
+            {subItem.label}
+          </button>
+        ))}
+      </div>
+    </div>
+  )}
+</div>
             {/* Latest Draw CTA button */}
             <button
               onClick={() => handleNavClick('latest-draw')}
@@ -578,41 +596,46 @@ export const Navbar: React.FC<NavbarProps> = ({
             )}
           </div>
 
-          {/* News & Savings Section */}
-          <div className="py-2 space-y-1.5 border-b border-slate-100 pb-3">
-            <button
-              type="button"
-              onClick={() => setMobileInfoOpen(!mobileInfoOpen)}
-              className="w-full flex items-center justify-between text-xs font-extrabold text-[#004D26] uppercase tracking-wider cursor-pointer py-1 mb-1"
-            >
-              <span>News & Savings</span>
-              <ChevronDown className={`w-4 h-4 transition-transform duration-200 ${mobileInfoOpen ? 'rotate-180' : ''}`} />
-            </button>
+          {/* News & Savings Section (Mobile Drawer) */}
+<div className="py-2 space-y-1.5 border-b border-slate-100 pb-3">
+  <button
+    type="button"
+    onClick={() => setMobileInfoOpen(!mobileInfoOpen)}
+    className="w-full flex items-center justify-between text-xs font-extrabold text-[#004D26] uppercase tracking-wider cursor-pointer py-1 mb-1"
+  >
+    <span>News & Savings</span>
+    <ChevronDown className={`w-4 h-4 transition-transform duration-200 ${mobileInfoOpen ? 'rotate-180' : ''}`} />
+  </button>
 
-            {mobileInfoOpen && (
-              <div className="space-y-1.5 pt-1 animate-in fade-in duration-150">
-                <button
-                  onClick={() => handleNavClick('information', 'information')}
-                  className="w-full text-left px-3 py-2.5 text-xs font-bold text-slate-700 bg-slate-50 hover:bg-emerald-50 hover:text-[#006633] rounded-lg cursor-pointer transition-colors"
-                >
-                  Prize Bond News & Updates
-                </button>
-                <button
-                  onClick={() => handleNavClick('information', 'national-savings-rates')}
-                  className="w-full text-left px-3 py-2.5 text-xs font-bold text-slate-700 bg-slate-50 hover:bg-emerald-50 hover:text-[#006633] rounded-lg cursor-pointer transition-colors"
-                >
-                  National Savings Profit Rates (2026)
-                </button>
-                <button
-                  onClick={() => handleNavClick('information', 'prize-money-and-tax')}
-                  className="w-full text-left px-3 py-2.5 text-xs font-bold text-slate-700 bg-slate-50 hover:bg-emerald-50 hover:text-[#006633] rounded-lg cursor-pointer transition-colors"
-                >
-                  How to Claim Prize Money & Tax Rates
-                </button>
-              </div>
-            )}
-          </div>
-
+  {mobileInfoOpen && (
+    <div className="space-y-1.5 pt-1 animate-in fade-in duration-150 pl-2">
+      <button
+        onClick={() => handleNavClick('information', 'hub')}
+        className="w-full text-left px-3 py-2.5 text-xs font-black text-[#006633] bg-emerald-50 hover:bg-emerald-100 rounded-lg cursor-pointer transition-colors"
+      >
+        Information Hub Overview
+      </button>
+      <button
+        onClick={() => handleNavClick('information', 'information')}
+        className="w-full text-left px-3 py-2.5 text-xs font-bold text-slate-700 bg-slate-50 hover:bg-emerald-50 hover:text-[#006633] rounded-lg cursor-pointer transition-colors"
+      >
+        Prize Bond News & Updates
+      </button>
+      <button
+        onClick={() => handleNavClick('information', 'national-savings-rates')}
+        className="w-full text-left px-3 py-2.5 text-xs font-bold text-slate-700 bg-slate-50 hover:bg-emerald-50 hover:text-[#006633] rounded-lg cursor-pointer transition-colors"
+      >
+        National Savings Profit Rates (2026)
+      </button>
+      <button
+        onClick={() => handleNavClick('information', 'prize-money-and-tax')}
+        className="w-full text-left px-3 py-2.5 text-xs font-bold text-slate-700 bg-slate-50 hover:bg-emerald-50 hover:text-[#006633] rounded-lg cursor-pointer transition-colors"
+      >
+        How to Claim Prize Money & Tax Rates
+      </button>
+    </div>
+  )}
+</div>
           {/* Latest Draw CTA */}
           <div className="pt-2">
             <button
