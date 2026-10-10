@@ -51,7 +51,6 @@ export const InformationPage: React.FC<InformationPageProps> = ({
 }) => {
   const isHubView = !slug || slug === 'hub' || slug === 'index';
   
-  // Find detailed article based on slug from GUIDE_ARTICLES
   const detailedArticle = GUIDE_ARTICLES.find(
     (g) => g.frontmatter.slug === slug
   ) || GUIDE_ARTICLES[0];
@@ -142,7 +141,9 @@ export const InformationPage: React.FC<InformationPageProps> = ({
     setTimeout(() => setLinkCopied(false), 2000);
   };
 
-  // IF USER IS VIEWING A SPECIFIC GUIDE ARTICLE
+  // =========================================================================
+  // IF USER IS VIEWING A SPECIFIC GUIDE ARTICLE (Sub-Hub Pages)
+  // =========================================================================
   if (!isHubView && slug) {
     const frontmatter = detailedArticle.frontmatter;
 
@@ -191,7 +192,6 @@ export const InformationPage: React.FC<InformationPageProps> = ({
               </p>
             </header>
 
-            {/* AI Overview Section */}
             <aside aria-label="AI Overview Summary" className="p-5 sm:p-6 rounded-2xl bg-gradient-to-br from-emerald-50 via-teal-50/40 to-white border-2 border-emerald-200 shadow-xs space-y-3">
               <div className="flex items-center gap-2 text-[#006633] text-xs font-black uppercase tracking-wider">
                 <Sparkles className="w-4 h-4 text-amber-500" />
@@ -202,7 +202,6 @@ export const InformationPage: React.FC<InformationPageProps> = ({
               </p>
             </aside>
 
-            {/* Detailed Article Sections */}
             <article className="bg-white p-6 sm:p-8 rounded-2xl border border-slate-200 shadow-xs space-y-10 text-xs sm:text-sm text-slate-700 leading-relaxed">
               {detailedArticle.sections.map((sec, idx) => (
                 <section
@@ -276,7 +275,6 @@ export const InformationPage: React.FC<InformationPageProps> = ({
                     </div>
                   )}
 
-                  {/* Interactive Tax Calculator on Tax Section */}
                   {sec.id === 'prize-tax' && (
                     <div className="bg-slate-900 text-white rounded-2xl p-6 border border-slate-800 shadow-md space-y-4 my-4">
                       <div className="flex items-center gap-2 border-b border-slate-800 pb-3">
@@ -308,7 +306,6 @@ export const InformationPage: React.FC<InformationPageProps> = ({
               ))}
             </article>
 
-            {/* FAQs for Guide */}
             <section className="bg-white p-6 sm:p-8 rounded-2xl border border-slate-200 shadow-xs space-y-4">
               <div className="flex items-center gap-2 text-xs font-extrabold text-slate-900 uppercase tracking-wider">
                 <HelpCircle className="w-4 h-4 text-[#006633]" />
@@ -323,31 +320,6 @@ export const InformationPage: React.FC<InformationPageProps> = ({
                 ))}
               </div>
             </section>
-
-            {/* PREVIOUS / NEXT NAVIGATION */}
-            <nav className="grid grid-cols-1 sm:grid-cols-2 gap-4 pt-2">
-              {prevArticle ? (
-                <button
-                  type="button"
-                  onClick={() => onNavigate('information', prevArticle.slug)}
-                  className="p-4 bg-white hover:bg-emerald-50/50 rounded-2xl border border-slate-200 hover:border-emerald-300 text-left transition-all space-y-1 group cursor-pointer"
-                >
-                  <div className="text-[10px] font-extrabold text-slate-400 uppercase tracking-wider">← Previous Guide</div>
-                  <div className="text-xs font-bold text-slate-900 group-hover:text-[#006633] truncate">{prevArticle.title}</div>
-                </button>
-              ) : <div />}
-
-              {nextArticle ? (
-                <button
-                  type="button"
-                  onClick={() => onNavigate('information', nextArticle.slug)}
-                  className="p-4 bg-white hover:bg-emerald-50/50 rounded-2xl border border-slate-200 hover:border-emerald-300 text-right transition-all space-y-1 group cursor-pointer"
-                >
-                  <div className="text-[10px] font-extrabold text-slate-400 uppercase tracking-wider">Next Guide →</div>
-                  <div className="text-xs font-bold text-slate-900 group-hover:text-[#006633] truncate">{nextArticle.title}</div>
-                </button>
-              ) : <div />}
-            </nav>
           </div>
 
           <aside className="space-y-6">
@@ -380,80 +352,208 @@ export const InformationPage: React.FC<InformationPageProps> = ({
     );
   }
 
-  // MASTER INFORMATION HUB VIEW (Overview Page)
+  // =========================================================================
+  // MASTER INFORMATION HUB VIEW (Original Master Overview Page)
+  // =========================================================================
   return (
     <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-6 space-y-10">
+      {/* 02. BREADCRUMB */}
       <Breadcrumbs
         items={[
           { label: 'Home', onClick: () => onNavigate('home') },
-          { label: 'Information Hub' },
+          { label: 'Information' },
         ]}
       />
 
+      {/* 03. HERO */}
       <section className="bg-white rounded-2xl p-6 sm:p-10 border border-slate-200 shadow-xs relative overflow-hidden space-y-4">
         <div className="absolute top-0 right-0 w-80 h-80 bg-emerald-50 rounded-full blur-3xl -z-0 pointer-events-none transform translate-x-20 -translate-y-20 opacity-80" />
+
         <div className="relative z-10 space-y-3">
-          <span className="px-3 py-1 rounded-full bg-emerald-100 text-[#004D26] text-xs font-black uppercase tracking-wider flex items-center gap-1.5 w-max">
-            <BookOpen className="w-3.5 h-3.5 text-[#006633]" /> Official Knowledge & Information Directory
-          </span>
+          <div className="flex flex-wrap items-center gap-2">
+            <span className="px-3 py-1 rounded-full bg-emerald-100 text-[#004D26] text-xs font-black uppercase tracking-wider flex items-center gap-1.5">
+              <BookOpen className="w-3.5 h-3.5 text-[#006633]" /> Official Knowledge & Information Directory
+            </span>
+            <LastUpdatedBadge date="15 August 2026" />
+          </div>
+
           <h1 className="text-2xl sm:text-4xl font-black text-slate-900 tracking-tight leading-tight">
-            Information Hub Overview
+            Prize Bond Information
           </h1>
+
           <p className="text-xs sm:text-sm text-slate-600 max-w-3xl leading-relaxed font-medium">
             Understand Prize Bond denominations, prizes, draws, results and how to check your Prize Bond using clear, verified government facts and interactive tools.
           </p>
         </div>
       </section>
 
-      {/* FEATURED GUIDES */}
+      {/* 04. START HERE (NEW TO PRIZE BONDS?) */}
+      <section className="bg-white rounded-2xl p-6 sm:p-8 border border-slate-200 shadow-xs space-y-6">
+        <div className="flex flex-col sm:flex-row sm:items-center justify-between gap-2 border-b border-slate-100 pb-4">
+          <div>
+            <div className="text-xs font-black text-[#006633] uppercase tracking-wider">
+              Beginner's Guidance Path
+            </div>
+            <h2 className="text-xl sm:text-2xl font-black text-slate-900 tracking-tight">
+              New to Prize Bonds? Start Here
+            </h2>
+          </div>
+          <span className="text-xs font-bold text-slate-500 bg-slate-100 px-3 py-1 rounded-full w-max">
+            5-Step Guided Journey
+          </span>
+        </div>
+
+        <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-5 gap-4">
+          <button
+            type="button"
+            onClick={() => onNavigate('information', 'how-prize-bonds-work')}
+            className="p-4 bg-slate-50 hover:bg-emerald-50/60 rounded-xl border border-slate-200 hover:border-emerald-300 transition-all text-left space-y-2 group cursor-pointer"
+          >
+            <div className="flex items-center justify-between">
+              <span className="text-xs font-black text-[#006633] font-mono bg-emerald-100 px-2 py-0.5 rounded">01</span>
+              <ArrowRight className="w-4 h-4 text-slate-400 group-hover:text-[#006633] transition-transform" />
+            </div>
+            <h3 className="text-xs font-black text-slate-900 group-hover:text-[#006633]">Understand Prize Bonds</h3>
+            <p className="text-[11px] text-slate-500">Learn basics, security guarantee, and ownership rules.</p>
+          </button>
+
+          <button
+            type="button"
+            onClick={() => onNavigate('prizebonds')}
+            className="p-4 bg-slate-50 hover:bg-emerald-50/60 rounded-xl border border-slate-200 hover:border-emerald-300 transition-all text-left space-y-2 group cursor-pointer"
+          >
+            <div className="flex items-center justify-between">
+              <span className="text-xs font-black text-[#006633] font-mono bg-emerald-100 px-2 py-0.5 rounded">02</span>
+              <ArrowRight className="w-4 h-4 text-slate-400 group-hover:text-[#006633] transition-transform" />
+            </div>
+            <h3 className="text-xs font-black text-slate-900 group-hover:text-[#006633]">Explore Denominations</h3>
+            <p className="text-[11px] text-slate-500">Browse Rs. 100 to Rs. 40,000 Premium categories.</p>
+          </button>
+
+          <button
+            type="button"
+            onClick={() => onNavigate('information', 'prize-money-and-tax')}
+            className="p-4 bg-slate-50 hover:bg-emerald-50/60 rounded-xl border border-slate-200 hover:border-emerald-300 transition-all text-left space-y-2 group cursor-pointer"
+          >
+            <div className="flex items-center justify-between">
+              <span className="text-xs font-black text-[#006633] font-mono bg-emerald-100 px-2 py-0.5 rounded">03</span>
+              <ArrowRight className="w-4 h-4 text-slate-400 group-hover:text-[#006633] transition-transform" />
+            </div>
+            <h3 className="text-xs font-black text-slate-900 group-hover:text-[#006633]">Understand Draws & Prizes</h3>
+            <p className="text-[11px] text-slate-500">Prize amounts, draw cycles, and tax deduction rates.</p>
+          </button>
+
+          <button
+            type="button"
+            onClick={() => onNavigate('results')}
+            className="p-4 bg-slate-50 hover:bg-emerald-50/60 rounded-xl border border-slate-200 hover:border-emerald-300 transition-all text-left space-y-2 group cursor-pointer"
+          >
+            <div className="flex items-center justify-between">
+              <span className="text-xs font-black text-[#006633] font-mono bg-emerald-100 px-2 py-0.5 rounded">04</span>
+              <ArrowRight className="w-4 h-4 text-slate-400 group-hover:text-[#006633] transition-transform" />
+            </div>
+            <h3 className="text-xs font-black text-slate-900 group-hover:text-[#006633]">Check Gazette Results</h3>
+            <p className="text-[11px] text-slate-500">Access official published SBP draw gazette lists.</p>
+          </button>
+
+          <button
+            type="button"
+            onClick={() => onNavigate('checker')}
+            className="p-4 bg-emerald-50 hover:bg-emerald-100 rounded-xl border border-emerald-200 transition-all text-left space-y-2 group cursor-pointer"
+          >
+            <div className="flex items-center justify-between">
+              <span className="text-xs font-black text-white font-mono bg-[#006633] px-2 py-0.5 rounded">05</span>
+              <ArrowRight className="w-4 h-4 text-[#006633]" />
+            </div>
+            <h3 className="text-xs font-black text-[#004D26]">Check Your Bond</h3>
+            <p className="text-[11px] text-slate-600">Enter serial numbers for instant automated matching.</p>
+          </button>
+        </div>
+      </section>
+
+      {/* 05. MAIN INFORMATION TOPICS DIRECTORY */}
+      <section className="space-y-6">
+        <div className="bg-white p-5 rounded-2xl border border-slate-200 shadow-xs flex flex-col sm:flex-row sm:items-center justify-between gap-3">
+          <div>
+            <div className="text-xs font-black text-[#006633] uppercase tracking-wider">Structured Directory</div>
+            <h2 className="text-xl sm:text-2xl font-black text-slate-900 tracking-tight">Main Information Directory</h2>
+          </div>
+          <p className="text-xs text-slate-500 max-w-md">Click any topic card to explore factual guides and transition directly to tools.</p>
+        </div>
+
+        <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-5">
+          <div className="bg-white rounded-2xl p-5 border border-slate-200 hover:border-emerald-300 shadow-xs transition-all flex flex-col justify-between space-y-4 group">
+            <div className="space-y-2">
+              <div className="w-10 h-10 bg-emerald-100 text-[#006633] rounded-xl flex items-center justify-center font-black text-sm">01</div>
+              <h3 className="text-base font-black text-slate-900 group-hover:text-[#006633]">Prize Bond Basics</h3>
+              <p className="text-xs text-slate-600 leading-relaxed">Explain what Prize Bonds are, capital safety, and ownership rules.</p>
+            </div>
+            <div className="pt-2 border-t border-slate-100">
+              <button onClick={() => onNavigate('information', 'prize-bond-basics-pakistan')} className="w-full py-2 bg-[#006633] hover:bg-[#004D26] text-white text-xs font-black rounded-xl cursor-pointer">Learn About Prize Bonds</button>
+            </div>
+          </div>
+
+          <div className="bg-white rounded-2xl p-5 border border-slate-200 hover:border-emerald-300 shadow-xs transition-all flex flex-col justify-between space-y-4 group">
+            <div className="space-y-2">
+              <div className="w-10 h-10 bg-emerald-100 text-[#006633] rounded-xl flex items-center justify-center font-black text-sm">02</div>
+              <h3 className="text-base font-black text-slate-900 group-hover:text-[#006633]">Prize Bond Denominations</h3>
+              <p className="text-xs text-slate-600 leading-relaxed">Explore available denominations from Rs. 100 bearer up to Rs. 40,000 Premium.</p>
+            </div>
+            <div className="pt-2 border-t border-slate-100">
+              <button onClick={() => onNavigate('prizebonds')} className="w-full py-2 bg-[#006633] hover:bg-[#004D26] text-white text-xs font-black rounded-xl cursor-pointer">View Prize Bonds</button>
+            </div>
+          </div>
+
+          <div className="bg-white rounded-2xl p-5 border border-slate-200 hover:border-emerald-300 shadow-xs transition-all flex flex-col justify-between space-y-4 group">
+            <div className="space-y-2">
+              <div className="w-10 h-10 bg-emerald-100 text-[#006633] rounded-xl flex items-center justify-center font-black text-sm">03</div>
+              <h3 className="text-base font-black text-slate-900 group-hover:text-[#006633]">Prize Bond Draws</h3>
+              <p className="text-xs text-slate-600 leading-relaxed">Explain how quarterly draws work and SBP draw locations.</p>
+            </div>
+            <div className="pt-2 border-t border-slate-100">
+              <button onClick={() => onNavigate('schedule')} className="w-full py-2 bg-[#006633] hover:bg-[#004D26] text-white text-xs font-black rounded-xl cursor-pointer">Learn About Draws</button>
+            </div>
+          </div>
+
+          <div className="bg-white rounded-2xl p-5 border border-slate-200 hover:border-emerald-300 shadow-xs transition-all flex flex-col justify-between space-y-4 group">
+            <div className="space-y-2">
+              <div className="w-10 h-10 bg-emerald-100 text-[#006633] rounded-xl flex items-center justify-center font-black text-sm">04</div>
+              <h3 className="text-base font-black text-slate-900 group-hover:text-[#006633]">Prize Structure & Tax</h3>
+              <p className="text-xs text-slate-600 leading-relaxed">Explain prize categories and tax withholding rates.</p>
+            </div>
+            <div className="pt-2 border-t border-slate-100">
+              <button onClick={() => onNavigate('information', 'prize-money-and-tax')} className="w-full py-2 bg-[#006633] hover:bg-[#004D26] text-white text-xs font-black rounded-xl cursor-pointer">View Prize Structure</button>
+            </div>
+          </div>
+        </div>
+      </section>
+
+      {/* FEATURED / IMPORTANT GUIDES */}
       <section className="bg-white rounded-2xl p-6 sm:p-8 border border-slate-200 shadow-xs space-y-6">
         <div className="flex flex-col sm:flex-row sm:items-center justify-between gap-3 border-b border-slate-100 pb-4">
           <div>
-            <div className="text-xs font-black text-[#006633] uppercase tracking-wider">
-              Knowledge Base
-            </div>
-            <h2 className="text-xl sm:text-2xl font-black text-slate-900 tracking-tight">
-              Featured Prize Bond Guides
-            </h2>
+            <div className="text-xs font-black text-[#006633] uppercase tracking-wider">Knowledge Base</div>
+            <h2 className="text-xl sm:text-2xl font-black text-slate-900 tracking-tight">Featured Prize Bond Guides</h2>
           </div>
-          <span className="text-xs font-bold text-slate-500">
-            Showing {ARTICLES.length} Educational Guides
-          </span>
+          <span className="text-xs font-bold text-slate-500">Showing {ARTICLES.length} Educational Guides</span>
         </div>
 
         <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">
           {ARTICLES.map((art) => (
-            <div
-              key={art.slug}
-              className="bg-white rounded-2xl p-5 border border-slate-200 hover:border-emerald-300 shadow-xs transition-all flex flex-col justify-between space-y-4 group"
-            >
+            <div key={art.slug} className="bg-white rounded-2xl p-5 border border-slate-200 hover:border-emerald-300 shadow-xs transition-all flex flex-col justify-between space-y-4 group">
               <div className="space-y-3">
                 <div className="flex items-center justify-between text-[11px]">
-                  <span className="px-2.5 py-0.5 rounded-md bg-emerald-100 text-[#004D26] font-black uppercase">
-                    {art.category}
-                  </span>
+                  <span className="px-2.5 py-0.5 rounded-md bg-emerald-100 text-[#004D26] font-black uppercase">{art.category}</span>
                   <span className="text-slate-500 font-medium">{art.readTime}</span>
                 </div>
-
                 <div>
-                  <h3 className="text-base font-black text-slate-900 group-hover:text-[#006633] transition-colors leading-snug">
-                    {art.title}
-                  </h3>
-                  <p className="text-xs text-slate-600 mt-1.5 line-clamp-3 leading-relaxed">
-                    {art.shortSummary}
-                  </p>
+                  <h3 className="text-base font-black text-slate-900 group-hover:text-[#006633] transition-colors leading-snug">{art.title}</h3>
+                  <p className="text-xs text-slate-600 mt-1.5 line-clamp-3 leading-relaxed">{art.shortSummary}</p>
                 </div>
               </div>
-
               <div className="pt-3 border-t border-slate-100 flex items-center justify-between text-xs">
-                <span className="text-[10px] text-slate-400 font-medium">
-                  Updated: {art.lastUpdated}
-                </span>
-                <button
-                  type="button"
-                  onClick={() => onNavigate('information', art.slug)}
-                  className="font-black text-[#006633] hover:underline flex items-center gap-1 cursor-pointer"
-                >
+                <span className="text-[10px] text-slate-400 font-medium">Updated: {art.lastUpdated}</span>
+                <button type="button" onClick={() => onNavigate('information', art.slug)} className="font-black text-[#006633] hover:underline flex items-center gap-1 cursor-pointer">
                   <span>Read Guide</span>
                   <ArrowRight className="w-3.5 h-3.5" />
                 </button>
@@ -463,22 +563,14 @@ export const InformationPage: React.FC<InformationPageProps> = ({
         </div>
       </section>
 
-      {/* FAQs */}
+      {/* FAQS */}
       <section className="bg-white rounded-2xl p-6 sm:p-8 border border-slate-200 shadow-xs space-y-8">
         <div className="flex flex-col sm:flex-row sm:items-center justify-between gap-3 border-b border-slate-100 pb-4">
           <div>
-            <div className="text-xs font-black text-[#006633] uppercase tracking-wider">
-              Direct Answers & Knowledge
-            </div>
-            <h2 className="text-xl sm:text-2xl font-black text-slate-900 tracking-tight">
-              Frequently Asked Questions
-            </h2>
+            <div className="text-xs font-black text-[#006633] uppercase tracking-wider">Direct Answers & Knowledge</div>
+            <h2 className="text-xl sm:text-2xl font-black text-slate-900 tracking-tight">Frequently Asked Questions</h2>
           </div>
-          <button
-            type="button"
-            onClick={() => onNavigate('faqs')}
-            className="px-4 py-2 bg-slate-100 hover:bg-slate-200 text-slate-800 font-extrabold text-xs rounded-xl transition-colors cursor-pointer w-max"
-          >
+          <button type="button" onClick={() => onNavigate('faqs')} className="px-4 py-2 bg-slate-100 hover:bg-slate-200 text-slate-800 font-extrabold text-xs rounded-xl transition-colors cursor-pointer w-max">
             View All FAQs →
           </button>
         </div>
@@ -487,21 +579,10 @@ export const InformationPage: React.FC<InformationPageProps> = ({
           {FAQS.slice(0, 5).map((faq) => {
             const isOpen = openFaqId === faq.id;
             return (
-              <div
-                key={faq.id}
-                className="border border-slate-200 rounded-xl overflow-hidden transition-colors"
-              >
-                <button
-                  type="button"
-                  onClick={() => setOpenFaqId(isOpen ? null : faq.id)}
-                  className="w-full text-left p-4 bg-slate-50 hover:bg-slate-100/80 font-extrabold text-xs sm:text-sm text-slate-900 flex items-center justify-between gap-3 cursor-pointer"
-                >
+              <div key={faq.id} className="border border-slate-200 rounded-xl overflow-hidden transition-colors">
+                <button type="button" onClick={() => setOpenFaqId(isOpen ? null : faq.id)} className="w-full text-left p-4 bg-slate-50 hover:bg-slate-100/80 font-extrabold text-xs sm:text-sm text-slate-900 flex items-center justify-between gap-3 cursor-pointer">
                   <span>{faq.question}</span>
-                  {isOpen ? (
-                    <ChevronUp className="w-4 h-4 text-slate-500 shrink-0" />
-                  ) : (
-                    <ChevronDown className="w-4 h-4 text-slate-500 shrink-0" />
-                  )}
+                  {isOpen ? <ChevronUp className="w-4 h-4 text-slate-500 shrink-0" /> : <ChevronDown className="w-4 h-4 text-slate-500 shrink-0" />}
                 </button>
                 {isOpen && (
                   <div className="p-4 bg-white text-xs sm:text-sm text-slate-600 leading-relaxed border-t border-slate-200">

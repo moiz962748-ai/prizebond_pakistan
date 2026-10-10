@@ -596,7 +596,7 @@ export const Navbar: React.FC<NavbarProps> = ({
             )}
           </div>
 
-          {/* News & Savings Section (Mobile Drawer) */}
+      {/* News & Savings Section (Mobile Drawer) */}
 <div className="py-2 space-y-1.5 border-b border-slate-100 pb-3">
   <button
     type="button"
@@ -608,31 +608,45 @@ export const Navbar: React.FC<NavbarProps> = ({
   </button>
 
   {mobileInfoOpen && (
-    <div className="space-y-1.5 pt-1 animate-in fade-in duration-150 pl-2">
+    <div className="space-y-1.5 pt-1 animate-in fade-in duration-150 bg-slate-50/70 p-2 rounded-xl border border-slate-200">
+      
+      {/* Hub Title Header */}
+      <div className="px-3.5 py-1.5 text-[10px] font-bold uppercase tracking-wider text-slate-400 border-b border-slate-200">
+        Information Hub
+      </div>
+
+      {/* Overview / Main Hub Link */}
       <button
         onClick={() => handleNavClick('information', 'hub')}
-        className="w-full text-left px-3 py-2.5 text-xs font-black text-[#006633] bg-emerald-50 hover:bg-emerald-100 rounded-lg cursor-pointer transition-colors"
+        className="w-full text-left px-3.5 py-2.5 text-xs font-black text-[#006633] bg-emerald-50/80 hover:bg-emerald-100/80 rounded-xl cursor-pointer transition-colors flex items-center justify-between border border-emerald-200 shadow-2xs"
       >
-        Information Hub Overview
+        <span>Information Hub Overview</span>
+        <Sparkles className="w-3.5 h-3.5 text-amber-500" />
       </button>
-      <button
-        onClick={() => handleNavClick('information', 'information')}
-        className="w-full text-left px-3 py-2.5 text-xs font-bold text-slate-700 bg-slate-50 hover:bg-emerald-50 hover:text-[#006633] rounded-lg cursor-pointer transition-colors"
-      >
-        Prize Bond News & Updates
-      </button>
-      <button
-        onClick={() => handleNavClick('information', 'national-savings-rates')}
-        className="w-full text-left px-3 py-2.5 text-xs font-bold text-slate-700 bg-slate-50 hover:bg-emerald-50 hover:text-[#006633] rounded-lg cursor-pointer transition-colors"
-      >
-        National Savings Profit Rates (2026)
-      </button>
-      <button
-        onClick={() => handleNavClick('information', 'prize-money-and-tax')}
-        className="w-full text-left px-3 py-2.5 text-xs font-bold text-slate-700 bg-slate-50 hover:bg-emerald-50 hover:text-[#006633] rounded-lg cursor-pointer transition-colors"
-      >
-        How to Claim Prize Money & Tax Rates
-      </button>
+
+      <div className="my-1 border-t border-slate-200"></div>
+
+      {/* Sub-Hub Pages / Guides List matching desktop view */}
+      <div className="space-y-1">
+        {[
+          { label: "Prize Bond Basics (Beginner's Guide)", param: "prize-bond-basics-pakistan" },
+          { label: "How Prize Bonds Work", param: "how-prize-bonds-work" },
+          { label: "How to Buy Prize Bonds", param: "how-to-buy-prize-bonds" },
+          { label: "How to Check Prize Bonds", param: "how-to-check-prize-bonds" },
+          { label: "Prize Bond Rules", param: "prize-bond-rules" },
+          { label: "Prize Money & Tax Rates", param: "prize-money-and-tax" },
+          { label: "How to Claim a Prize", param: "how-to-claim-a-prize" },
+          { label: "Frequently Asked Questions", param: "frequently-asked-questions" },
+        ].map((subItem, index) => (
+          <button
+            key={index}
+            onClick={() => handleNavClick('information', subItem.param)}
+            className="w-full text-left px-3.5 py-2 text-xs font-bold text-slate-700 hover:bg-emerald-50 hover:text-[#006633] rounded-lg cursor-pointer transition-colors"
+          >
+            {subItem.label}
+          </button>
+        ))}
+      </div>
     </div>
   )}
 </div>
