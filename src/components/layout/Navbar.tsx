@@ -110,7 +110,9 @@ export const Navbar: React.FC<NavbarProps> = ({
               onMouseLeave={() => setActiveDropdown(null)}
             >
               <button
-                onClick={() => handleNavClick('results')}
+                onClick={() => {
+                  setActiveDropdown(activeDropdown === 'results' ? null : 'results');
+                }}
                 className={`px-3 py-1.5 rounded font-semibold text-xs flex items-center gap-1 transition-colors cursor-pointer ${
                   activeView === 'results' || activeView === 'denomination' || activeView === 'newspaper'
                     ? 'text-[#006633] border-b-2 border-[#006633] pb-1'
@@ -138,7 +140,7 @@ export const Navbar: React.FC<NavbarProps> = ({
                     </button>
                     <div className="my-1 border-t border-slate-100"></div>
 
-                    {/* Denomination Lists - FIXED to point to 'results' view */}
+                    {/* Denomination Lists */}
                     {[
                       { label: 'Rs. 100 Draw Results & Lists', val: '100' },
                       { label: 'Rs. 200 Draw Results & Lists', val: '200' },
@@ -212,7 +214,9 @@ export const Navbar: React.FC<NavbarProps> = ({
               onMouseLeave={() => setActiveDropdown(null)}
             >
               <button
-                onClick={() => handleNavClick('schedule')}
+                onClick={() => {
+                  setActiveDropdown(activeDropdown === 'schedule' ? null : 'schedule');
+                }}
                 className={`px-3 py-1.5 rounded font-semibold text-xs flex items-center gap-1 transition-colors cursor-pointer ${
                   activeView === 'schedule'
                     ? 'text-[#006633] border-b-2 border-[#006633] pb-1'
@@ -264,7 +268,9 @@ export const Navbar: React.FC<NavbarProps> = ({
               onMouseLeave={() => setActiveDropdown(null)}
             >
               <button
-                onClick={() => handleNavClick('prizebonds')}
+                onClick={() => {
+                  setActiveDropdown(activeDropdown === 'prize-bonds' ? null : 'prize-bonds');
+                }}
                 className={`px-3 py-1.5 rounded font-semibold text-xs flex items-center gap-1 transition-colors cursor-pointer ${
                   activeView === 'prizebonds' || activeView === 'prize-bonds' || activeView === 'denomination'
                     ? 'text-[#006633] border-b-2 border-[#006633] pb-1'
@@ -317,7 +323,9 @@ export const Navbar: React.FC<NavbarProps> = ({
               onMouseLeave={() => setActiveDropdown(null)}
             >
               <button
-                onClick={() => handleNavClick('information', 'hub')}
+                onClick={() => {
+                  setActiveDropdown(activeDropdown === 'information' ? null : 'information');
+                }}
                 className={`px-3 py-1.5 rounded font-semibold text-xs flex items-center gap-1 transition-colors cursor-pointer ${
                   activeView === 'information'
                     ? 'text-[#006633] border-b-2 border-[#006633] pb-1'
@@ -331,7 +339,6 @@ export const Navbar: React.FC<NavbarProps> = ({
               {activeDropdown === 'information' && (
                 <div className="absolute top-full left-0 w-64 pt-2 z-50 animate-in fade-in slide-in-from-top-1 duration-150">
                   <div className="bg-white rounded-xl shadow-xl border border-slate-200 py-2 overflow-hidden">
-                    <div className="my-1 border-t border-slate-100"></div>
                     {[
                       { label: "Prize Bond News & Updates", actionType: "information", param: "information" },
                       { label: "National Savings Profit Rates (2026)", actionType: "information", param: "national-savings-rates" },

@@ -46,8 +46,8 @@ export const ResultsPage: React.FC<ResultsPageProps> = ({
   const [drawsList, setDrawsList] = useState<any[]>([]);
   const [isDataLoading, setIsDataLoading] = useState<boolean>(true);
 
-  // Filter States (City removed)
-  const [selectedDenom, setSelectedDenom] = useState<string>(initialDenomination || 'all');
+  // Filter States
+  const [selectedDenom, setSelectedDenom] = useState<string>('all');
   const [selectedYear, setSelectedYear] = useState<string>('all');
   const [drawNoSearch, setDrawNoSearch] = useState<string>('');
   const [showAdvancedFilters, setShowAdvancedFilters] = useState<boolean>(false);
@@ -66,6 +66,20 @@ export const ResultsPage: React.FC<ResultsPageProps> = ({
 
   // FAQ Accordion State
   const [openFaqId, setOpenFaqId] = useState<string | null>('results-faq-1');
+
+  // Sync initialDenomination prop (handles both Denominations and Archive Years)
+  useEffect(() => {
+    if (!initialDenomination || initialDenomination === 'all') {
+      setSelectedDenom('all');
+      setSelectedYear('all');
+    } else if (['2026', '2025', '2024', '2023'].includes(initialDenomination)) {
+      setSelectedYear(initialDenomination);
+      setSelectedDenom('all');
+    } else {
+      setSelectedDenom(initialDenomination);
+      setSelectedYear('all');
+    }
+  }, [initialDenomination]);
 
   // Fetch Real Draw Results from Supabase on Mount
   useEffect(() => {
@@ -156,7 +170,6 @@ export const ResultsPage: React.FC<ResultsPageProps> = ({
     setTimeout(() => setCopiedNumber(null), 2000);
   };
 
-  // Toggle Loading Simulation
   const handleSimulateLoading = () => {
     setIsLoadingSim(true);
     setTimeout(() => {
@@ -166,19 +179,19 @@ export const ResultsPage: React.FC<ResultsPageProps> = ({
 
   return (
     <div className="space-y-10 pb-16">
-      {/* 02. BREADCRUMB CONTAINER */}
       <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 pt-6">
         <Breadcrumbs
           items={[
             { label: 'Results', onClick: () => onNavigate('results') },
             ...(selectedDenom !== 'all'
               ? [{ label: `Rs. ${selectedDenom} Results` }]
+              : selectedYear !== 'all'
+              ? [{ label: `${selectedYear} Archive` }]
               : [{ label: 'All Results Hub' }]),
           ]}
         />
       </div>
 
-      {/* 03 & 04. HERO / PAGE INTRODUCTION & AEO DIRECT ANSWER BLOCK */}
       <section className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
         <div className="bg-white rounded-2xl p-6 sm:p-8 border border-slate-200 shadow-sm relative overflow-hidden">
           <div className="absolute top-0 left-0 right-0 h-1.5 bg-gradient-to-r from-[#004D26] via-[#006633] to-[#003B1D]"></div>
@@ -199,18 +212,6 @@ export const ResultsPage: React.FC<ResultsPageProps> = ({
                 numbers, draw dates, draw cities and official gazette results for major Prize Bond
                 denominations.
               </p>
-
-              <div className="bg-slate-50 border border-slate-200 rounded-xl p-4 text-xs sm:text-sm text-slate-700 font-medium flex items-start gap-3 mt-4">
-                <Sparkles className="w-5 h-5 text-amber-500 shrink-0 mt-0.5" />
-                <div>
-                  <strong className="font-bold text-slate-900 block mb-1">
-                    Direct Answer Summary:
-                  </strong>
-                  Looking for the latest Prize Bond result? Select a Prize Bond denomination below
-                  to view recent and previous draw results, or use the Prize Bond Checker to verify
-                  your bond number across official gazettes.
-                </div>
-              </div>
             </div>
 
             <div className="shrink-0 flex flex-col sm:flex-row lg:flex-col gap-3 justify-center border-t lg:border-t-0 lg:border-l border-slate-200 pt-4 lg:pt-0 lg:pl-6">
@@ -229,21 +230,12 @@ export const ResultsPage: React.FC<ResultsPageProps> = ({
                 <Award className="w-4 h-4 text-[#006633]" />
                 <span>View Latest Draw</span>
               </button>
-
-              <div className="text-center pt-1">
-                <LastUpdatedBadge date="15 August 2026" source="National Savings Gazette" />
-              </div>
             </div>
           </div>
         </div>
       </section>
 
-      {/* ADSENSE AD PLACEHOLDER */}
-      <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
-        <AdSensePlaceholder slot="banner" />
-      </div>
-
-      {/* 07. RESULT FILTERS SECTION */}
+      {/* RESULT FILTERS SECTION */}
       <section className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
         <div className="bg-white rounded-2xl p-5 border border-slate-200 shadow-xs space-y-4">
           <div className="flex flex-col md:flex-row md:items-center justify-between gap-4 border-b border-slate-100 pb-4">
@@ -252,28 +244,6 @@ export const ResultsPage: React.FC<ResultsPageProps> = ({
                 <Filter className="w-5 h-5 text-[#006633]" />
                 <span>Search & Filter Results Database</span>
               </h2>
-              <p className="text-xs text-slate-500">
-                Filter by denomination, draw year, or search specific draw number.
-              </p>
-            </div>
-
-            <div className="flex items-center gap-2 text-[11px]">
-              <button
-                onClick={handleSimulateLoading}
-                className="px-2.5 py-1 bg-slate-100 hover:bg-slate-200 text-slate-600 rounded border border-slate-200 font-medium flex items-center gap-1 cursor-pointer"
-              >
-                <RefreshCw className="w-3 h-3" /> Simulate Loading
-              </button>
-              <button
-                onClick={() => setIsErrorSim(!isErrorSim)}
-                className={`px-2.5 py-1 rounded border font-medium flex items-center gap-1 cursor-pointer ${
-                  isErrorSim
-                    ? 'bg-red-100 text-red-700 border-red-300'
-                    : 'bg-slate-100 text-slate-600 border-slate-200'
-                }`}
-              >
-                <AlertTriangle className="w-3 h-3" /> {isErrorSim ? 'Error Active' : 'Test Error State'}
-              </button>
             </div>
           </div>
 
@@ -355,7 +325,7 @@ export const ResultsPage: React.FC<ResultsPageProps> = ({
         </div>
       </section>
 
-      {/* 08. SIMPLIFIED RESULTS TABLE */}
+      {/* RESULTS TABLE */}
       <section className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
         <div className="bg-white rounded-2xl border border-slate-200 shadow-xs overflow-hidden">
           <div className="bg-slate-50 px-6 py-4 border-b border-slate-200 flex flex-col sm:flex-row sm:items-center justify-between gap-3">
@@ -369,54 +339,9 @@ export const ResultsPage: React.FC<ResultsPageProps> = ({
                 {Math.min(currentPage * pageSize, totalResults)} of {totalResults} draw records
               </p>
             </div>
-
-            <div className="flex items-center gap-2 text-xs text-slate-600">
-              <span className="font-semibold">Per Page:</span>
-              <select
-                value={pageSize}
-                onChange={(e) => {
-                  setPageSize(Number(e.target.value));
-                  setCurrentPage(1);
-                }}
-                className="bg-white border border-slate-300 px-2 py-1 rounded text-xs font-bold focus:outline-none focus:border-[#006633]"
-              >
-                <option value={10}>10</option>
-                <option value={25}>25</option>
-                <option value={50}>50</option>
-                <option value={100}>100</option>
-              </select>
-            </div>
           </div>
 
-          {isErrorSim || isDataLoading ? (
-            <div className="p-12 text-center space-y-4">
-              {isDataLoading ? (
-                <div className="p-6 space-y-4 animate-pulse">
-                  {[1, 2, 3, 4, 5].map((i) => (
-                    <div key={i} className="h-12 bg-slate-100 rounded-lg w-full"></div>
-                  ))}
-                </div>
-              ) : (
-                <>
-                  <div className="w-12 h-12 bg-red-100 text-red-600 rounded-full flex items-center justify-center mx-auto">
-                    <AlertTriangle className="w-6 h-6" />
-                  </div>
-                  <div className="space-y-1 max-w-md mx-auto">
-                    <h4 className="text-lg font-bold text-slate-900">We couldn&apos;t load the results right now</h4>
-                    <p className="text-xs text-slate-500">
-                      A temporary connection issue occurred while fetching the National Savings database archive.
-                    </p>
-                  </div>
-                  <button
-                    onClick={() => setIsErrorSim(false)}
-                    className="px-5 py-2 bg-[#006633] text-white font-bold text-xs rounded-lg hover:bg-[#004D26] cursor-pointer"
-                  >
-                    Try Again
-                  </button>
-                </>
-              )}
-            </div>
-          ) : isLoadingSim ? (
+          {isDataLoading ? (
             <div className="p-6 space-y-4 animate-pulse">
               {[1, 2, 3, 4, 5].map((i) => (
                 <div key={i} className="h-12 bg-slate-100 rounded-lg w-full"></div>
@@ -519,7 +444,7 @@ export const ResultsPage: React.FC<ResultsPageProps> = ({
 
                     <button
                       onClick={() => {
-                        const queryParam = `denom=${draw.denomination}&file=${encodeURIComponent(draw.fileName || '15-02-2019-Rs-100.txt')}&date=${encodeURIComponent(draw.formattedDate)}&city=${encodeURIComponent(draw.city)}`;
+                        const queryParam = `denom=${draw.denomination}&date=${encodeURIComponent(draw.formattedDate)}&city=${encodeURIComponent(draw.city)}`;
                         onNavigate('draw-detail', queryParam);
                       }}
                       className="w-full py-2 bg-[#006633] text-white font-bold text-xs rounded-lg flex items-center justify-center gap-1 cursor-pointer shadow-xs"
@@ -533,8 +458,8 @@ export const ResultsPage: React.FC<ResultsPageProps> = ({
             </div>
           )}
 
-          {/* 09. PAGINATION CONTROLS */}
-          {totalResults > 0 && !isErrorSim && !isDataLoading && !isLoadingSim && (
+          {/* PAGINATION CONTROLS */}
+          {totalResults > 0 && !isDataLoading && (
             <div className="bg-slate-50 px-6 py-4 border-t border-slate-200 flex flex-col sm:flex-row items-center justify-between gap-4 text-xs font-bold text-slate-700">
               <div>
                 Showing Page {currentPage} of {totalPages}
