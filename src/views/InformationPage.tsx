@@ -201,7 +201,75 @@ export const InformationPage: React.FC<InformationPageProps> = ({
                 {detailedArticle.aiOverview}
               </p>
             </aside>
+{/* TABLE OF CONTENTS */}
+<div className="bg-white p-5 rounded-2xl border border-slate-200 shadow-xs space-y-3">
+  <div className="flex items-center justify-between border-b border-slate-100 pb-2.5">
+    <div className="flex items-center gap-2 text-xs font-extrabold text-slate-900 uppercase tracking-wider">
+      <Layers className="w-4 h-4 text-[#006633]" />
+      <span>Table of Contents</span>
+    </div>
+    <button
+      type="button"
+      onClick={() => setTocOpenMobile(!tocOpenMobile)}
+      className="sm:hidden text-xs font-bold text-[#006633] flex items-center gap-1"
+    >
+      {tocOpenMobile ? <ChevronUp className="w-4 h-4" /> : <ChevronDown className="w-4 h-4" />}
+    </button>
+  </div>
 
+  {tocOpenMobile && (
+    <nav className="grid grid-cols-1 sm:grid-cols-2 gap-2 text-xs font-bold pt-1">
+      {detailedArticle.tableOfContents.map((item, idx) => (
+        <button
+          key={idx}
+          type="button"
+          onClick={() => scrollToAnchor(item.href.replace('#', ''))}
+          className="text-left p-2.5 rounded-xl bg-slate-50 hover:bg-emerald-50 text-slate-700 hover:text-[#006633] border border-slate-100 hover:border-emerald-200 transition-all flex items-center justify-between cursor-pointer"
+        >
+          <span className="truncate pr-2">
+            <span className="text-[#006633] font-mono mr-1.5">{idx + 1}.</span>
+            {item.label}
+          </span>
+          <ChevronRight className="w-3.5 h-3.5 text-slate-400 shrink-0" />
+        </button>
+      ))}
+    </nav>
+  )}
+</div>
+
+{/* TOP FIXED ADSENSE SLOT (CLS = 0) */}
+<div
+  className="w-full min-h-[90px] bg-slate-100/80 border border-dashed border-slate-300 rounded-xl flex flex-col items-center justify-center p-3 text-center my-4"
+  aria-label="Advertisement Space"
+>
+  <span className="text-[10px] uppercase font-bold tracking-widest text-slate-400">
+    Advertisement
+  </span>
+  <span className="text-xs text-slate-400 font-medium">
+    Official CDNS & SBP Gazette Sponsor Slot
+  </span>
+</div>
+
+{/* SECTION: KEY TAKEAWAYS */}
+<section id="key-takeaways" className="scroll-mt-24 space-y-4">
+  <div className="flex items-center gap-2">
+    <div className="w-2.5 h-6 bg-[#006633] rounded-sm" />
+    <h2 className="text-xl sm:text-2xl font-black text-slate-900">
+      Key Takeaways
+    </h2>
+  </div>
+
+  <div className="bg-slate-50 border border-slate-200 rounded-2xl p-5 sm:p-6 space-y-3">
+    <ul className="space-y-3 list-none p-0 m-0">
+      {detailedArticle.keyTakeaways.map((takeaway, idx) => (
+        <li key={idx} className="flex items-start gap-3 text-xs sm:text-sm text-slate-700 leading-relaxed font-medium">
+          <CheckCircle2 className="w-4 h-4 text-[#006633] mt-0.5 shrink-0" />
+          <span>{takeaway}</span>
+        </li>
+      ))}
+    </ul>
+  </div>
+</section>
             <article className="bg-white p-6 sm:p-8 rounded-2xl border border-slate-200 shadow-xs space-y-10 text-xs sm:text-sm text-slate-700 leading-relaxed">
               {detailedArticle.sections.map((sec, idx) => (
                 <section
