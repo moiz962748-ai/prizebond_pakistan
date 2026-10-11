@@ -1,5 +1,3 @@
-'use client';
-
 import React, { useState } from 'react';
 import { HelpCircle, Search, ChevronRight } from 'lucide-react';
 import { FAQS } from '../data/mockData';

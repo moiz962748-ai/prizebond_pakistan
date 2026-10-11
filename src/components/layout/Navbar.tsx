@@ -365,7 +365,7 @@ export const Navbar: React.FC<NavbarProps> = ({
           { label: "Prize Bond Rules", param: "prize-bond-rules" },
           { label: "Prize Money & Tax Rates", param: "prize-money-and-tax" },
           { label: "How to Claim a Prize", param: "how-to-claim-a-prize" },
-          { label: "Frequently Asked Questions", param: "frequently-asked-questions" },
+          { label: "Frequently Asked Questions", param: "faqs" },
         ].map((subItem, index) => (
           <button
             key={index}

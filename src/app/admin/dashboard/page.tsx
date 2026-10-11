@@ -4,19 +4,52 @@ import { useState, useEffect } from 'react';
 import { supabase } from '@/lib/supabase';
 import { defaultSiteContent } from '@/data/defaultContent';
 import { useRouter } from 'next/navigation';
-import { LayoutDashboard, Globe, LogOut, Save, Loader2, Sparkles, Navigation, Layers, Menu, ChevronLeft, Eye, EyeOff, RefreshCw, X } from 'lucide-react';
+import { LayoutDashboard, Globe, LogOut, Save, Loader2, Sparkles, Navigation, Layers, Menu, ChevronLeft, Eye, EyeOff, RefreshCw, X, BookOpen } from 'lucide-react';
+import { getStoredGuideArticles, saveStoredGuideArticles, DetailedGuideArticle } from '@/data/articleGuidesData';
 
 export default function AdminDashboard() {
   const [content, setContent] = useState<Record<string, string>>(defaultSiteContent.home);
   const [loading, setLoading] = useState(true);
   const [saving, setSaving] = useState(false);
   const [message, setMessage] = useState('');
-  const [activeTab, setActiveTab] = useState<'hero' | 'navbar' | 'footer'>('hero');
+  const [activeTab, setActiveTab] = useState<'hero' | 'navbar' | 'footer' | 'articles'>('hero');
   const [sidebarOpen, setSidebarOpen] = useState(false);
   const [mobileDrawerOpen, setMobileDrawerOpen] = useState(false);
   const [showPreview, setShowPreview] = useState(true);
   const [iframeKey, setIframeKey] = useState(0);
   const router = useRouter();
+
+  // Admin Dashboard Article Management State & UI
+  const [articlesList, setArticlesList] = useState<DetailedGuideArticle[]>([]);
+  const [selectedSlug, setSelectedSlug] = useState<string>('');
+  const [editingArticle, setEditingArticle] = useState<DetailedGuideArticle | null>(null);
+  const [successMsg, setSuccessMsg] = useState<string>('');
+
+  useEffect(() => {
+    const loaded = getStoredGuideArticles();
+    setArticlesList(loaded);
+    if (loaded.length > 0) {
+      setSelectedSlug(loaded[0].frontmatter.slug);
+      setEditingArticle(loaded[0]);
+    }
+  }, []);
+
+  const handleSelectArticle = (slug: string) => {
+    setSelectedSlug(slug);
+    const found = articlesList.find(a => a.frontmatter.slug === slug);
+    if (found) setEditingArticle(JSON.parse(JSON.stringify(found)));
+  };
+
+  const handleSaveArticle = () => {
+    if (!editingArticle) return;
+    const updated = articlesList.map(a => 
+      a.frontmatter.slug === editingArticle.frontmatter.slug ? editingArticle : a
+    );
+    setArticlesList(updated);
+    saveStoredGuideArticles(updated);
+    setSuccessMsg('Article successfully updated!');
+    setTimeout(() => setSuccessMsg(''), 3000);
+  };
 
   useEffect(() => {
     fetchContent();
@@ -183,11 +216,10 @@ export default function AdminDashboard() {
               </button>
               <div>
                 <h1 className="text-base sm:text-lg font-black tracking-tight text-white">Store Customizer</h1>
-                <p className="text-[11px] text-emerald-200/80 hidden xs:block">Customize branding, header, hero, and footer.</p>
+                <p className="text-[11px] text-emerald-200/80 hidden xs:block">Customize branding, header, hero, footer, and guides.</p>
               </div>
             </div>
             
-            {/* Mobile Logout/Preview Controls on top row */}
             <div className="flex items-center gap-2 sm:hidden">
               <button
                 onClick={() => setShowPreview(!showPreview)}
@@ -233,7 +265,7 @@ export default function AdminDashboard() {
                   activeTab === 'hero' ? 'bg-emerald-800 text-amber-300 shadow-md border border-emerald-700' : 'bg-[#003B1D]/80 text-emerald-100 hover:bg-emerald-900 border border-emerald-900'
                 }`}
               >
-                <Sparkles className="w-3.5 h-3.5 text-amber-400" /> Hero & Main Section
+                <Sparkles className="w-3.5 h-3.5 text-amber-400" /> Hero & Main
               </button>
               <button
                 onClick={() => setActiveTab('navbar')}
@@ -249,48 +281,123 @@ export default function AdminDashboard() {
                   activeTab === 'footer' ? 'bg-emerald-800 text-amber-300 shadow-md border border-emerald-700' : 'bg-[#003B1D]/80 text-emerald-100 hover:bg-emerald-900 border border-emerald-900'
                 }`}
               >
-                <Layers className="w-3.5 h-3.5 text-emerald-400" /> Footer Content
+                <Layers className="w-3.5 h-3.5 text-emerald-400" /> Footer
+              </button>
+              <button
+                onClick={() => setActiveTab('articles')}
+                className={`px-3 sm:px-4 py-2 rounded-xl text-xs font-black transition cursor-pointer flex items-center gap-2 shrink-0 ${
+                  activeTab === 'articles' ? 'bg-emerald-800 text-amber-300 shadow-md border border-emerald-700' : 'bg-[#003B1D]/80 text-emerald-100 hover:bg-emerald-900 border border-emerald-900'
+                }`}
+              >
+                <BookOpen className="w-3.5 h-3.5 text-amber-400" /> Manage Guides
               </button>
             </div>
 
-            {message && (
+            {message && activeTab !== 'articles' && (
               <div className={`p-3 rounded-xl text-xs font-bold ${message.includes('Error') ? 'bg-red-500/20 text-red-300 border border-red-500/30' : 'bg-emerald-500/20 text-emerald-200 border border-emerald-500/30'}`}>
                 {message}
               </div>
             )}
 
-            <form onSubmit={handleSave} className="space-y-6 bg-white p-5 sm:p-8 rounded-2xl border border-emerald-900/20 shadow-xl">
-              <div className="space-y-5">
-                {currentKeys.length > 0 ? (
-                  currentKeys.map((key) => (
-                    <div key={key} className="space-y-1.5">
-                      <label className="block text-xs font-black text-slate-700 uppercase tracking-wider">
-                        {key.replace(/_/g, ' ')}
-                      </label>
-                      <textarea
-                        value={content[key] || ''}
-                        onChange={(e) => handleChange(key, e.target.value)}
-                        rows={key.includes('title') || key.includes('desc') || key.includes('subtitle') ? 3 : 1}
-                        className="w-full px-4 py-3 border border-emerald-200 rounded-xl focus:ring-2 focus:ring-[#006633] focus:outline-none text-slate-900 text-sm font-medium bg-emerald-50/20"
+            {/* If Articles Tab is active */}
+            {activeTab === 'articles' ? (
+              <div className="bg-white p-6 rounded-2xl border border-emerald-900/20 shadow-xl space-y-6 text-slate-900">
+                <div>
+                  <h3 className="text-base font-black text-slate-900 mb-1">Information Hub Guides Manager</h3>
+                  <p className="text-xs text-slate-500">Select a guide below to edit its title and summary directly.</p>
+                </div>
+
+                <div className="flex flex-wrap gap-2">
+                  {articlesList.map((art) => (
+                    <button
+                      key={art.frontmatter.slug}
+                      onClick={() => handleSelectArticle(art.frontmatter.slug)}
+                      className={`px-3 py-1.5 text-xs font-bold rounded-lg border cursor-pointer transition-colors ${
+                        selectedSlug === art.frontmatter.slug
+                          ? 'bg-[#006633] text-white border-[#006633]'
+                          : 'bg-slate-50 text-slate-700 border-slate-200 hover:bg-slate-100'
+                      }`}
+                    >
+                      {art.frontmatter.title}
+                    </button>
+                  ))}
+                </div>
+
+                {editingArticle && (
+                  <div className="space-y-4 pt-4 border-t border-slate-100">
+                    <h4 className="text-sm font-black text-slate-900">Editing: {editingArticle.frontmatter.title}</h4>
+                    
+                    <div>
+                      <label className="block text-xs font-bold text-slate-700 mb-1">Guide Title</label>
+                      <input
+                        type="text"
+                        value={editingArticle.frontmatter.title}
+                        onChange={(e) => setEditingArticle({
+                          ...editingArticle,
+                          frontmatter: { ...editingArticle.frontmatter, title: e.target.value }
+                        })}
+                        className="w-full p-3 border border-slate-200 rounded-xl text-xs font-medium bg-slate-50/50"
                       />
                     </div>
-                  ))
-                ) : (
-                  <p className="text-xs text-slate-400 py-4 text-center">No configurable fields found for this section in default content.</p>
+
+                    <div>
+                      <label className="block text-xs font-bold text-slate-700 mb-1">Meta Description / Summary</label>
+                      <textarea
+                        rows={3}
+                        value={editingArticle.frontmatter.meta_description}
+                        onChange={(e) => setEditingArticle({
+                          ...editingArticle,
+                          frontmatter: { ...editingArticle.frontmatter, meta_description: e.target.value }
+                        })}
+                        className="w-full p-3 border border-slate-200 rounded-xl text-xs font-medium bg-slate-50/50"
+                      />
+                    </div>
+
+                    {successMsg && <div className="p-3 bg-emerald-100 text-emerald-800 text-xs font-bold rounded-lg">{successMsg}</div>}
+
+                    <button
+                      onClick={handleSaveArticle}
+                      className="px-5 py-3 bg-[#006633] text-white font-black text-xs rounded-xl cursor-pointer hover:bg-[#004D26] transition-colors shadow-sm"
+                    >
+                      Save Guide Changes
+                    </button>
+                  </div>
                 )}
               </div>
+            ) : (
+              <form onSubmit={handleSave} className="space-y-6 bg-white p-5 sm:p-8 rounded-2xl border border-emerald-900/20 shadow-xl">
+                <div className="space-y-5">
+                  {currentKeys.length > 0 ? (
+                    currentKeys.map((key) => (
+                      <div key={key} className="space-y-1.5">
+                        <label className="block text-xs font-black text-slate-700 uppercase tracking-wider">
+                          {key.replace(/_/g, ' ')}
+                        </label>
+                        <textarea
+                          value={content[key] || ''}
+                          onChange={(e) => handleChange(key, e.target.value)}
+                          rows={key.includes('title') || key.includes('desc') || key.includes('subtitle') ? 3 : 1}
+                          className="w-full px-4 py-3 border border-emerald-200 rounded-xl focus:ring-2 focus:ring-[#006633] focus:outline-none text-slate-900 text-sm font-medium bg-emerald-50/20"
+                        />
+                      </div>
+                    ))
+                  ) : (
+                    <p className="text-xs text-slate-400 py-4 text-center">No configurable fields found for this section in default content.</p>
+                  )}
+                </div>
 
-              <div className="pt-4 border-t border-emerald-100 flex justify-end">
-                <button
-                  type="submit"
-                  disabled={saving}
-                  className="w-full sm:w-auto px-6 py-3.5 bg-[#006633] hover:bg-[#004D26] text-white font-black text-xs sm:text-sm rounded-xl shadow-md transition-all cursor-pointer flex items-center justify-center gap-2"
-                >
-                  {saving ? <Loader2 className="w-4 h-4 animate-spin" /> : <Save className="w-4 h-4" />}
-                  <span>{saving ? 'Publishing Changes...' : 'Save Configuration'}</span>
-                </button>
-              </div>
-            </form>
+                <div className="pt-4 border-t border-emerald-100 flex justify-end">
+                  <button
+                    type="submit"
+                    disabled={saving}
+                    className="w-full sm:w-auto px-6 py-3.5 bg-[#006633] hover:bg-[#004D26] text-white font-black text-xs sm:text-sm rounded-xl shadow-md transition-all cursor-pointer flex items-center justify-center gap-2"
+                  >
+                    {saving ? <Loader2 className="w-4 h-4 animate-spin" /> : <Save className="w-4 h-4" />}
+                    <span>{saving ? 'Publishing Changes...' : 'Save Configuration'}</span>
+                  </button>
+                </div>
+              </form>
+            )}
           </div>
 
           {/* Right Live Website Iframe Preview Section */}

@@ -313,3 +313,21 @@ export const GUIDE_ARTICLES: DetailedGuideArticle[] = [
     ],
   },
 ];
+// LocalStorage helpers for Admin Article Editing & Fallbacks
+export const getStoredGuideArticles = (): DetailedGuideArticle[] => {
+  if (typeof window === 'undefined') return GUIDE_ARTICLES;
+  const saved = localStorage.getItem('admin_guide_articles');
+  if (saved) {
+    try {
+      return JSON.parse(saved);
+    } catch (e) {
+      console.error("Failed to parse saved articles", e);
+    }
+  }
+  return GUIDE_ARTICLES;
+};
+
+export const saveStoredGuideArticles = (articles: DetailedGuideArticle[]) => {
+  if (typeof window === 'undefined') return;
+  localStorage.setItem('admin_guide_articles', JSON.stringify(articles));
+};
