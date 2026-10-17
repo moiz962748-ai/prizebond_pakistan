@@ -66,7 +66,7 @@ export const BondCheckerTool: React.FC<BondCheckerToolProps> = ({
     return ALL_DRAW_RESULTS.filter((d) => d.denomination === selectedDenomination);
   }, [selectedDenomination]);
 
-  // Execute check against Supabase Database using two-step robust query
+  // Execute check against official gazette files & verification engine
   const executeCheck = async (bondNumbersToCheck: string[], denom: DenominationValue) => {
     setValidationError(null);
 
@@ -84,101 +84,31 @@ export const BondCheckerTool: React.FC<BondCheckerToolProps> = ({
     setIsLoading(true);
 
     try {
-      const checkResults: CheckerResultItem[] = [];
+      const res = await fetch('/api/check-bonds', {
+        method: 'POST',
+        headers: {
+          'Content-Type': 'application/json',
+        },
+        body: JSON.stringify({
+          denomination: denom,
+          numbers: cleanNumbers,
+          drawScope,
+          selectedDrawId,
+          selectedYearFilter,
+        }),
+      });
 
-      for (const rawNum of cleanNumbers) {
-        const paddedNum = rawNum.padStart(6, '0');
+      const data = await res.json();
 
-        // Step 1: Fetch all draw IDs corresponding to the selected denomination safely (Removed 'city' column)
-        const { data: drawsData, error: drawsError } = await supabase
-          .from('draws')
-          .select('id, draw_number, draw_date, denomination')
-          .eq('denomination', Number(denom));
-
-        if (drawsError || !drawsData) {
-          console.error('Error fetching draws for denomination:', drawsError?.message);
-        }
-
-        const drawIds = (drawsData || []).map((d) => d.id);
-
-        if (drawIds.length === 0) {
-          checkResults.push({
-            bondNumber: paddedNum,
-            denomination: denom,
-            isWinner: false,
-            drawNo: 1,
-            drawDate: 'Latest',
-            drawCity: 'Pakistan',
-          });
-          continue;
-        }
-
-        // Step 2: Query prize_bonds for this bond number within those draw IDs
-        const { data: matchedBonds, error: bondError } = await supabase
-          .from('prize_bonds')
-          .select('id, bond_number, prize_type, draw_id')
-          .eq('bond_number', paddedNum)
-          .in('draw_id', drawIds);
-
-        if (bondError) {
-          console.error('Supabase query error:', bondError.message);
-        }
-
-        if (matchedBonds && matchedBonds.length > 0) {
-          const targetMatch = matchedBonds[0];
-          const matchedDraw = (drawsData || []).find((d) => d.id === targetMatch.draw_id);
-
-          // Dynamic Prize Mapping based on Denomination
-          const getPrizeDetails = (denomination: number, prizeType: string) => {
-            if (Number(denomination) === 1500) {
-              if (prizeType === 'first') return { category: '1st Prize' as const, amount: 3000000, formatted: 'Rs. 3,000,000' };
-              if (prizeType === 'second') return { category: '2nd Prize' as const, amount: 1000000, formatted: 'Rs. 1,000,000' };
-              return { category: '3rd Prize' as const, amount: 18500, formatted: 'Rs. 18,500' };
-            }
-            if (Number(denomination) === 750) {
-              if (prizeType === 'first') return { category: '1st Prize' as const, amount: 1500000, formatted: 'Rs. 1,500,000' };
-              if (prizeType === 'second') return { category: '2nd Prize' as const, amount: 500000, formatted: 'Rs. 500,000' };
-              return { category: '3rd Prize' as const, amount: 9300, formatted: 'Rs. 9,300' };
-            }
-            const prizeTypeMap: Record<string, { category: '1st Prize' | '2nd Prize' | '3rd Prize'; amount: number; formatted: string }> = {
-              first: { category: '1st Prize', amount: 1500000, formatted: 'Rs. 1,500,000' },
-              second: { category: '2nd Prize', amount: 500000, formatted: 'Rs. 500,000' },
-              third: { category: '3rd Prize', amount: 9300, formatted: 'Rs. 9,300' },
-            };
-            return prizeTypeMap[prizeType] || { category: '1st Prize', amount: 1500000, formatted: 'Rs. 1,500,000' };
-          };
-
-          const pInfo = getPrizeDetails(Number(denom), targetMatch.prize_type);
-
-          checkResults.push({
-            bondNumber: paddedNum,
-            denomination: denom,
-            isWinner: true,
-            prizeCategory: pInfo.category,
-            prizeAmount: pInfo.amount,
-            prizeAmountFormatted: pInfo.formatted,
-            drawNo: matchedDraw?.draw_number || 82,
-            drawDate: matchedDraw?.draw_date || '2020-05-15',
-            drawCity: 'Muzaffarabad',
-            matchedDrawId: matchedDraw?.id,
-          });
-        } else {
-          checkResults.push({
-            bondNumber: paddedNum,
-            denomination: denom,
-            isWinner: false,
-            drawNo: 1,
-            drawDate: 'Latest',
-            drawCity: 'Pakistan',
-          });
-        }
+      if (!res.ok || !data.success) {
+        throw new Error(data.error || 'Failed to verify prize bond numbers.');
       }
 
-      setResults(checkResults);
+      setResults(data.results);
       setHasSearched(true);
-    } catch (err) {
+    } catch (err: any) {
       console.error('Error checking bonds:', err);
-      setValidationError('An error occurred while connecting to the database.');
+      setValidationError(err.message || 'An error occurred while checking official records.');
     } finally {
       setIsLoading(false);
     }

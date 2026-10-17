@@ -8,19 +8,52 @@ const supabase = createClient(supabaseUrl, supabaseKey);
 
 const DATA_FOLDER = path.join(__dirname, 'prize-bond-data');
 
+const SBP_CITIES = [
+  'Karachi', 'Lahore', 'Rawalpindi', 'Faisalabad', 'Multan',
+  'Peshawar', 'Quetta', 'Hyderabad', 'Muzaffarabad', 'Sialkot',
+  'Islamabad', 'Bahawalpur', 'Gujranwala', 'Sukkur'
+];
+
+function cleanCityName(rawText) {
+  const lower = (rawText || '').toLowerCase();
+  for (const c of SBP_CITIES) {
+    if (lower.includes(c.toLowerCase())) return c;
+  }
+  if (lower.includes('rwp')) return 'Rawalpindi';
+  if (lower.includes('lhr')) return 'Lahore';
+  if (lower.includes('fsd')) return 'Faisalabad';
+  if (lower.includes('mul')) return 'Multan';
+  if (lower.includes('pes')) return 'Peshawar';
+  if (lower.includes('qta')) return 'Quetta';
+  if (lower.includes('hyd')) return 'Hyderabad';
+  if (lower.includes('mzd')) return 'Muzaffarabad';
+  return 'Pakistan';
+}
+
 function parsePrizeBondText(rawText, fileName = "") {
   const lines = rawText.split('\n').map(line => line.trim()).filter(Boolean);
   
   let denomination = "";
   let drawNumber = "";
   let drawDate = "";
+  let city = "";
   let firstPrize = [];
   let secondPrizes = [];
   let thirdPrizes = [];
   
   let currentSection = "";
   
-  for (let line of lines) {
+  for (let i = 0; i < Math.min(lines.length, 35); i++) {
+    const line = lines[i];
+
+    // City detect karna
+    if (!city || city === 'Pakistan') {
+      const cityMatch = line.match(/(?:HELD\s+(?:AT|ON)|at\s+SBP\s*\(BSC\)|DRAW\s+AT)\s+([A-Za-z\s]+)/i);
+      if (cityMatch) {
+        city = cleanCityName(cityMatch[1]);
+      }
+    }
+
     // Denomination & Draw Number detect karna
     if (line.includes("Draw Result of") || line.includes("DENOMINATION") || line.includes("Draw") || line.includes("DRAW OF")) {
       const matchDenom = line.match(/(?:Rs\.?|\b)\s*(\d+)\/?-?\s*(?:Denomination|PRIZE BOND)?/i);
@@ -29,26 +62,61 @@ function parsePrizeBondText(rawText, fileName = "") {
       if (matchDraw && !drawNumber) drawNumber = matchDraw[1];
     } 
 
-    // Date detect karna (e.g. Date : 15/07/2020 ya 15-07-2020)
-    if (!drawDate && (line.includes("Date") || line.includes("HELD ON"))) {
-      const dateMatch = line.match(/(\d{2})[-\/](\d{2})[-\/](\d{4})/);
+    // Date detect karna
+    if (!drawDate) {
+      const dateMatch = line.match(/(\d{1,2})[-\/.](\d{1,2})[-\/.](\d{4})/);
       if (dateMatch) {
-        drawDate = `${dateMatch[3]}-${dateMatch[2]}-${dateMatch[1]}`; // YYYY-MM-DD format for database
+        const d = dateMatch[1].padStart(2, '0');
+        const m = dateMatch[2].padStart(2, '0');
+        const y = dateMatch[3];
+        drawDate = `${y}-${m}-${d}`;
       }
     }
-    
-    if (line.includes("First Prize") || line.toLowerCase().includes("1st prize")) {
+  }
+
+  // Fallback from filename
+  if (!city || city === 'Pakistan') {
+    city = cleanCityName(fileName);
+  }
+
+  if (!drawDate) {
+    const fileDateMatch = fileName.match(/(\d{1,2})[-\/.](\d{1,2})[-\/.](\d{4})/);
+    if (fileDateMatch) {
+      const d = fileDateMatch[1].padStart(2, '0');
+      const m = fileDateMatch[2].padStart(2, '0');
+      const y = fileDateMatch[3];
+      drawDate = `${y}-${m}-${d}`;
+    } else {
+      drawDate = '2024-01-01'; // Default fallback
+    }
+  }
+
+  if (!drawNumber) {
+    const fileMatch = fileName.match(/(\d+)(?:st|nd|rd|th)?-?draw/i) || fileName.match(/^(\d+)-/);
+    if (fileMatch) drawNumber = fileMatch[1];
+  }
+
+  // Section parsing for winning numbers
+  for (let line of lines) {
+    const lower = line.toLowerCase();
+    if (lower.includes("first prize") || lower.includes("1st prize")) {
       currentSection = "FIRST";
       continue;
-    } else if (line.includes("Second Prize") || line.toLowerCase().includes("2nd prize")) {
+    } else if (lower.includes("second prize") || lower.includes("2nd prize")) {
       currentSection = "SECOND";
       continue;
-    } else if (line.includes("Third Prize") || line.toLowerCase().includes("3rd prize")) {
+    } else if (
+      lower.includes("third prize") || 
+      lower.includes("3rd prize") || 
+      /prize\(s\)\s+of/i.test(line) ||
+      /\d+\s+prizes?\s+of/i.test(line) ||
+      /prizes?\s+of\s+rs/i.test(line)
+    ) {
       currentSection = "THIRD";
       continue;
     } 
     
-    const numbers = line.split(/\s+/).filter(n => /^\d{5,6}$/.test(n));
+    const numbers = line.split(/[\s\t,]+/).filter(n => /^\d{5,6}$/.test(n));
     if (numbers.length > 0) {
       if (currentSection === "FIRST") {
         firstPrize.push(...numbers);
@@ -60,25 +128,11 @@ function parsePrizeBondText(rawText, fileName = "") {
     }
   }
 
-  // Fallback: Agar text ya filename se date na mile toh filename se nikal lo
-  if (!drawDate) {
-    const fileDateMatch = fileName.match(/(\d{2})[-\/](\d{2})[-\/](\d{4})/);
-    if (fileDateMatch) {
-      drawDate = `${fileDateMatch[3]}-${fileDateMatch[2]}-${fileDateMatch[1]}`;
-    } else {
-      drawDate = '2020-01-01'; // Default fallback
-    }
-  }
-
-  if (!drawNumber) {
-    const fileMatch = fileName.match(/(\d+)(?:st|nd|rd|th)?-?draw/i) || fileName.match(/^(\d+)-/);
-    if (fileMatch) drawNumber = fileMatch[1];
-  }
-
   return {
     denomination,
     drawNumber,
     drawDate,
+    city: city || 'Pakistan',
     firstPrize,
     secondPrizes,
     thirdPrizes
@@ -97,7 +151,6 @@ async function importAllData() {
     const denomPath = path.join(DATA_FOLDER, denomFolder);
     if (!fs.statSync(denomPath).isDirectory()) continue;
 
-    // Folder name se default denomination uthana (e.g. "750" ya folder name)
     const folderDenom = denomFolder.replace(/\D/g, '') || denomFolder;
 
     console.log(`Processing Denomination Folder: Rs. ${denomFolder}`);
@@ -116,13 +169,14 @@ async function importAllData() {
 
       const finalDenom = parseInt(parsedData.denomination || folderDenom);
 
-      // Insert into 'draws' with actual correct date and denomination
+      // Insert into 'draws' with actual correct date, city, and denomination
       const { data: drawRecord, error: drawError } = await supabase
         .from('draws')
         .insert({
           denomination: finalDenom,
           draw_number: parseInt(parsedData.drawNumber),
-          draw_date: parsedData.drawDate
+          draw_date: parsedData.drawDate,
+          city: parsedData.city
         })
         .select()
         .single();

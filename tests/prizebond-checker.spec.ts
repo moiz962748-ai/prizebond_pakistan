@@ -3,11 +3,6 @@ import { test, expect } from '@playwright/test';
 test.beforeEach(async ({ page }) => {
   await page.goto('http://localhost:3000/');
   await page.getByRole('button', { name: 'Checker', exact: true }).click();
-  await page.getByRole('button', { name: /Rs\. 750/ }).click();
-});
-test.beforeEach(async ({ page }) => {
-  await page.goto('http://localhost:3000/');
-  await page.getByRole('button', { name: 'Checker', exact: true }).click();
 
   await expect(page.locator('#checker-tool-card')).toBeVisible();
   await page.getByRole('button', { name: /Rs\. 750/ }).click();
